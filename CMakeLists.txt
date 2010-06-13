@@ -1,0 +1,94 @@
+#
+#  Copyright
+#
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+
+SET(PROJECT_NAME sot-tutorial)
+project(${PROJECT_NAME})
+
+SET(PROJECT_VERSION 1.0)
+
+SET(CMAKE_VERBOSE_MAKEFILE true)
+
+IF(WIN32)
+  SET(LIBDIR_KW "/LIBPATH:")
+  SET(LIBINCL_KW "")
+  SET(LIB_EXT ".lib")
+ENDIF(WIN32)
+
+IF(UNIX)
+  SET(LIBDIR_KW "-L")
+  SET(LIBINCL_KW "-l")
+  SET(LIB_EXT "")
+ENDIF(UNIX)
+
+#
+# Look for dependencies
+#
+
+# Load Pkgconfig macros
+INCLUDE(FindPkgConfig)
+SET(PACKAGE_REQUIREMENTS "")
+
+#
+#  Dependency to package StackOfTasks
+#
+SET(STACKOFTASKS_FOUND 0)
+SET(STACKOFTASKS_REQUIRED "StackOfTasks >= 1.0")
+PKG_CHECK_MODULES(STACKOFTASKS REQUIRED ${STACKOFTASKS_REQUIRED})
+EXEC_PROGRAM(${PKG_CONFIG_EXECUTABLE} ARGS  --variable=docdir StackOfTasks
+  OUTPUT_VARIABLE STACKOFTASKS_DOCDIR)
+MESSAGE(STATUS "pkg-config: ${PKG_CONFIG_EXECUTABLE}")
+MESSAGE(STATUS "STACKOFTASKS_DOCDIR=${STACKOFTASKS_DOCDIR}")
+SET(STACKOFTASKS_FOUND 1)
+
+IF(NOT ${STACKOFTASKS_FOUND})
+  MESSAGE(FATAL_ERROR "Check that package StackOfTasks is installed in a directory pointed out by PKG_CONFIG_PATH.")
+ENDIF(NOT ${STACKOFTASKS_FOUND})
+  
+IF(PACKAGE_REQUIREMENTS STREQUAL "")
+  SET(PACKAGE_REQUIREMENTS ${STACKOFTASKS_REQUIRED})
+ELSE(PACKAGE_REQUIREMENTS STREQUAL "")
+  SET(PACKAGE_REQUIREMENTS "${PACKAGE_REQUIREMENTS}, ${STACKOFTASKS_REQUIRED}")
+ENDIF(PACKAGE_REQUIREMENTS STREQUAL "")
+
+#
+# pkg-config file
+#
+
+SET(install_pkg_prefix "\${prefix}")
+SET(install_pkg_exec_prefix "\${exec_prefix}")
+SET(install_pkg_libdir "\${libdir}")
+SET(install_pkg_datarootdir "\${datarootdir}")
+SET(install_pkg_include_dir "\${includedir}")
+
+IF(UNIX)
+  SET (${PROJECT_NAME}_LDFLAGS "-Wl,-R${install_pkg_libdir} ${LIBINCL_KW}${PROJECT_NAME}${LIB_EXT} ${${PROJECT_NAME}_LDFLAGS}")
+ENDIF(UNIX)
+
+IF(WIN32)
+  SET (${PROJECT_NAME}_LDFLAGS "${LIBINCL_KW}${PROJECT_NAME}${LIB_EXT} ${${PROJECT_NAME}_LDFLAGS}")
+ENDIF(WIN32)
+
+# Install the file in the appropriate place.
+SET(install_libdir_pkgconfig ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
+
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc)
+
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+  DESTINATION ${install_libdir_pkgconfig}	
+  PERMISSIONS OWNER_READ GROUP_READ WORLD_READ OWNER_WRITE)
+
+ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(include)
+ADD_SUBDIRECTORY(unitTesting)
+
+#
+# Documentation produced by doxygen
+#
+INCLUDE(FindDoxygen)
+IF(DOXYGEN_FOUND)
+  add_subdirectory(doc)
+ENDIF(DOXYGEN_FOUND)
