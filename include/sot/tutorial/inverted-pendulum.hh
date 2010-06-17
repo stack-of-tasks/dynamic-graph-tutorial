@@ -49,8 +49,40 @@ namespace sot {
 	 @}
       */
 
+      /** 
+	  \name Parameters
+	  @{
+      */
       /**
-	 \brief Handle commands from script
+	 \brief Set the mass of the cart
+      */
+      void setCartMass (double inMass) {
+	cartMass_ = inMass;
+      }
+
+      /**
+	 \brief Get the mass of the cart
+      */
+      double getCartMass () const {
+	return cartMass_;
+      }
+
+      /**
+	 \brief Set the mass of the cart
+      */
+      void setPendulumMass (double inMass) {
+	pendulumMass_ = inMass;
+      }
+
+      /**
+	 \brief Get the mass of the pendulum
+      */
+      double getPendulumMass () const {
+	return pendulumMass_;
+      }
+
+      /**
+	 @}
       */
       virtual void commandLine( const std::string& cmdLine,
 				std::istringstream& cmdArgs,
