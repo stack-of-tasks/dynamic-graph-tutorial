@@ -22,22 +22,3 @@ InvertedPendulum::~InvertedPendulum()
 {
 }
 
-void InvertedPendulum::commandLine( const std::string& cmdLine,
-				    std::istringstream& cmdArgs,
-				    std::ostream& os )
-{
-  if( cmdLine == "help" ) {
-    os << "setCartMass m\t set the mass of the cart" << std::endl
-       << "setPendulumMass m\t set the mass of the pendulum" << std::endl
-       << std::endl;
-  }
-  else if (cmdLine == "setCartMass") {
-    cmdArgs >> cartMass_;
-  }
-  else if (cmdLine == "setPendulumMass") {
-    cmdArgs >> pendulumMass_;
-  else {
-    Entity::commandLine( cmdLine,cmdArgs,os);
-  }
-}
-
