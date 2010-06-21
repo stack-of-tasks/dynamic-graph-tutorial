@@ -1,12 +1,12 @@
 # 
-#  Copyright 
+#  Copyright 2010 CNRS
 # 
+#  Author: Florent Lamiraux
+#
 
 SET(LIBRARY_NAME ${PROJECT_NAME})
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
-
-ADD_DEFINITIONS(-DDEBUG=2)
 
 # provide path to library libStackOfTasks.so
 LINK_DIRECTORIES(${STACKOFTASKS_LIBRARY_DIRS})

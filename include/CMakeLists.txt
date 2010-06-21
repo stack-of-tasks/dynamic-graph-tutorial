@@ -5,8 +5,8 @@
 # 
 
 SET(${PROJECT_NAME}_HEADERS
-sot/tutorial/inverted-pendulum.hh
-sot/tutorial/api.hh
+    sot/tutorial/inverted-pendulum.hh
+    sot/tutorial/api.hh
 )
 
 # Recreate correct path for the headers
