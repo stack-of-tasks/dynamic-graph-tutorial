@@ -7,9 +7,11 @@
 #ifndef SOT_TUTORIAL_INVERTED_PENDULUM_HH
 #define SOT_TUTORIAL_INVERTED_PENDULUM_HH
 
-#include "sot/tutorial/api.hh"
-
+#include <boost/numeric/ublas/vector.hpp>
 #include <sot/sotEntity.h>
+#include <sot/sotSignalTimeDependant.h>
+
+#include "sot/tutorial/api.hh"
 
 /**
   \brief namespace sot
@@ -25,7 +27,12 @@ namespace sot {
     class SOT_TUTORIAL_EXPORT InvertedPendulum : public sotEntity 
     {
     public:
+      typedef boost::numeric::ublas::vector<double> Vector;
+      /**
+	 \brief Constructor by name
+      */
       InvertedPendulum(const std::string& inName);
+
       ~InvertedPendulum();
 
       virtual const std::string& getClassName (void) const {
@@ -39,11 +46,11 @@ namespace sot {
       /**
 	 \brief Input of the inverted pendulum
       */
-      sotSignalPtr< Vector, int > forceSIN;
+      sotSignalTimeDependant< Vector, int > forceSIN;
       /**
 	 \brief State of the inverted pendulum
       */
-      sotSignalPtr< Vector, int> stateSOUT;
+      sotSignalTimeDependant< Vector, int> stateSOUT;
 
       /**
 	 @}
@@ -89,7 +96,7 @@ namespace sot {
       /*
 	\brief Class name
       */
-      static const std::string& CLASS_NAME;
+      static const std::string CLASS_NAME;
 
     private:
       /**
@@ -103,6 +110,15 @@ namespace sot {
       /**
 	 @}
       */
+      /**
+	 \brief State of the system
+      */
+      Vector state_;
+
+      /**
+	 \brief Compute the evolution of the state of the pendulum
+      */
+      Vector& computeDynamics(Vector& outState, int time);
     };
   };
 };
