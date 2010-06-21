@@ -11,7 +11,7 @@ using namespace sot::tutorial;
 const std::string InvertedPendulum::CLASS_NAME = "InvertedPendulum";
 
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
-  sotEntity(inName), 
+  sotEntity(inName),
   forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::forcein"),
   stateSOUT(boost::bind(&InvertedPendulum::computeDynamics, this, _1, _2),
 	    sotNOSIGNAL, "InvertedPendulum("+name+")::output(vector)::state"),

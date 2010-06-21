@@ -19,12 +19,12 @@
 
 namespace sot {
   namespace tutorial {
-    
+
     /**
        \brief Main class of package sot-tutorial
     */
-    
-    class SOT_TUTORIAL_EXPORT InvertedPendulum : public sotEntity 
+
+    class SOT_TUTORIAL_EXPORT InvertedPendulum : public sotEntity
     {
     public:
       typedef boost::numeric::ublas::vector<double> Vector;
@@ -39,7 +39,7 @@ namespace sot {
 	return CLASS_NAME;
       }
 
-      /** 
+      /**
 	  \name Signals
 	  @{
       */
@@ -56,7 +56,7 @@ namespace sot {
 	 @}
       */
 
-      /** 
+      /**
 	  \name Parameters
 	  @{
       */
