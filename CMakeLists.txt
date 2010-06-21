@@ -92,3 +92,11 @@ INCLUDE(FindDoxygen)
 IF(DOXYGEN_FOUND)
   add_subdirectory(doc)
 ENDIF(DOXYGEN_FOUND)
+
+#
+# Python
+#
+INCLUDE(FindPythonLibs)
+IF (NOT ${PYTHONLIBS_FOUND} STREQUAL TRUE)
+   MESSAGE(FATAL_ERROR "Python has not been found.")
+ENDIF (NOT ${PYTHONLIBS_FOUND} STREQUAL TRUE)
