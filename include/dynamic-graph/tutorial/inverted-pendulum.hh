@@ -4,8 +4,8 @@
  *  Florent Lamiraux
  */
 
-#ifndef SOT_TUTORIAL_INVERTED_PENDULUM_HH
-#define SOT_TUTORIAL_INVERTED_PENDULUM_HH
+#ifndef DG_TUTORIAL_INVERTED_PENDULUM_HH
+#define DG_TUTORIAL_INVERTED_PENDULUM_HH
 
 #include <boost/numeric/ublas/vector.hpp>
 #include <sot/sotEntity.h>
@@ -21,10 +21,10 @@ namespace sot {
   namespace tutorial {
 
     /**
-       \brief Main class of package sot-tutorial
+       \brief Main class of package dg-tutorial
     */
 
-    class SOT_TUTORIAL_EXPORT InvertedPendulum : public sotEntity
+    class DG_TUTORIAL_EXPORT InvertedPendulum : public sotEntity
     {
     public:
       typedef boost::numeric::ublas::vector<double> Vector;

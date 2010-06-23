@@ -2,7 +2,7 @@
  *  Copyright
  */
 
-#include "sot-tutorial-test.hh" 
+#include "dg-tutorial-test.hh" 
 
 int main (int argc, char** argv)
 {

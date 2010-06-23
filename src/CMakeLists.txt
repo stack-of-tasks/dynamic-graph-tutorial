@@ -82,8 +82,8 @@ INSTALL(TARGETS ${PYTHON_MODULE}
 	       ${PYTHON_INSTALL_DIR})
 
 SET (PYTHON_SOURCES
-    sot/tutorial/inverted_pendulum.py
-    sot/tutorial/__init__.py
+    dynamic-graph/tutorial/inverted_pendulum.py
+    dynamic-graph/tutorial/__init__.py
 )
 
 SET (PYTHON_SOURCES_FULLPATH "")

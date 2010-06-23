@@ -11,13 +11,13 @@ LINK_DIRECTORIES(${STACKOFTASKS_LIBRARY_DIRS})
 
 ADD_EXECUTABLE(${EXECUTABLE_NAME}
   main.cc
-  sot-tutorial-test.cc)
+  dg-tutorial-test.cc)
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 
 LINK_DIRECTORIES(${${PROJECT_NAME}_BINARY_DIR}/src)
 TARGET_LINK_LIBRARIES(${EXECUTABLE_NAME}
-  sot-tutorial)
+  dg-tutorial)
 
 # Add StackOfTasks compilation flags and link to library libStackOfTasks.so
 ADD_DEFINITIONS(${STACKOFTASKS_CFLAGS})

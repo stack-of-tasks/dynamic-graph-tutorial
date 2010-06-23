@@ -1,10 +1,11 @@
 #
-#  Copyright
+#  Copyright 2010 CNRS
+#  Author: Florent Lamiraux
 #
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-SET(PROJECT_NAME sot-tutorial)
+SET(PROJECT_NAME dg-tutorial)
 project(${PROJECT_NAME})
 
 SET(PROJECT_VERSION 1.0)

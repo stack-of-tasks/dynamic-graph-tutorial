@@ -159,7 +159,7 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 TAGFILES               = \
 	${STACKOFTASKS_DOCDIR}/html/StackOfTasks.doxytag=${STACKOFTASKS_DOCDIR}/html
-GENERATE_TAGFILE       = sot-tutorial.doxytag
+GENERATE_TAGFILE       = dg-tutorial.doxytag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
 PERL_PATH              = /usr/bin/perl

@@ -5,8 +5,8 @@
 # 
 
 SET(${PROJECT_NAME}_HEADERS
-    sot/tutorial/inverted-pendulum.hh
-    sot/tutorial/api.hh
+    dynamic-graph/tutorial/inverted-pendulum.hh
+    dynamic-graph/tutorial/api.hh
 )
 
 # Recreate correct path for the headers

@@ -4,7 +4,7 @@
  *  Florent Lamiraux
  */
 
-#include "sot/tutorial/inverted-pendulum.hh"
+#include "dynamic-graph/tutorial/inverted-pendulum.hh"
 
 using namespace sot::tutorial;
 

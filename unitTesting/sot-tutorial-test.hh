@@ -2,10 +2,10 @@
  *  Copyright
  */
 
-#ifndef SOT_TUTORIAL_HH
-#define SOT_TUTORIAL_HH
+#ifndef DG_TUTORIAL_HH
+#define DG_TUTORIAL_HH
 
-#include "sot-tutorial/sot-tutorial.hh" 
+#include "dg-tutorial/dg-tutorial.hh" 
 
 /**
  \brief UnitTesting class of class Tutorial
