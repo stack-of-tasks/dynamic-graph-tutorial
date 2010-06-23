@@ -88,15 +88,15 @@ EXEC_PROGRAM(${PYTHON_EXECUTABLE} ARGS "-c \"from distutils import sysconfig; pr
 MESSAGE(STATUS "PYTHON_SITELIB=${PYTHON_SITELIB}")
 
 
-SET(PYTHON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/${PYTHON_SITELIB}/dynamic-graph/tutorial)
+SET(PYTHON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/${PYTHON_SITELIB}/dynamic_graph/tutorial)
 
 INSTALL(TARGETS ${PYTHON_MODULE}
 	       DESTINATION
 	       ${PYTHON_INSTALL_DIR})
 
 SET (PYTHON_SOURCES
-    dynamic-graph/tutorial/inverted_pendulum.py
-    dynamic-graph/tutorial/__init__.py
+    dynamic_graph/tutorial/inverted_pendulum.py
+    dynamic_graph/tutorial/__init__.py
 )
 
 SET (PYTHON_SOURCES_FULLPATH "")

@@ -3,7 +3,7 @@
 
     Author: Florent Lamiraux
 """
-import dynamic_graph.tutorial.wrap as stw
+import wrap as stw
 
 class InvertedPendulum:
     """
