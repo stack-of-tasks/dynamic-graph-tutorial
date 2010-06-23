@@ -25,6 +25,6 @@ ENDFOREACH(lHeader)
 # Install procedure for the header files
 #----------------------------------------------------
 INSTALL(FILES ${fullpath_${PROJECT_NAME}_HEADERS}
-	DESTINATION ${CMAKE_INSTALL_PREFIX}/include/sot/tutorial
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/include/dynamic-graph/tutorial
         PERMISSIONS OWNER_READ GROUP_READ WORLD_READ OWNER_WRITE
 )

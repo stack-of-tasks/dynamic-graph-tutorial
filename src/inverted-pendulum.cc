@@ -6,12 +6,12 @@
 
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 
-using namespace sot::tutorial;
+using namespace dynamicgraph::tutorial;
 
 const std::string InvertedPendulum::CLASS_NAME = "InvertedPendulum";
 
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
-  sotEntity(inName),
+  Entity(inName),
   forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::forcein"),
   stateSOUT(boost::bind(&InvertedPendulum::computeDynamics, this, _1, _2),
 	    sotNOSIGNAL, "InvertedPendulum("+name+")::output(vector)::state"),

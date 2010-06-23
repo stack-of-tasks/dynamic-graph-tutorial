@@ -3,4 +3,4 @@
 
     Author: Florent Lamiraux
 """
-import sot.tutorial.inverted_pendulum
+import dynamic_graph.tutorial.inverted_pendulum

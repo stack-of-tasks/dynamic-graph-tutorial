@@ -3,11 +3,11 @@
 
     Author: Florent Lamiraux
 """
-import sot_tutorial_wrap as stw
+import dynamic_graph.tutorial.wrap as stw
 
 class InvertedPendulum:
     """
-    This class binds sot::tutorial::InvertedPendulum C++ class
+    This class binds dynamicgraph::tutorial::InvertedPendulum C++ class
     """
     def __init__(self, name):
         """

@@ -8,23 +8,19 @@
 #define DG_TUTORIAL_INVERTED_PENDULUM_HH
 
 #include <boost/numeric/ublas/vector.hpp>
-#include <sot/sotEntity.h>
-#include <sot/sotSignalTimeDependant.h>
+#include <dynamic-graph/entity.h>
+#include <dynamic-graph/signal-time-dependant.h>
 
-#include "sot/tutorial/api.hh"
+#include "dynamic-graph/tutorial/api.hh"
 
-/**
-  \brief namespace sot
- */
-
-namespace sot {
+namespace dynamicgraph {
   namespace tutorial {
 
     /**
        \brief Main class of package dg-tutorial
     */
 
-    class DG_TUTORIAL_EXPORT InvertedPendulum : public sotEntity
+    class DG_TUTORIAL_EXPORT InvertedPendulum : public Entity
     {
     public:
       typedef boost::numeric::ublas::vector<double> Vector;
@@ -46,11 +42,11 @@ namespace sot {
       /**
 	 \brief Input of the inverted pendulum
       */
-      sotSignalTimeDependant< Vector, int > forceSIN;
+      SignalTimeDependant< Vector, int > forceSIN;
       /**
 	 \brief State of the inverted pendulum
       */
-      sotSignalTimeDependant< Vector, int> stateSOUT;
+      SignalTimeDependant< Vector, int> stateSOUT;
 
       /**
 	 @}

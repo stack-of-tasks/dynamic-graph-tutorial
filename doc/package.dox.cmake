@@ -158,7 +158,7 @@ SKIP_FUNCTION_MACROS   = YES
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
 TAGFILES               = \
-	${STACKOFTASKS_DOCDIR}/html/StackOfTasks.doxytag=${STACKOFTASKS_DOCDIR}/html
+	${DYNAMIC_GRAPH_PYTHON_DOCDIR}/html/dynamic-graph-python.doxytag=${DYNAMIC_GRAPH_PYTHON_DOCDIR}/html
 GENERATE_TAGFILE       = dg-tutorial.doxytag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES

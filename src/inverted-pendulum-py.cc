@@ -7,7 +7,7 @@
 #include <Python.h>
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 
-using sot::tutorial::InvertedPendulum;
+using dynamicgraph::tutorial::InvertedPendulum;
 
 namespace invertedPendulum {
 
@@ -124,7 +124,7 @@ namespace invertedPendulum {
 /**
    \brief List of python functions
 */
-static PyMethodDef sotTutorialMethods[] = {
+static PyMethodDef dynamicGraphTutorialMethods[] = {
   {"createInvertedPendulum",  invertedPendulum::create, METH_VARARGS,
      "Create an instance of InvertedPendulum."},
   {"deleteInvertedPendulum",  invertedPendulum::destroy, METH_VARARGS,
@@ -141,11 +141,11 @@ static PyMethodDef sotTutorialMethods[] = {
 };
 
 PyMODINIT_FUNC
-initsot_tutorial_wrap(void)
+initwrap(void)
 {
     PyObject *m;
 
-    m = Py_InitModule("sot_tutorial_wrap", sotTutorialMethods);
+    m = Py_InitModule("wrap", dynamicGraphTutorialMethods);
     if (m == NULL)
         return;
 }
