@@ -19,7 +19,8 @@ class InvertedPendulum:
         """
         Destructor: delete the C++ object allocated at creation
         """
-        stw.deleteInvertedPendulum(self.object)
+        if hasattr(self, "object"):
+            stw.deleteInvertedPendulum(self.object)
     
     def getCartMass(self):
         """

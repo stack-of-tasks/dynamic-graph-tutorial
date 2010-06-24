@@ -11,6 +11,8 @@ using dynamicgraph::tutorial::InvertedPendulum;
 
 namespace invertedPendulum {
 
+  static PyObject* error;
+
   /**
      \brief Create an instance of InvertedPendulum
   */
@@ -22,7 +24,13 @@ namespace invertedPendulum {
     if (!PyArg_ParseTuple(args, "s", &name))
       return NULL;
 
-    InvertedPendulum* obj = new InvertedPendulum(std::string(name));
+    InvertedPendulum* obj = NULL;
+    try {
+      obj = new InvertedPendulum(std::string(name));
+    } catch (dynamicgraph::ExceptionFactory& exc) {
+      PyErr_SetString(error, exc.getStringMessage().c_str());
+      return NULL;
+    }
 
     // Return the pointer as an integer
     return Py_BuildValue("i", (unsigned int)obj);
@@ -148,4 +156,10 @@ initwrap(void)
     m = Py_InitModule("wrap", dynamicGraphTutorialMethods);
     if (m == NULL)
         return;
+
+    invertedPendulum::error =
+      PyErr_NewException("dynamic_graph.tutorial.wrap.error",
+			 NULL, NULL);
+    Py_INCREF(invertedPendulum::error);
+    PyModule_AddObject(m, "error", invertedPendulum::error);
 }
