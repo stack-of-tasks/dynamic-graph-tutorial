@@ -22,25 +22,29 @@ class InvertedPendulum:
         if hasattr(self, "object"):
             stw.deleteInvertedPendulum(self.object)
     
-    def getCartMass(self):
+    @property
+    def cart_mass(self):
         """
         Get mass of the cart
         """
         return stw.invertedPendulumGetCartMass(self.object)
 
-    def setCartMass(self, mass):
+    @cart_mass.setter
+    def cart_mass(self, mass):
         """
         Set mass of the cart
         """
         return stw.invertedPendulumSetCartMass(self.object, mass)
 
-    def getPendulumMass(self):
+    @property
+    def pendulum_mass(self):
         """
         Get mass of the pendulum
         """
         return stw.invertedPendulumGetPendulumMass(self.object)
 
-    def setPendulumMass(self, mass):
+    @cart_mass.setter
+    def pendulum_mass(self, mass):
         """
         Set mass of the pendulum
         """
