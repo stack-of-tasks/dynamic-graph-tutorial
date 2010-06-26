@@ -17,10 +17,12 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
 	    sotNOSIGNAL, "InvertedPendulum("+name+")::output(vector)::state"),
   cartMass_(1.0), pendulumMass_(1.0)
 {
+  std::cout << "InvertedPendulum constructor" << std::endl;
 }
 
 InvertedPendulum::~InvertedPendulum()
 {
+  std::cout << "InvertedPendulum destructor" << std::endl;
 }
 
 InvertedPendulum::Vector& InvertedPendulum::

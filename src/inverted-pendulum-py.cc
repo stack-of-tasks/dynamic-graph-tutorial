@@ -11,6 +11,7 @@ using dynamicgraph::tutorial::InvertedPendulum;
 
 namespace invertedPendulum {
 
+  static void destroy (void* self);
   static PyObject* error;
 
   /**
@@ -33,25 +34,17 @@ namespace invertedPendulum {
     }
 
     // Return the pointer as an integer
-    return Py_BuildValue("i", (unsigned int)obj);
+    return PyCObject_FromVoidPtr((void*)obj, destroy);
   }
 
   /**
-     \brief Deallocate an instance of InvertedPendulum
+     \brief Destroy an instance of InvertedPendulum
   */
-  static PyObject*
-  destroy (PyObject* self, PyObject* args)
+  static void
+  destroy (void* self)
   {
-    InvertedPendulum* obj = NULL;
-    unsigned int pointer;
-
-    if (!PyArg_ParseTuple(args, "I", &pointer))
-      return NULL;
-
-    obj = (InvertedPendulum*)pointer;
+    InvertedPendulum* obj = (InvertedPendulum*)self;
     delete obj;
-
-    return Py_BuildValue("");
   }
 
   /**
@@ -63,7 +56,7 @@ namespace invertedPendulum {
     InvertedPendulum* obj = NULL;
     unsigned int pointer;
 
-    if (!PyArg_ParseTuple(args, "I", &pointer))
+    if (!PyArg_ParseTuple(args, "O", &pointer))
       return NULL;
 
     obj = (InvertedPendulum*)pointer;
@@ -79,10 +72,10 @@ namespace invertedPendulum {
   setCartMass (PyObject* self, PyObject* args)
   {
     InvertedPendulum* obj = NULL;
-    unsigned int pointer;
+    void* pointer;
     double value;
 
-    if (!PyArg_ParseTuple(args, "Id", &pointer, &value))
+    if (!PyArg_ParseTuple(args, "Od", &pointer, &value))
       return NULL;
 
     obj = (InvertedPendulum*)pointer;
@@ -98,9 +91,9 @@ namespace invertedPendulum {
   getPendulumMass (PyObject* self, PyObject* args)
   {
     InvertedPendulum* obj = NULL;
-    unsigned int pointer;
+    void* pointer;
 
-    if (!PyArg_ParseTuple(args, "I", &pointer))
+    if (!PyArg_ParseTuple(args, "O", &pointer))
       return NULL;
 
     obj = (InvertedPendulum*)pointer;
@@ -116,10 +109,10 @@ namespace invertedPendulum {
   setPendulumMass (PyObject* self, PyObject* args)
   {
     InvertedPendulum* obj = NULL;
-    unsigned int pointer;
+    void* pointer;
     double value;
 
-    if (!PyArg_ParseTuple(args, "Id", &pointer, &value))
+    if (!PyArg_ParseTuple(args, "Od", &pointer, &value))
       return NULL;
 
     obj = (InvertedPendulum*)pointer;
@@ -135,8 +128,6 @@ namespace invertedPendulum {
 static PyMethodDef dynamicGraphTutorialMethods[] = {
   {"createInvertedPendulum",  invertedPendulum::create, METH_VARARGS,
      "Create an instance of InvertedPendulum."},
-  {"deleteInvertedPendulum",  invertedPendulum::destroy, METH_VARARGS,
-     "Destroy an instance of InvertedPendulum."},
   {"invertedPendulumGetCartMass", invertedPendulum::getCartMass, METH_VARARGS,
    "Get mass of the cart of inverted pendulum."},
   {"invertedPendulumSetCartMass", invertedPendulum::setCartMass, METH_VARARGS,
