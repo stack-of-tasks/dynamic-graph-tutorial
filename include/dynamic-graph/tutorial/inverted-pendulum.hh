@@ -17,7 +17,15 @@ namespace dynamicgraph {
   namespace tutorial {
 
     /**
-       \brief Main class of package dg-tutorial
+       \brief Inverted Pendulum on a cart
+
+       This class represents the classical inverted pendulum on a cart.
+       The equation of motion is:
+
+       \f{eqnarray*}{
+       \left ( M + m \right ) \ddot x - m l \ddot \theta \cos \theta + m l \dot \theta^2 \sin \theta &=& F\\
+       m l (-g \sin \theta - \ddot x \cos \theta + l \ddot \theta) &=& 0 
+       \f}
     */
 
     class DG_TUTORIAL_EXPORT InvertedPendulum : public Entity
