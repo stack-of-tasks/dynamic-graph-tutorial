@@ -9,7 +9,7 @@
 
 #include <boost/numeric/ublas/vector.hpp>
 #include <dynamic-graph/entity.h>
-#include <dynamic-graph/signal-time-dependant.h>
+#include <dynamic-graph/signal-ptr.h>
 
 #include "dynamic-graph/tutorial/api.hh"
 
@@ -42,11 +42,11 @@ namespace dynamicgraph {
       /**
 	 \brief Input of the inverted pendulum
       */
-      SignalTimeDependant< Vector, int > forceSIN;
+      SignalPtr< Vector, int > forceSIN;
       /**
 	 \brief State of the inverted pendulum
       */
-      SignalTimeDependant< Vector, int> stateSOUT;
+      Signal< Vector, int> stateSOUT;
 
       /**
 	 @}
