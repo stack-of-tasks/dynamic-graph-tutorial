@@ -43,7 +43,7 @@ namespace dynamicgraph {
 	return CLASS_NAME;
       }
 
-      void incr();
+      void incr(double inTimeStep);
       /**
 	  \name Signals
 	  @{
@@ -123,7 +123,8 @@ namespace dynamicgraph {
       /**
 	 \brief Compute the evolution of the state of the pendulum
       */
-      Vector computeDynamics(const Vector& inState, const Vector& inControl);
+      Vector computeDynamics(const Vector& inState, const Vector& inControl,
+			     double inTimeStep);
     };
   };
 };

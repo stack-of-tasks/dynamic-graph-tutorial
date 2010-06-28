@@ -47,3 +47,9 @@ class InvertedPendulum (dge.Entity):
         Set mass of the pendulum
         """
         return stw.invertedPendulumSetPendulumMass(self.object, mass)
+
+    def incr(self, timeStep):
+        """
+        Increment time by one time step and re-compute state accordingly
+        """
+        return stw.invertedPendulumIncr(self.object, timeStep)

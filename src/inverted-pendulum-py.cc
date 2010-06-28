@@ -138,6 +138,35 @@ namespace invertedPendulum {
 
     return Py_BuildValue("");
   }
+
+  /**
+     \brief Binding for InvertedPendulum::incr
+  */
+  static PyObject*
+  incr (PyObject* self, PyObject* args)
+  {
+    InvertedPendulum* invertedPendulum = NULL;
+    PyObject* object = NULL;
+    void* pointer = NULL;
+    double timeStep;
+
+    if (!PyArg_ParseTuple(args, "Od", &object, &timeStep))
+      return NULL;
+    if (!PyCObject_Check(object))
+      return NULL;
+
+    pointer = PyCObject_AsVoidPtr(object);
+
+    invertedPendulum = (InvertedPendulum*)pointer;
+    try {
+      invertedPendulum->incr(timeStep);
+    } catch (dynamicgraph::ExceptionAbstract& exc) {
+      PyErr_SetString(error, exc.getStringMessage().c_str());
+      return NULL;
+    }
+
+    return Py_BuildValue("");
+  }
 }
 
 /**
@@ -154,6 +183,8 @@ static PyMethodDef dynamicGraphTutorialMethods[] = {
    METH_VARARGS, "Get mass of the pendulum."},
   {"invertedPendulumSetPendulumMass", invertedPendulum::setPendulumMass,
    METH_VARARGS, "Set mass of the pendulum."},
+  {"invertedPendulumIncr", invertedPendulum::incr,
+   METH_VARARGS, "Increment time by time step and recompute state."},
   {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
