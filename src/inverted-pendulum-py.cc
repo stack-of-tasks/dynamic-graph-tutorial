@@ -25,16 +25,16 @@ namespace invertedPendulum {
     if (!PyArg_ParseTuple(args, "s", &name))
       return NULL;
 
-    InvertedPendulum* obj = NULL;
+    InvertedPendulum* invertedPendulum = NULL;
     try {
-      obj = new InvertedPendulum(std::string(name));
+      invertedPendulum = new InvertedPendulum(std::string(name));
     } catch (dynamicgraph::ExceptionFactory& exc) {
       PyErr_SetString(error, exc.getStringMessage().c_str());
       return NULL;
     }
 
-    // Return the pointer as an integer
-    return PyCObject_FromVoidPtr((void*)obj, destroy);
+    // Return the pointer
+    return PyCObject_FromVoidPtr((void*)invertedPendulum, destroy);
   }
 
   /**
@@ -43,8 +43,8 @@ namespace invertedPendulum {
   static void
   destroy (void* self)
   {
-    InvertedPendulum* obj = (InvertedPendulum*)self;
-    delete obj;
+    InvertedPendulum* invertedPendulum = (InvertedPendulum*)self;
+    delete invertedPendulum;
   }
 
   /**
@@ -53,14 +53,18 @@ namespace invertedPendulum {
   static PyObject*
   getCartMass (PyObject* self, PyObject* args)
   {
-    InvertedPendulum* obj = NULL;
-    unsigned int pointer;
+    InvertedPendulum* invertedPendulum = NULL;
+    PyObject* object = NULL;
+    void* pointer = NULL;
 
-    if (!PyArg_ParseTuple(args, "O", &pointer))
+    if (!PyArg_ParseTuple(args, "O", &object))
+      return NULL;
+    if (!PyCObject_Check(object))
       return NULL;
 
-    obj = (InvertedPendulum*)pointer;
-    double result = obj->getCartMass();
+    pointer = PyCObject_AsVoidPtr(object);
+    invertedPendulum = (InvertedPendulum*)pointer;
+    double result = invertedPendulum->getCartMass();
 
     return Py_BuildValue("f", result);
   }
@@ -71,15 +75,20 @@ namespace invertedPendulum {
   static PyObject*
   setCartMass (PyObject* self, PyObject* args)
   {
-    InvertedPendulum* obj = NULL;
-    void* pointer;
-    double value;
+    InvertedPendulum* invertedPendulum = NULL;
+    PyObject* object = NULL;
+    void* pointer = NULL;
+    double value = 0;
 
-    if (!PyArg_ParseTuple(args, "Od", &pointer, &value))
+    if (!PyArg_ParseTuple(args, "Od", &object, &value))
+      return NULL;
+    if (!PyCObject_Check(object))
       return NULL;
 
-    obj = (InvertedPendulum*)pointer;
-    obj->setCartMass(value);
+    pointer = PyCObject_AsVoidPtr(object);
+
+    invertedPendulum = (InvertedPendulum*)pointer;
+    invertedPendulum->setCartMass(value);
 
     return Py_BuildValue("");
   }
@@ -90,14 +99,18 @@ namespace invertedPendulum {
   static PyObject*
   getPendulumMass (PyObject* self, PyObject* args)
   {
-    InvertedPendulum* obj = NULL;
-    void* pointer;
+    InvertedPendulum* invertedPendulum = NULL;
+    PyObject* object = NULL;
+    void* pointer = NULL;
 
-    if (!PyArg_ParseTuple(args, "O", &pointer))
+    if (!PyArg_ParseTuple(args, "O", &object))
+      return NULL;
+    if (!PyCObject_Check(object))
       return NULL;
 
-    obj = (InvertedPendulum*)pointer;
-    double result = obj->getPendulumMass();
+    pointer = PyCObject_AsVoidPtr(object);
+    invertedPendulum = (InvertedPendulum*)pointer;
+    double result = invertedPendulum->getPendulumMass();
 
     return Py_BuildValue("f", result);
   }
@@ -108,15 +121,20 @@ namespace invertedPendulum {
   static PyObject*
   setPendulumMass (PyObject* self, PyObject* args)
   {
-    InvertedPendulum* obj = NULL;
-    void* pointer;
+    InvertedPendulum* invertedPendulum = NULL;
+    PyObject* object = NULL;
+    void* pointer = NULL;
     double value;
 
-    if (!PyArg_ParseTuple(args, "Od", &pointer, &value))
+    if (!PyArg_ParseTuple(args, "Od", &object, &value))
+      return NULL;
+    if (!PyCObject_Check(object))
       return NULL;
 
-    obj = (InvertedPendulum*)pointer;
-    obj->setPendulumMass(value);
+    pointer = PyCObject_AsVoidPtr(object);
+
+    invertedPendulum = (InvertedPendulum*)pointer;
+    invertedPendulum->setPendulumMass(value);
 
     return Py_BuildValue("");
   }
