@@ -13,21 +13,29 @@ const std::string InvertedPendulum::CLASS_NAME = "InvertedPendulum";
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
   Entity(inName),
   forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::forcein"),
-  stateSOUT(boost::bind(&InvertedPendulum::computeDynamics, this, _1, _2),
-	    sotNOSIGNAL, "InvertedPendulum("+name+")::output(vector)::state"),
+  stateSOUT("InvertedPendulum("+name+")::output(vector)::state"),
   cartMass_(1.0), pendulumMass_(1.0)
 {
-  std::cout << "InvertedPendulum constructor" << std::endl;
+  // Register signals into the entity.
+  signalRegistration (forceSIN);
+  signalRegistration (stateSOUT);
 }
 
 InvertedPendulum::~InvertedPendulum()
 {
-  std::cout << "InvertedPendulum destructor" << std::endl;
 }
 
-InvertedPendulum::Vector& InvertedPendulum::
-computeDynamics(Vector& outState, int time)
+InvertedPendulum::Vector
+InvertedPendulum::computeDynamics(const Vector& inState,
+				  const Vector& inControl)
 {
-  return outState;
+  return inState;
 }
 
+void InvertedPendulum::incr()
+{
+  int t = stateSOUT.getTime();
+  Vector nextState = computeDynamics(stateSOUT, forceSIN(t));
+  stateSOUT.setConstant(nextState);
+  stateSOUT.setTime(t+1);
+}
