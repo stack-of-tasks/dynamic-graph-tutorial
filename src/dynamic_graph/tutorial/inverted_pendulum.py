@@ -4,16 +4,21 @@
     Author: Florent Lamiraux
 """
 import wrap as stw
+import dynamic_graph.entity as dge
 
-class InvertedPendulum:
+class InvertedPendulum (dge.Entity):
     """
     This class binds dynamicgraph::tutorial::InvertedPendulum C++ class
     """
     def __init__(self, name):
         """
-        Constructor: create and store a pointer to a C++ object InvertedPendulum
+        Constructor: if not called by a child class, create and store a pointer
+        to a C++ InvertedPendulum object.
         """
-        self.object = stw.createInvertedPendulum(name)
+        if not self.object :
+            self.object = stw.createInvertedPendulum(name)
+        # Call parent constructor
+        dge.Entity.__init__(self, name)
 
     @property
     def cart_mass(self):
