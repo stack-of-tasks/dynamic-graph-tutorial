@@ -140,6 +140,52 @@ namespace invertedPendulum {
   }
 
   /**
+     \brief Binding for InvertedPendulum::getPendulumLength
+  */
+  static PyObject*
+  getPendulumLength (PyObject* self, PyObject* args)
+  {
+    InvertedPendulum* invertedPendulum = NULL;
+    PyObject* object = NULL;
+    void* pointer = NULL;
+
+    if (!PyArg_ParseTuple(args, "O", &object))
+      return NULL;
+    if (!PyCObject_Check(object))
+      return NULL;
+
+    pointer = PyCObject_AsVoidPtr(object);
+    invertedPendulum = (InvertedPendulum*)pointer;
+    double result = invertedPendulum->getPendulumLength();
+
+    return Py_BuildValue("f", result);
+  }
+
+  /**
+     \brief Binding for InvertedPendulum::setPendulumLength
+  */
+  static PyObject*
+  setPendulumLength (PyObject* self, PyObject* args)
+  {
+    InvertedPendulum* invertedPendulum = NULL;
+    PyObject* object = NULL;
+    void* pointer = NULL;
+    double value;
+
+    if (!PyArg_ParseTuple(args, "Od", &object, &value))
+      return NULL;
+    if (!PyCObject_Check(object))
+      return NULL;
+
+    pointer = PyCObject_AsVoidPtr(object);
+
+    invertedPendulum = (InvertedPendulum*)pointer;
+    invertedPendulum->setPendulumLength(value);
+
+    return Py_BuildValue("");
+  }
+
+  /**
      \brief Binding for InvertedPendulum::incr
   */
   static PyObject*
@@ -183,6 +229,10 @@ static PyMethodDef dynamicGraphTutorialMethods[] = {
    METH_VARARGS, "Get mass of the pendulum."},
   {"invertedPendulumSetPendulumMass", invertedPendulum::setPendulumMass,
    METH_VARARGS, "Set mass of the pendulum."},
+  {"invertedPendulumGetPendulumLength", invertedPendulum::getPendulumLength,
+   METH_VARARGS, "Get length of the pendulum."},
+  {"invertedPendulumSetPendulumLength", invertedPendulum::setPendulumLength,
+   METH_VARARGS, "Set length of the pendulum."},
   {"invertedPendulumIncr", invertedPendulum::incr,
    METH_VARARGS, "Increment time by time step and recompute state."},
   {NULL, NULL, 0, NULL}        /* Sentinel */

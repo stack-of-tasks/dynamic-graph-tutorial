@@ -48,6 +48,20 @@ class InvertedPendulum (dge.Entity):
         """
         return stw.invertedPendulumSetPendulumMass(self.object, mass)
 
+    @property
+    def pendulum_length(self):
+        """
+        Get length of the pendulum
+        """
+        return stw.invertedPendulumGetPendulumLength(self.object)
+
+    @cart_length.setter
+    def pendulum_length(self, length):
+        """
+        Set length of the pendulum
+        """
+        return stw.invertedPendulumSetPendulumLength(self.object, length)
+
     def incr(self, timeStep):
         """
         Increment time by one time step and re-compute state accordingly

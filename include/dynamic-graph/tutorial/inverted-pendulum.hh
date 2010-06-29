@@ -94,6 +94,20 @@ namespace dynamicgraph {
       }
 
       /**
+	 \brief Set the length of the cart
+      */
+      void setPendulumLength (double inLength) {
+	pendulumLength_ = inLength;
+      }
+
+      /**
+	 \brief Get the length of the pendulum
+      */
+      double getPendulumLength () const {
+	return pendulumLength_;
+      }
+
+      /**
 	 @}
       */
 
@@ -112,6 +126,9 @@ namespace dynamicgraph {
       double cartMass_;
       /// \brief Mass of the pendulum
       double pendulumMass_;
+      /// \brief Length of the pendulum
+      double pendulumLength_;
+
       /**
 	 @}
       */
