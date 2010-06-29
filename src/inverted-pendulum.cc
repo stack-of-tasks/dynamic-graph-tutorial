@@ -8,6 +8,7 @@
 
 using namespace dynamicgraph::tutorial;
 
+const double InvertedPendulum::gravity = 9.81;
 const std::string InvertedPendulum::CLASS_NAME = "InvertedPendulum";
 
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
@@ -21,8 +22,8 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   signalRegistration (stateSOUT);
 
   // Set signals as constant to size them
-  Vector state(4);
-  Vector input(1);
+  Vector state = ZeroVector(4);
+  Vector input = ZeroVector(1);
   stateSOUT.setConstant(state);
   forceSIN.setConstant(input);
 }
@@ -47,19 +48,44 @@ InvertedPendulum::computeDynamics(const Vector& inState,
 					"force signal size is ",
 					"%d, should be 1.",
 					inControl.size());
+  double dt = inTimeStep;
+  double dt2 = dt*dt;
+  double g = gravity;
   double x = inState[0];
-  double theta = inState[1];
+  double th = inState[1];
   double dx = inState[2];
-  double dtheta = inState[3];
+  double dth = inState[3];
   double F = inControl[0];
+  double m = pendulumMass_;
+  double M = cartMass_;
+  double l = pendulumLength_;
+  double l2 = l*l;
+  double dth2 = dth*dth;
+  double sth = sin(th);
+  double cth = cos(th);
+  double sth2 = sth*sth;
 
-  return inState;
+  double b1 = F - m*l*dth2*sth;
+  double b2 = m*l*g*sth;
+
+  double det = m*l2*(M + m*sth2);
+
+  double ddx = (b1*m*l2 + b2*m*l*cth)/det;
+  double ddth = ((M+m)*b2 + m*l*cth*b1)/det;
+
+  Vector nextState(4);
+  nextState[0] = x + dx*dt + .5*ddx*dt2;
+  nextState[1] = th + dth*dt + .5*ddth*dt2;
+  nextState[2] = dx + dt*ddx;
+  nextState[3] = dth + dt*ddth;
+
+  return nextState;
 }
 
 void InvertedPendulum::incr(double inTimeStep)
 {
   int t = stateSOUT.getTime();
-  Vector nextState = computeDynamics(stateSOUT, forceSIN(t), inTimeStep);
+  Vector nextState = computeDynamics(stateSOUT(t), forceSIN(t), inTimeStep);
   stateSOUT.setConstant(nextState);
   stateSOUT.setTime(t+1);
 }

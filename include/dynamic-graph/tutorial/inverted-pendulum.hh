@@ -24,7 +24,7 @@ namespace dynamicgraph {
 
        \f{eqnarray*}{
        \left ( M + m \right ) \ddot x - m l \ddot \theta \cos \theta + m l \dot \theta^2 \sin \theta &=& F\\
-       m l (-g \sin \theta - \ddot x \cos \theta + l \ddot \theta) &=& 0 
+       m l (-g \sin \theta - \ddot x \cos \theta + l \ddot \theta) &=& 0
        \f}
     */
 
@@ -32,6 +32,7 @@ namespace dynamicgraph {
     {
     public:
       typedef boost::numeric::ublas::vector<double> Vector;
+      typedef boost::numeric::ublas::zero_vector<double> ZeroVector;
       /**
 	 \brief Constructor by name
       */
@@ -132,6 +133,8 @@ namespace dynamicgraph {
       /**
 	 @}
       */
+      static const double gravity;
+
       /**
 	 \brief State of the system
       */
