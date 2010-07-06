@@ -41,7 +41,7 @@ class InvertedPendulum (dge.Entity):
         """
         return stw.invertedPendulumGetPendulumMass(self.object)
 
-    @cart_mass.setter
+    @pendulum_mass.setter
     def pendulum_mass(self, mass):
         """
         Set mass of the pendulum
@@ -55,7 +55,7 @@ class InvertedPendulum (dge.Entity):
         """
         return stw.invertedPendulumGetPendulumLength(self.object)
 
-    @cart_length.setter
+    @pendulum_length.setter
     def pendulum_length(self, length):
         """
         Set length of the pendulum
