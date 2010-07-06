@@ -213,6 +213,35 @@ namespace invertedPendulum {
 
     return Py_BuildValue("");
   }
+
+  /**
+     \brief Print value of state signal
+  */
+  static PyObject*
+  printState (PyObject* self, PyObject* args)
+  {
+    InvertedPendulum* invertedPendulum = NULL;
+    PyObject* object = NULL;
+    void* pointer = NULL;
+
+    if (!PyArg_ParseTuple(args, "O", &object))
+      return NULL;
+    if (!PyCObject_Check(object))
+      return NULL;
+
+    pointer = PyCObject_AsVoidPtr(object);
+
+    invertedPendulum = (InvertedPendulum*)pointer;
+    try {
+      std::cout << "calling InvertedPendulum->state()" << std::endl;
+      std::cout << "state = " << invertedPendulum->state() << std::endl;
+    } catch (dynamicgraph::ExceptionAbstract& exc) {
+      PyErr_SetString(error, exc.getStringMessage().c_str());
+      return NULL;
+    }
+
+    return Py_BuildValue("");
+  }
 }
 
 /**
@@ -235,6 +264,8 @@ static PyMethodDef dynamicGraphTutorialMethods[] = {
    METH_VARARGS, "Set length of the pendulum."},
   {"invertedPendulumIncr", invertedPendulum::incr,
    METH_VARARGS, "Increment time by time step and recompute state."},
+  {"invertedPendulumPrintState", invertedPendulum::printState,
+   METH_VARARGS, "Print value of state signal."},
   {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 

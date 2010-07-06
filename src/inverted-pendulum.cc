@@ -32,6 +32,11 @@ InvertedPendulum::~InvertedPendulum()
 {
 }
 
+const InvertedPendulum::Vector& InvertedPendulum::state()
+{
+  return stateSOUT.accessCopy();
+}
+
 InvertedPendulum::Vector
 InvertedPendulum::computeDynamics(const Vector& inState,
 				  const Vector& inControl,

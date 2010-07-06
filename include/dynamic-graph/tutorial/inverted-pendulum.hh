@@ -59,6 +59,11 @@ namespace dynamicgraph {
       Signal< Vector, int> stateSOUT;
 
       /**
+	 \brief Read value of stateSOUT signal
+      */
+      const Vector& state();
+
+      /**
 	 @}
       */
 

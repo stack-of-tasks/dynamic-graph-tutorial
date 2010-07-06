@@ -67,3 +67,6 @@ class InvertedPendulum (dge.Entity):
         Increment time by one time step and re-compute state accordingly
         """
         return stw.invertedPendulumIncr(self.object, timeStep)
+
+    def print_state(self) :
+        return stw.invertedPendulumPrintState(self.object)
