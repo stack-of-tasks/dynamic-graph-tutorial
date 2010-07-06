@@ -233,8 +233,6 @@ namespace invertedPendulum {
 
     invertedPendulum = (InvertedPendulum*)pointer;
     try {
-      std::cout << "calling InvertedPendulum->state()" << std::endl;
-      std::cout << "state = " << invertedPendulum->state() << std::endl;
     } catch (dynamicgraph::ExceptionAbstract& exc) {
       PyErr_SetString(error, exc.getStringMessage().c_str());
       return NULL;
