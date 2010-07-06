@@ -4,6 +4,7 @@
  *  Florent Lamiraux
  */
 
+#include <boost/numeric/ublas/io.hpp>
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 
 using namespace dynamicgraph::tutorial;
@@ -94,3 +95,5 @@ void InvertedPendulum::incr(double inTimeStep)
   stateSOUT.setConstant(nextState);
   stateSOUT.setTime(t+1);
 }
+
+dynamicgraph::DefaultCastRegisterer<InvertedPendulum::Vector> IPVectorCast;
