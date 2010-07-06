@@ -28,7 +28,6 @@ STRIP_FROM_INC_PATH    =
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = YES
 MULTILINE_CPP_IS_BRIEF = NO
-DETAILS_AT_TOP         = YES
 INHERIT_DOCS           = YES
 DISTRIBUTE_GROUP_DOC   = NO
 SEPARATE_MEMBER_PAGES  = NO
@@ -158,7 +157,8 @@ SKIP_FUNCTION_MACROS   = YES
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
 TAGFILES               = \
-	${DYNAMIC_GRAPH_PYTHON_DOCDIR}/html/dynamic-graph-python.doxytag=${DYNAMIC_GRAPH_PYTHON_DOCDIR}/html
+	${DYNAMIC_GRAPH_PYTHON_DOCDIR}/html/dynamic-graph-python.doxytag=${DYNAMIC_GRAPH_PYTHON_DOCDIR}/html \
+	${DYNAMIC_GRAPH_DOCDIR}/html/dynamic-graph.doxytag=${DYNAMIC_GRAPH_DOCDIR}/html
 GENERATE_TAGFILE       = dg-tutorial.doxytag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES

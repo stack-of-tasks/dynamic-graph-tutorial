@@ -26,6 +26,18 @@ namespace dynamicgraph {
        \left ( M + m \right ) \ddot x - m l \ddot \theta \cos \theta + m l \dot \theta^2 \sin \theta &=& F\\
        m l (-g \sin \theta - \ddot x \cos \theta + l \ddot \theta) &=& 0
        \f}
+
+       where
+       \li the state is a vector of dimension 4
+           \f$(x,\theta,\dot{x},\dot{\theta})\f$ represented by signal
+	   stateSOUT,
+       \li \f$x\f$ is the position of the cart on an horizontal axis,
+           \f$\theta\f$ is the angle of the pendulum with respect to the
+	    vertical axis,
+       \li the input is a vector of dimension 1 \f$(F)\f$ reprensented by signal
+           forceSIN,
+       \li m, M and l are respectively the mass of the pendulum, the mass of the
+           cart and the length of the pendulum.
     */
 
     class DG_TUTORIAL_EXPORT InvertedPendulum : public Entity
