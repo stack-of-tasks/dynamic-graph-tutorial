@@ -16,7 +16,7 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   Entity(inName),
   forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::forcein"),
   stateSOUT("InvertedPendulum("+name+")::output(vector)::state"),
-  cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0)
+  cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0), viscosity_(0.1)
 {
   // Register signals into the entity.
   signalRegistration (forceSIN);
@@ -65,14 +65,15 @@ InvertedPendulum::computeDynamics(const Vector& inState,
   double m = pendulumMass_;
   double M = cartMass_;
   double l = pendulumLength_;
+  double lambda = viscosity_;
   double l2 = l*l;
   double dth2 = dth*dth;
   double sth = sin(th);
   double cth = cos(th);
   double sth2 = sth*sth;
 
-  double b1 = F - m*l*dth2*sth;
-  double b2 = m*l*g*sth;
+  double b1 = F - m*l*dth2*sth - lambda*dx;
+  double b2 = m*l*g*sth - lambda*dth;
 
   double det = m*l2*(M + m*sth2);
 

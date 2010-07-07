@@ -146,6 +146,8 @@ namespace dynamicgraph {
       double pendulumMass_;
       /// \brief Length of the pendulum
       double pendulumLength_;
+      /// \brief Viscosity coefficient
+      double viscosity_;
 
       /**
 	 @}
