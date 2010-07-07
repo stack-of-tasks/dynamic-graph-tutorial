@@ -111,6 +111,7 @@ PDF_HYPERLINKS         = NO
 USE_PDFLATEX           = NO
 LATEX_BATCHMODE        = NO
 LATEX_HIDE_INDICES     = NO
+FORMULA_FONTSIZE       = 16
 #---------------------------------------------------------------------------
 # configuration options related to the RTF output
 #---------------------------------------------------------------------------

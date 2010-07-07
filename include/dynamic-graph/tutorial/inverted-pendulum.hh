@@ -38,6 +38,35 @@ namespace dynamicgraph {
            forceSIN,
        \li m, M and l are respectively the mass of the pendulum, the mass of the
            cart and the length of the pendulum.
+
+       A more natural form of the above equation for roboticists is
+       \f[
+       \textbf{M}(\textbf{q})\ddot{\textbf{q}} +
+       \textbf{N}(\textbf{q},\dot{\textbf{q}})\dot{\textbf{q}} +
+       \textbf{G}(\textbf{q}) = \textbf{F}
+       \f]
+       where
+       \f{eqnarray*}
+       \textbf{q} &=& (x, \theta) \\
+       \textbf{M}(\textbf{q}) &=& \left( \begin{array}{cc}
+       M + m & -m\ l\ \cos\theta \\
+       -m\ l\ \cos\theta & m\ l^2 \end{array}\right) \\
+       \textbf{N}(\textbf{q},\dot{\textbf{q}}) &=& \left( \begin{array}{cc}
+       0 & m\ l\ \dot{\theta} \sin\theta \\
+       0 & 0 \end{array}\right)\\
+       \textbf{G}(\textbf{q}) &=& \left( \begin{array}{c}
+       0 \\ -m\ l\ g\ \sin\theta \end{array}\right)\\
+       \textbf{F} &=& \left( \begin{array}{c}
+       F \\ 0 \end{array}\right)
+       \f}
+       In order to make the system intrinsically stable, we add some viscosity
+       by rewriting:
+       \f{eqnarray*}
+       \textbf{N}(\textbf{q},\dot{\textbf{q}}) &=& \left( \begin{array}{cc}
+       \lambda & m\ l\ \dot{\theta} \sin\theta\\
+       0 & \lambda \end{array}\right)
+       \f}
+       where \f$\lambda\f$ is a positive coefficient.
     */
 
     class DG_TUTORIAL_EXPORT InvertedPendulum : public Entity
