@@ -94,7 +94,6 @@ class InvertedPendulum (dge.Entity):
             except exc :
                 raise RunTimeError("Input should be a vector of float.")
         stringValue = stringValue[0:-1] + ")"
-        print ("stringValue = %s" % stringValue)
         s = self.signal("state")
         s.value = stringValue
 
