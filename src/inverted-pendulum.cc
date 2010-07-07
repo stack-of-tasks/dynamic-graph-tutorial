@@ -16,7 +16,7 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   Entity(inName),
   forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::forcein"),
   stateSOUT("InvertedPendulum("+name+")::output(vector)::state"),
-  cartMass_(1.0), pendulumMass_(1.0)
+  cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0)
 {
   // Register signals into the entity.
   signalRegistration (forceSIN);
