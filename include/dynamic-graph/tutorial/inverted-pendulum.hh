@@ -153,11 +153,6 @@ namespace dynamicgraph {
       static const double gravity;
 
       /**
-	 \brief State of the system
-      */
-      Vector state_;
-
-      /**
 	 \brief Compute the evolution of the state of the pendulum
       */
       Vector computeDynamics(const Vector& inState, const Vector& inControl,
