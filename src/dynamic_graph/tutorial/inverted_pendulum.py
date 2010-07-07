@@ -3,6 +3,8 @@
 
     Author: Florent Lamiraux
 """
+
+import re
 import wrap
 import dynamic_graph.entity as dge
 
@@ -61,6 +63,40 @@ class InvertedPendulum (dge.Entity):
         Set length of the pendulum
         """
         return wrap.invertedPendulumSetPendulumLength(self.object, length)
+
+    @property
+    def state(self):
+        """
+        Read value of state signal and parse the string into a tuple
+        """
+        s = self.signal("state")
+        stringValue = s.value
+        vec = filter(lambda a:a is not "",
+                     re.split("[^eE0-9.+\-]", stringValue))
+        if int(vec[0]) != len(vec)-1 :
+            raise RuntimeError("Size of state vector is inconsistent.")
+        return map (float, vec[1:])
+
+    @state.setter
+    def state(self, value):
+        """
+        Set the value of the state signal from a given input vector
+        """
+        if len(value) is not 4:
+            raise RuntimeError("Size of state should be 4.")
+
+
+
+        stringValue = "[" + str(len(value)) + "]("
+        for x in value :
+            try :
+                stringValue += str(float(x)) + ","
+            except exc :
+                raise RunTimeError("Input should be a vector of float.")
+        stringValue = stringValue[0:-1] + ")"
+        print ("stringValue = %s" % stringValue)
+        s = self.signal("state")
+        s.value = stringValue
 
     def incr(self, timeStep):
         """
