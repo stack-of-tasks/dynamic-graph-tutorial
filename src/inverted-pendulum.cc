@@ -6,11 +6,14 @@
 
 #include <boost/numeric/ublas/io.hpp>
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
+#include "dynamic-graph/factory.h"
 
+using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
 
 const double InvertedPendulum::gravity = 9.81;
-const std::string InvertedPendulum::CLASS_NAME = "InvertedPendulum";
+
+DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
   Entity(inName),

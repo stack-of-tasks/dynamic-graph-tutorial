@@ -5,6 +5,7 @@
  */
 
 #include <Python.h>
+#include <dynamic-graph/factory.h>
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 
 using dynamicgraph::tutorial::InvertedPendulum;
@@ -25,9 +26,10 @@ namespace invertedPendulum {
     if (!PyArg_ParseTuple(args, "s", &name))
       return NULL;
 
-    InvertedPendulum* invertedPendulum = NULL;
+    dynamicgraph::Entity* invertedPendulum = NULL;
     try {
-      invertedPendulum = new InvertedPendulum(std::string(name));
+      invertedPendulum = dynamicgraph::g_factory.newEntity("InvertedPendulum",
+							   std::string(name));
     } catch (dynamicgraph::ExceptionFactory& exc) {
       PyErr_SetString(error, exc.getStringMessage().c_str());
       return NULL;
