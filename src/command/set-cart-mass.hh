@@ -23,7 +23,13 @@ namespace dynamicgraph {
 	virtual Value doExecute ()
 	{
 	  double mass=0;
-	  std::vector<Value> values = getParameterValues();
+	  const std::vector<Value>& values = getParameterValues();
+	  std::cout << "SetCartMass::doExecute()" << std::endl;
+	  for (unsigned int i=0; i<values.size(); i++) {
+	    std::cout << "  value[" << i << "]=(" 
+		      << values[i] << ")" << std::endl;
+	  }
+	  
 	  mass = values[0].doubleValue();
 	  std::cout << "SetCartMass( " << mass << " )" << std::endl;
 	  InvertedPendulum& ip = static_cast<InvertedPendulum&>(owner());
