@@ -22,6 +22,7 @@ for e in entityTypeList:
     a = metacls(e, (dg.entity.Entity,), {})
     # Store class name in class member
     a.class_name = e
+    print ("new class %s"%e)
     # set class constructor
     setattr(a, '__init__', initEntity)
     # Store new class in dictionary with class name

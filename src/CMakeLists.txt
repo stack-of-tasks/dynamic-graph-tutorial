@@ -13,7 +13,8 @@ LINK_DIRECTORIES(${DYNAMIC_GRAPH_PYTHON_LIBRARY_DIRS})
 
 ADD_LIBRARY(${LIBRARY_NAME}
   SHARED
-  inverted-pendulum.cc)
+  inverted-pendulum.cc
+  command/set-cart-mass.hh)
 
 SET_TARGET_PROPERTIES(${LIBRARY_NAME}
   PROPERTIES
@@ -95,7 +96,6 @@ INSTALL(TARGETS ${PYTHON_MODULE}
 	       ${PYTHON_INSTALL_DIR})
 
 SET (PYTHON_SOURCES
-    dynamic_graph/tutorial/inverted_pendulum.py
     dynamic_graph/tutorial/__init__.py
 )
 
