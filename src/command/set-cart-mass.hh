@@ -26,7 +26,7 @@ namespace dynamicgraph {
 	  const std::vector<Value>& values = getParameterValues();
 	  std::cout << "SetCartMass::doExecute()" << std::endl;
 	  for (unsigned int i=0; i<values.size(); i++) {
-	    std::cout << "  value[" << i << "]=(" 
+	    std::cout << "  value[" << i << "]=("
 		      << values[i] << ")" << std::endl;
 	  }
 	  
@@ -38,7 +38,7 @@ namespace dynamicgraph {
 	}
 
       private:
-	static const std::vector<Value::Type> typeVector() 
+	static const std::vector<Value::Type> typeVector()
 	{
 	  std::vector<Value::Type> result;
 	  result.push_back(Value::DOUBLE);
