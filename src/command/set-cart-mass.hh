@@ -29,8 +29,8 @@ namespace dynamicgraph {
 	    std::cout << "  value[" << i << "]=("
 		      << values[i] << ")" << std::endl;
 	  }
-	  
-	  mass = values[0].doubleValue();
+
+	  mass = values[0].value();
 	  std::cout << "SetCartMass( " << mass << " )" << std::endl;
 	  InvertedPendulum& ip = static_cast<InvertedPendulum&>(owner());
 	  ip.setCartMass(mass);
