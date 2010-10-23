@@ -8,6 +8,7 @@
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 #include <dynamic-graph/factory.h>
 #include <dynamic-graph/command-setter.h>
+#include <dynamic-graph/command-getter.h>
 
 using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
@@ -36,6 +37,9 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   addCommand(std::string("setCartMass"),
 	     new command::Setter<InvertedPendulum, double>
 	     (*this, &InvertedPendulum::setCartMass));
+  addCommand(std::string("getCartMass"),
+	     new command::Getter<InvertedPendulum, double>
+	     (*this, &InvertedPendulum::getCartMass));
 }
 
 InvertedPendulum::~InvertedPendulum()
