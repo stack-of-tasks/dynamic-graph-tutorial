@@ -7,7 +7,7 @@
 #include <boost/numeric/ublas/io.hpp>
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 #include <dynamic-graph/factory.h>
-#include "command/set-cart-mass.hh"
+#include <dynamic-graph/command-setter.h>
 
 using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
@@ -33,7 +33,9 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   forceSIN.setConstant(input);
 
   // Commands
-  addCommand(std::string("setCartMass"), new command::SetCartMass(*this));
+  addCommand(std::string("setCartMass"),
+	     new command::Setter<InvertedPendulum, double>
+	     (*this, &InvertedPendulum::setCartMass));
 }
 
 InvertedPendulum::~InvertedPendulum()
