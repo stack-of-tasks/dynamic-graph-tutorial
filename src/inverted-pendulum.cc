@@ -5,10 +5,11 @@
  */
 
 #include <boost/numeric/ublas/io.hpp>
-#include "dynamic-graph/tutorial/inverted-pendulum.hh"
 #include <dynamic-graph/factory.h>
 #include <dynamic-graph/command-setter.h>
 #include <dynamic-graph/command-getter.h>
+#include "dynamic-graph/tutorial/inverted-pendulum.hh"
+#include "command-increment.h"
 
 using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
@@ -34,12 +35,33 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   forceSIN.setConstant(input);
 
   // Commands
+  // setCartMass
   addCommand(std::string("setCartMass"),
-	     new command::Setter<InvertedPendulum, double>
+	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
 	     (*this, &InvertedPendulum::setCartMass));
+  // getCartMass
   addCommand(std::string("getCartMass"),
-	     new command::Getter<InvertedPendulum, double>
+	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
 	     (*this, &InvertedPendulum::getCartMass));
+  // setPendulumMass
+  addCommand(std::string("setPendulumMass"),
+	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
+	     (*this, &InvertedPendulum::setPendulumMass));
+  // getPendulumMass
+  addCommand(std::string("getPendulumMass"),
+	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
+	     (*this, &InvertedPendulum::getPendulumMass));
+  // setPendulumLength
+  addCommand(std::string("setPendulumLength"),
+	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
+	     (*this, &InvertedPendulum::setPendulumLength));
+  // getPendulumLength
+  addCommand(std::string("getPendulumLength"),
+	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
+	     (*this, &InvertedPendulum::getPendulumLength));
+  // Incr
+  addCommand(std::string("incr"),
+	     new command::Increment(*this));
 }
 
 InvertedPendulum::~InvertedPendulum()

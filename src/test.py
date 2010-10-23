@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as pl
-import dynamic_graph.tutorial.inverted_pendulum as ip
+import dynamic_graph as dg
+import dynamic_graph.tutorial
 
 # define inverted pendulum
-a = ip.InvertedPendulum("IP")
+a = dg.InvertedPendulum("IP")
 a.cart_mass = 1.0
 a.pendulum_mass = 1.0
 a.pendulum_length = 1.0
