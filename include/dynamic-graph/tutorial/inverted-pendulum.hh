@@ -115,7 +115,7 @@ namespace dynamicgraph {
       /**
 	 \brief Set the mass of the cart
       */
-      void setCartMass (double inMass) {
+      void setCartMass (const double& inMass) {
 	cartMass_ = inMass;
       }
 
@@ -129,7 +129,7 @@ namespace dynamicgraph {
       /**
 	 \brief Set the mass of the cart
       */
-      void setPendulumMass (double inMass) {
+      void setPendulumMass (const double& inMass) {
 	pendulumMass_ = inMass;
       }
 
@@ -143,7 +143,7 @@ namespace dynamicgraph {
       /**
 	 \brief Set the length of the cart
       */
-      void setPendulumLength (double inLength) {
+      void setPendulumLength (const double& inLength) {
 	pendulumLength_ = inLength;
       }
 
