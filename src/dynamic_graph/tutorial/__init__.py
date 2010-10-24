@@ -6,4 +6,4 @@
 import dynamic_graph as dg
 import wrap
 
-dg.entity.updateEntityClasses()
+dg.entity.updateEntityClasses(globals())
