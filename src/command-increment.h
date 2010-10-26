@@ -42,6 +42,7 @@ namespace dynamicgraph {
 	  std::vector<Value> values = getParameterValues();
 	  double timeStep = values[0].value();
 	  ip.incr(timeStep);
+	  return Value();
 	}
       }; //class Increment
     } // namespace command
