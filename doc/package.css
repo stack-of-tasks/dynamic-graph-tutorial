@@ -201,6 +201,19 @@ DIV.groupHeader
   color:#0066CC;
 }
 
+DIV.fragment
+{
+  spacing: 10px;
+  width:100%;
+  background:#F0F0F0;
+  font-size:100%;
+  line-height:normal;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #808080;
+  -moz-border-radius: 8px 8px 8px 8px;
+}
+
 .directory p 
 { 
     margin: 0px; 

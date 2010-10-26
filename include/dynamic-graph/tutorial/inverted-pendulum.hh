@@ -81,32 +81,13 @@ namespace dynamicgraph {
 
       ~InvertedPendulum();
 
+      /// Each entity should provide the name of the class it belongs to
       virtual const std::string& getClassName (void) const {
 	return CLASS_NAME;
       }
 
+      /// Integrate equation of motion over time step given as input
       void incr(double inTimeStep);
-      /**
-	  \name Signals
-	  @{
-      */
-      /**
-	 \brief Input of the inverted pendulum
-      */
-      SignalPtr< Vector, int > forceSIN;
-      /**
-	 \brief State of the inverted pendulum
-      */
-      Signal< Vector, int> stateSOUT;
-
-      /**
-	 \brief Read value of stateSOUT signal
-      */
-      const Vector& state();
-
-      /**
-	 @}
-      */
 
       /**
 	  \name Parameters
@@ -166,9 +147,14 @@ namespace dynamicgraph {
 
     private:
       /**
-	 \name Parameters
-	 @{
+	 \brief Input force acting on the inverted pendulum
       */
+      SignalPtr< Vector, int > forceSIN;
+      /**
+	 \brief State of the inverted pendulum
+      */
+      Signal< Vector, int> stateSOUT;
+
       /// \brief Mass of the cart
       double cartMass_;
       /// \brief Mass of the pendulum
@@ -177,10 +163,6 @@ namespace dynamicgraph {
       double pendulumLength_;
       /// \brief Viscosity coefficient
       double viscosity_;
-
-      /**
-	 @}
-      */
       static const double gravity;
 
       /**

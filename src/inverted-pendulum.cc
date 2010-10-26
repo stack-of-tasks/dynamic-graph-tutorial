@@ -21,7 +21,7 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
   Entity(inName),
   forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::forcein"),
-  stateSOUT("InvertedPendulum("+name+")::output(vector)::state"),
+  stateSOUT("InvertedPendulum("+inName+")::output(vector)::state"),
   cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0), viscosity_(0.1)
 {
   // Register signals into the entity.
@@ -35,6 +35,9 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   forceSIN.setConstant(input);
 
   // Commands
+  // Incr
+  addCommand(std::string("incr"),
+	     new command::Increment(*this));
   // setCartMass
   addCommand(std::string("setCartMass"),
 	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
@@ -59,18 +62,10 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   addCommand(std::string("getPendulumLength"),
 	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
 	     (*this, &InvertedPendulum::getPendulumLength));
-  // Incr
-  addCommand(std::string("incr"),
-	     new command::Increment(*this));
 }
 
 InvertedPendulum::~InvertedPendulum()
 {
-}
-
-const InvertedPendulum::Vector& InvertedPendulum::state()
-{
-  return stateSOUT.accessCopy();
 }
 
 InvertedPendulum::Vector
