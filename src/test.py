@@ -1,13 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as pl
-import dynamic_graph as dg
-import dynamic_graph.tutorial
+import dynamic_graph.tutorial as dgt
 
 # define inverted pendulum
-a = dg.InvertedPendulum("IP")
-a.cart_mass = 1.0
-a.pendulum_mass = 1.0
-a.pendulum_length = 1.0
+a = dgt.InvertedPendulum("IP")
+a.setCartMass(1.0)
+a.setPendulumMass(1.0)
+a.setPendulumLength(1.0)
 
 # Set value of state signal
 a.state = [0.0, 0.01, 0.0, 0.0]
