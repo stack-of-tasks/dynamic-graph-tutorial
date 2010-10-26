@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as pl
 import dynamic_graph.tutorial as dgt
+import dynamic_graph.signal_base as dgsb
 
 # define inverted pendulum
 a = dgt.InvertedPendulum("IP")
@@ -9,7 +10,7 @@ a.setPendulumMass(1.0)
 a.setPendulumLength(1.0)
 
 # Set value of state signal
-a.state = [0.0, 0.01, 0.0, 0.0]
+s = a.signal('state').value = '[4](0.0, 0.01, 0.0, 0.0)'
 
 timeStep = 0.01
 timeSteps = []
@@ -19,7 +20,7 @@ values = []
 for x in xrange(10000) :
     t = x*timeStep
     timeSteps.append(t)
-    values.append(a.state)
+    values.append(dgsb.stringToTuple(a.signal('state').value))
     a.incr(timeStep)
 
 # Convert into numpy array
