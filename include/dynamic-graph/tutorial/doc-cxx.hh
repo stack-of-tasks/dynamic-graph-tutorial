@@ -153,7 +153,7 @@ We set input and output signal as constant with a given value
 \endcode
 
 The following lines of code define and register commands into the entity.
-A Command is created by calling a constructor with 
+A \ref dynamicgraph::command::Command "command" is created by calling a constructor with 
 \li a string: the name of the command and
 \li a pointer to a newly created command:
 
