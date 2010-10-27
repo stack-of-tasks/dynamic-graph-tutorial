@@ -9,7 +9,7 @@
 /**
    \brief List of python functions
 */
-static PyMethodDef dynamicGraphTutorialMethods[] = {
+static PyMethodDef functions[] = {
   {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
@@ -18,7 +18,7 @@ initwrap(void)
 {
     PyObject *m;
 
-    m = Py_InitModule("wrap", dynamicGraphTutorialMethods);
+    m = Py_InitModule("wrap", functions);
     if (m == NULL)
         return;
 }

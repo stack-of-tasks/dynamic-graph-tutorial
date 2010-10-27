@@ -29,11 +29,9 @@ namespace dynamicgraph {
       {
       public:
 	virtual ~Increment() {}
-	Increment(Entity& entity) :
+	Increment(InvertedPendulum& entity) :
 	  Command(entity, boost::assign::list_of(Value::DOUBLE))
 	{
-	  // Will raise an exception if entity is not of type InvertedPendulum.
-	  dynamic_cast<InvertedPendulum&>(entity);
 	}
 	virtual Value doExecute() 
 	{
