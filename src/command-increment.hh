@@ -15,8 +15,8 @@
 // have received a copy of the GNU Lesser General Public License along
 // with dynamic-graph.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DYNAMIC_GRAPH_TUTORIAL_COMMAND_INCREMENT_H
-#define DYNAMIC_GRAPH_TUTORIAL_COMMAND_INCREMENT_H
+#ifndef DYNAMIC_GRAPH_TUTORIAL_COMMAND_INCREMENT_HH
+#define DYNAMIC_GRAPH_TUTORIAL_COMMAND_INCREMENT_HH
 
 #include <boost/assign/list_of.hpp>
 
@@ -48,5 +48,5 @@ namespace dynamicgraph {
     } // namespace command
   } // namespace tutorial
 } // namespace dynamicgraph
-#endif //DYNAMIC_GRAPH_TUTORIAL_COMMAND_INCREMENT_H
+#endif //DYNAMIC_GRAPH_TUTORIAL_COMMAND_INCREMENT_HH
 

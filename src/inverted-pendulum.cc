@@ -9,7 +9,7 @@
 #include <dynamic-graph/command-setter.h>
 #include <dynamic-graph/command-getter.h>
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
-#include "command-increment.h"
+#include "command-increment.hh"
 
 using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
