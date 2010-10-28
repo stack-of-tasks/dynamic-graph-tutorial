@@ -163,7 +163,6 @@ namespace dynamicgraph {
       double pendulumLength_;
       /// \brief Viscosity coefficient
       double viscosity_;
-      static const double gravity;
 
       /**
 	 \brief Compute the evolution of the state of the pendulum

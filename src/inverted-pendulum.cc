@@ -10,11 +10,10 @@
 #include <dynamic-graph/command-getter.h>
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 #include "command-increment.hh"
+#include "constant.hh"
 
 using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
-
-const double InvertedPendulum::gravity = 9.81;
 
 DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 
@@ -86,7 +85,7 @@ InvertedPendulum::computeDynamics(const Vector& inState,
 					inControl.size());
   double dt = inTimeStep;
   double dt2 = dt*dt;
-  double g = gravity;
+  double g = Constant::gravity;
   double x = inState[0];
   double th = inState[1];
   double dx = inState[2];
