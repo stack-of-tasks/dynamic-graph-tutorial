@@ -6,6 +6,7 @@
 
 SET(${PROJECT_NAME}_HEADERS
     dynamic-graph/tutorial/inverted-pendulum.hh
+    dynamic-graph/tutorial/feedback-controller.hh
     dynamic-graph/tutorial/api.hh
 )
 
