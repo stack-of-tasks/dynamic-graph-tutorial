@@ -124,6 +124,7 @@ void InvertedPendulum::incr(double inTimeStep)
   Vector nextState = computeDynamics(stateSOUT(t), forceSIN(t), inTimeStep);
   stateSOUT.setConstant(nextState);
   stateSOUT.setTime(t+1);
+  forceSIN(t+1);
 }
 
 dynamicgraph::DefaultCastRegisterer<InvertedPendulum::Vector> IPVectorCast;
