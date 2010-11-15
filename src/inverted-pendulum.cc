@@ -14,6 +14,8 @@
 using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
 
+const double Constant::gravity = 9.81;
+
 DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 
 InvertedPendulum::InvertedPendulum(const std::string& inName) :

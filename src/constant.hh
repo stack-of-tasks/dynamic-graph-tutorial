@@ -14,8 +14,6 @@ namespace dynamicgraph {
     public:
       static const double gravity;
     };
-
-const double Constant::gravity = 9.81;
   } // namespace tutorial
 } // namespace dynamicgraph
 
