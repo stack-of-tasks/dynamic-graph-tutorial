@@ -7,8 +7,8 @@
 #ifndef DG_TUTORIAL_FEEDBACK_CONTROLLER_HH
 #define DG_TUTORIAL_FEEDBACK_CONTROLLER_HH
 
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
+#include <eigen2/Eigen/Core>
+
 #include <dynamic-graph/entity.h>
 #include <dynamic-graph/signal-ptr.h>
 
@@ -18,17 +18,15 @@ namespace dynamicgraph {
   namespace tutorial {
     /**
        \brief Feedback controller for an inverted pendulum
-       
+
        This class implements a feedback control for the inverted pendulum
        represented by class InvertedPendulum
     */
     class DG_TUTORIAL_EXPORT FeedbackController : public Entity
     {
     public:
-      typedef boost::numeric::ublas::vector<double> Vector;
-      typedef boost::numeric::ublas::matrix<double> Matrix;
-      typedef boost::numeric::ublas::zero_vector<double> ZeroVector;
-      typedef boost::numeric::ublas::zero_matrix<double> ZeroMatrix;
+      typedef Eigen::VectorXd Vector;
+      typedef Eigen::MatrixXd Matrix;
 
       /**
 	 \brief Constructor by name

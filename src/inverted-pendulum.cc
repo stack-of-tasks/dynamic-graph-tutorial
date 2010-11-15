@@ -4,7 +4,6 @@
  *  Florent Lamiraux
  */
 
-#include <boost/numeric/ublas/io.hpp>
 #include <dynamic-graph/factory.h>
 #include <dynamic-graph/command-setter.h>
 #include <dynamic-graph/command-getter.h>
@@ -28,8 +27,8 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   signalRegistration (stateSOUT);
 
   // Set signals as constant to size them
-  Vector state = ZeroVector(4);
-  Vector input = ZeroVector(1);
+  Vector state = Vector(4); state.setZero();
+  Vector input = Vector(1); input.setZero();
   stateSOUT.setConstant(state);
   forceSIN.setConstant(input);
 
@@ -125,6 +124,22 @@ void InvertedPendulum::incr(double inTimeStep)
   stateSOUT.setConstant(nextState);
   stateSOUT.setTime(t+1);
   forceSIN(t+1);
+}
+
+InvertedPendulum::Vector operator>>(std::istringstream& iss,
+				    const InvertedPendulum::Vector& inVector)
+{
+  double value;
+  std::vector<double> vector;
+  while (!iss.eof()) {
+    iss >> value;
+    vector.push_back(value);
+  }
+  InvertedPendulum::Vector result(vector.size());
+  for (unsigned index = 0; index<vector.size(); index++) {
+    result[index] = vector[index];
+  }
+  return result;
 }
 
 dynamicgraph::DefaultCastRegisterer<InvertedPendulum::Vector> IPVectorCast;

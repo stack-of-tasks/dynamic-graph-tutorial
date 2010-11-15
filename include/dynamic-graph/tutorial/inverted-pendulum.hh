@@ -7,7 +7,8 @@
 #ifndef DG_TUTORIAL_INVERTED_PENDULUM_HH
 #define DG_TUTORIAL_INVERTED_PENDULUM_HH
 
-#include <boost/numeric/ublas/vector.hpp>
+#include <eigen2/Eigen/Core>
+
 #include <dynamic-graph/entity.h>
 #include <dynamic-graph/signal-ptr.h>
 
@@ -72,8 +73,8 @@ namespace dynamicgraph {
     class DG_TUTORIAL_EXPORT InvertedPendulum : public Entity
     {
     public:
-      typedef boost::numeric::ublas::vector<double> Vector;
-      typedef boost::numeric::ublas::zero_vector<double> ZeroVector;
+      typedef Eigen::VectorXd Vector;
+
       /**
 	 \brief Constructor by name
       */

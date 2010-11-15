@@ -26,8 +26,8 @@ FeedbackController::FeedbackController(const std::string& inName) :
   signalRegistration (forceSOUT);
 
   // Set signals as constant to size them
-  Vector force = ZeroVector(1);
-  Vector state = ZeroVector(4);
+  Vector force = Vector(1); force.setZero();
+  Vector state = Vector(4); state.setZero();
   forceSOUT.setConstant(force);
   stateSIN.setConstant(state);
 
@@ -83,24 +83,24 @@ FeedbackController::computeForceFeedback(Vector& force,
     unsigned nbStep = 50;
 
     // Linearized system about the origin
-    Matrix A = ZeroMatrix(4,4);
+    Matrix A = Matrix(4,4); A.setZero();
     A(0,2) = 1.;
     A(1,3) = 1.;
     A(2,1) = -m*g/M;
     A(3,1) = (m+M)*g/(M*l);
 
-    Matrix B = ZeroMatrix(4,1);
+    Matrix B = Matrix(4,1); B.setZero();
     B(2,0) = 1/M;
     B(3,0) = -1./(M*l);
 
-    Matrix Q = ZeroMatrix(4,4);
+    Matrix Q = Matrix(4,4); Q.setZero();
     Q(0,0) = 1/(l*l);
     Q(1,1) = 1;
 
     Matrix invR = Matrix(1,1);
     invR(0,0) = l*l*(M+m)*(M+m)/(T*T*T*T);
     
-    Matrix S = ZeroMatrix(4,4);
+    Matrix S = Matrix(4,4); S.setZero();
     S(0,0) = 1./(l*l);
     S(1,1) = 1.;
     S(2,2) = T*T/(l*l);
@@ -113,10 +113,7 @@ FeedbackController::computeForceFeedback(Vector& force,
       P += dt*ricatti(P, A, B, invR, Q);
     }
     
-    force = -prod(
-		  prod(invR,
-		       prod(boost::numeric::ublas::trans(B),P)),
-		  inState);
+    force = -invR*B.transpose()*P*inState;
     return force;
 }
 
@@ -124,7 +121,6 @@ FeedbackController::Matrix
 FeedbackController::ricatti(const Matrix& P, const Matrix& A, const Matrix& B,
 			    const Matrix& invR, const Matrix& Q)
 {
-  Matrix dotP = -prod(P,A) - prod(boost::numeric::ublas::trans(A),P) +
-    prod(P,prod(B,prod(invR,prod(boost::numeric::ublas::trans(B),P)))) + Q;
+  Matrix dotP = -P*A - A.transpose()*P + P*B*invR*B.transpose()*P + Q;
   return dotP;
 }
