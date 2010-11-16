@@ -10,7 +10,7 @@ a.setPendulumMass(1.0)
 a.setPendulumLength(1.0)
 
 # Set value of state signal
-s = a.signal('state').value = '[4](0.0, 0.01, 0.0, 0.0)'
+a.signal('state').value = '[4](0.0,0.01,0.0,0.0)'
 
 timeStep = 0.01
 timeSteps = []
