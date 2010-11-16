@@ -90,12 +90,12 @@ FeedbackController::computeForceFeedback(Vector& force,
     Matrix A = Matrix(4,4); A.setZero();
     A(0,2) = 1.;
     A(1,3) = 1.;
-    A(2,1) = -m*g/M;
+    A(2,1) = m*g/M;
     A(3,1) = (m+M)*g/(M*l);
 
     Matrix B = Matrix(4,1); B.setZero();
     B(2,0) = 1/M;
-    B(3,0) = -1./(M*l);
+    B(3,0) = 1./(M*l);
 
     Matrix Q = Matrix(4,4); Q.setZero();
     Q(0,0) = 1/(l*l);
