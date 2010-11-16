@@ -128,20 +128,58 @@ void InvertedPendulum::incr(double inTimeStep)
   forceSIN(t+1);
 }
 
-InvertedPendulum::Vector operator>>(std::istringstream& iss,
-				    const InvertedPendulum::Vector& inVector)
+class VectorCastRegisterer : public SignalCastRegisterer
 {
-  double value;
-  std::vector<double> vector;
-  while (!iss.eof()) {
-    iss >> value;
-    vector.push_back(value);
-  }
-  InvertedPendulum::Vector result(vector.size());
-  for (unsigned index = 0; index<vector.size(); index++) {
-    result[index] = vector[index];
-  }
-  return result;
-}
+public:
+  VectorCastRegisterer() :
+    SignalCastRegisterer(typeid(InvertedPendulum::Vector), disp, cast, trace) {}
 
-dynamicgraph::DefaultCastRegisterer<InvertedPendulum::Vector> IPVectorCast;
+  static boost::any cast(std::istringstream& iss)
+  {
+    char c;
+    unsigned int size=0;
+    iss.get(c);
+    // Look for an unsigned integer between brackets
+    if (c != '[') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+    iss >> size;
+    iss.get(c);
+    if (c != ']') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+    
+    // Read vector coordinates
+    InvertedPendulum::Vector vector(size);
+    iss.get(c);
+    if (c != '(') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+    for (unsigned int index = 0; index < size-1; index++) {
+      iss >> vector[index];
+      iss.get(c);
+      if (c != ',') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+    }
+    // There is no comma after last coordinate
+    if (size > 0) {
+      iss >> vector[size-1];
+    }      
+    iss.get(c);
+    if (c != ')') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+    return vector;
+  }
+
+  static void disp(const boost::any& object, std::ostream& os)
+  {
+    InvertedPendulum::Vector vector =
+      boost::any_cast<InvertedPendulum::Vector>(object);
+    os << "[" << vector.rows() << "](" ;
+    for (unsigned index = 0; index < vector.rows()-1; index++) {
+      os << vector[index] << ",";
+    }
+    if (vector.rows() > 0) {
+      os << vector[vector.rows()-1];
+    }
+    os << ")";
+  }
+  static void trace(const boost::any& object, std::ostream& os)
+  {
+    disp(object,os);
+  }
+};
+
+VectorCastRegisterer IPVectorCast;
