@@ -24,8 +24,8 @@ namespace dynamicgraph {
        The equation of motion is:
 
        \f{eqnarray*}{
-       \left ( M + m \right ) \ddot x + m \ell \ddot \theta\cos \theta - m \ell {\dot \theta}^2 \sin \theta &=& F\\
-       \ell \ddot \theta + \ddot x \cos \theta - g \sin \theta &=& 0\\
+       \left ( M + m \right ) \ddot x - m l \ddot \theta \cos \theta + m l \dot \theta^2 \sin \theta &=& F\\
+       m l (-g \sin \theta - \ddot x \cos \theta + l \ddot \theta) &=& 0
        \f}
 
        where
@@ -37,7 +37,7 @@ namespace dynamicgraph {
 	    vertical axis,
        \li the input is a vector of dimension 1 \f$(F)\f$ reprensented by signal
            forceSIN,
-       \li m, M and \f$\ell\f$ are respectively the mass of the pendulum, the mass of the
+       \li m, M and l are respectively the mass of the pendulum, the mass of the
            cart and the length of the pendulum.
 
        A more natural form of the above equation for roboticists is
@@ -50,10 +50,10 @@ namespace dynamicgraph {
        \f{eqnarray*}
        \textbf{q} &=& (x, \theta) \\
        \textbf{M}(\textbf{q}) &=& \left( \begin{array}{cc}
-       M + m & m\ \ell\ \cos\theta \\
-       m\ \ell\ \cos\theta & m\ \ell^2 \end{array}\right) \\
+       M + m & -m\ l\ \cos\theta \\
+       -m\ l\ \cos\theta & m\ l^2 \end{array}\right) \\
        \textbf{N}(\textbf{q},\dot{\textbf{q}}) &=& \left( \begin{array}{cc}
-       0 & -m\ \ell\ \dot{\theta} \sin\theta \\
+       0 & m\ l\ \dot{\theta} \sin\theta \\
        0 & 0 \end{array}\right)\\
        \textbf{G}(\textbf{q}) &=& \left( \begin{array}{c}
        0 \\ -m\ l\ g\ \sin\theta \end{array}\right)\\
@@ -64,7 +64,7 @@ namespace dynamicgraph {
        by rewriting:
        \f{eqnarray*}
        \textbf{N}(\textbf{q},\dot{\textbf{q}}) &=& \left( \begin{array}{cc}
-       \lambda & -m\ \ell\ \dot{\theta} \sin\theta\\
+       \lambda & m\ l\ \dot{\theta} \sin\theta\\
        0 & \lambda \end{array}\right)
        \f}
        where \f$\lambda\f$ is a positive coefficient.

@@ -102,13 +102,13 @@ InvertedPendulum::computeDynamics(const Vector& inState,
   double cth = cos(th);
   double sth2 = sth*sth;
 
-  double b1 = F + m*l*dth2*sth - lambda*dx;
+  double b1 = F - m*l*dth2*sth - lambda*dx;
   double b2 = m*l*g*sth - lambda*dth;
 
   double det = m*l2*(M + m*sth2);
 
-  double ddx = (b1*m*l2 - b2*m*l*cth)/det;
-  double ddth = ((M+m)*b2 - m*l*cth*b1)/det;
+  double ddx = (b1*m*l2 + b2*m*l*cth)/det;
+  double ddth = ((M+m)*b2 + m*l*cth*b1)/det;
 
   Vector nextState(4);
   nextState[0] = x + dx*dt + .5*ddx*dt2;
