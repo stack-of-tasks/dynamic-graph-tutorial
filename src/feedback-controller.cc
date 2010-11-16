@@ -64,6 +64,10 @@ FeedbackController::FeedbackController(const std::string& inName) :
 	     (*this, &FeedbackController::getPendulumLength));
 }
 
+FeedbackController::~FeedbackController()
+{
+}
+
 FeedbackController::Vector&
 FeedbackController::computeForceFeedback(Vector& force,
 					 const int& inTime)
