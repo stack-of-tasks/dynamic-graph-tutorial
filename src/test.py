@@ -1,7 +1,38 @@
 import numpy as np
 import matplotlib.pyplot as pl
+import dynamic_graph as dg
 import dynamic_graph.tutorial as dgt
 import dynamic_graph.signal_base as dgsb
+
+def A(ip, dt):
+    jac = []
+    for i in range(4):
+        x = [0,0,0,0]
+        x[i] = dt
+        ip.signal('state').value = dgsb.tupleToString(x)
+        ip.incr(dt)
+        y = dgsb.stringToTuple(ip.signal('state').value)
+        b = np.array(y)
+        a = np.array(x)
+        deriv = (b-a)/(dt*dt)
+        jac.append(deriv.tolist())
+    return np.array(jac).transpose()
+
+def B(ip, dt):
+    jac = []
+    x = [0,0,0,0]
+    for i in range(1):
+        ip.signal('state').value = dgsb.tupleToString(x)
+        f = [0]
+        f[i] = dt
+        ip.signal('force').value = dgsb.tupleToString(f)
+        ip.incr(dt)
+        y = dgsb.stringToTuple(ip.signal('state').value)
+        b = np.array(y)
+        a = np.array(x)
+        deriv = (b-a)/(dt*dt)
+        jac.append(deriv.tolist())
+    return np.array(jac).transpose()
 
 # define inverted pendulum
 a = dgt.InvertedPendulum("IP")
