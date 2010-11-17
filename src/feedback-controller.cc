@@ -126,6 +126,6 @@ FeedbackController::Matrix
 FeedbackController::ricatti(const Matrix& P, const Matrix& A, const Matrix& B,
 			    const Matrix& invR, const Matrix& Q)
 {
-  Matrix dotP = -P*A - A.transpose()*P + P*B*invR*B.transpose()*P + Q;
+  Matrix dotP = -P*A - A.transpose()*P + P*B*invR*B.transpose()*P - Q;
   return dotP;
 }
