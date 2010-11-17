@@ -20,7 +20,7 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
   Entity(inName),
-  forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::forcein"),
+  forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::force"),
   stateSOUT("InvertedPendulum("+inName+")::output(vector)::state"),
   cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0), viscosity_(0.1)
 {

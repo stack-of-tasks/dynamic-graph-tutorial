@@ -11,6 +11,7 @@
 
 #include <dynamic-graph/entity.h>
 #include <dynamic-graph/signal-ptr.h>
+#include <dynamic-graph/signal-time-dependent.h>
 
 #include "dynamic-graph/tutorial/api.hh"
 
@@ -107,11 +108,11 @@ namespace dynamicgraph {
       /**
 	 \brief State of the inverted pendulum
       */
-      Signal< Vector, int> stateSIN;
+      SignalPtr < Vector, int> stateSIN;
       /**
 	 \brief Force computed by the control law
       */
-      Signal< Vector, int > forceSOUT;
+      SignalTimeDependent < Vector, int > forceSOUT;
 
       /// \brief Mass of the cart
       double cartMass_;

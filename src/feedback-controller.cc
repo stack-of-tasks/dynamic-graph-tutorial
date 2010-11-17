@@ -17,8 +17,9 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(FeedbackController, "FeedbackController");
 
 FeedbackController::FeedbackController(const std::string& inName) :
   Entity(inName),
-  stateSIN("FeedbackController("+inName+")::input(vector)::statein"),
-  forceSOUT("FeedbackController("+inName+")::output(vector::force"),
+  stateSIN(NULL, "FeedbackController("+inName+")::input(vector)::state"),
+  forceSOUT(stateSIN,
+	    "FeedbackController("+inName+")::output(vector)::force"),
   cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0)
 {
   // Register signals into the entity.
