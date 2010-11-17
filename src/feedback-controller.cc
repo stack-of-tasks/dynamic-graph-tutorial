@@ -118,7 +118,7 @@ FeedbackController::computeForceFeedback(Vector& force,
       P += dt*ricatti(P, A, B, invR, Q);
     }
     
-    force = -invR*B.transpose()*P*inState;
+    force = -invR*B.transpose()*P*state;
     return force;
 }
 
