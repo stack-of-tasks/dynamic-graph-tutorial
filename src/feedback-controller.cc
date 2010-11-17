@@ -73,13 +73,13 @@ FeedbackController::Vector&
 FeedbackController::computeForceFeedback(Vector& force,
 					 const int& inTime)
 {
-  const Vector& inState = stateSIN(inTime);
+  const Vector& state = stateSIN(inTime);
 
-    if (inState.size() != 4)
+    if (state.size() != 4)
     throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
 					"state signal size is ",
 					"%d, should be 4.",
-					inState.size());
+					state.size());
     double m = pendulumMass_;
     double M = cartMass_;
     double l = pendulumLength_;
