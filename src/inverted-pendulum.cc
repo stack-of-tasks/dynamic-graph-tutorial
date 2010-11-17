@@ -4,6 +4,8 @@
  *  Florent Lamiraux
  */
 
+#include <boost/format.hpp>
+
 #include <dynamic-graph/factory.h>
 #include <dynamic-graph/command-setter.h>
 #include <dynamic-graph/command-getter.h>
@@ -138,28 +140,45 @@ public:
   {
     char c;
     unsigned int size=0;
+    boost::format format("expecting '%1%', got '%2%' "
+			 "instead while parsing Eigen vector");
     iss.get(c);
     // Look for an unsigned integer between brackets
-    if (c != '[') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+    if (c != '[') {
+      format % '[' % c;
+      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
+    }
     iss >> size;
     iss.get(c);
-    if (c != ']') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
-    
+    if (c != ']') {
+      format % ']' % c;
+      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
+    }
+
     // Read vector coordinates
     InvertedPendulum::Vector vector(size);
     iss.get(c);
-    if (c != '(') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+    if (c != '(') {
+      format % '(' % c;
+      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
+    }
     for (unsigned int index = 0; index < size-1; index++) {
       iss >> vector[index];
       iss.get(c);
-      if (c != ',') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+      if (c != ',') {
+      format % ',' % c;
+      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
+      }
     }
     // There is no comma after last coordinate
     if (size > 0) {
       iss >> vector[size-1];
     }      
     iss.get(c);
-    if (c != ')') throw ExceptionSignal(ExceptionSignal::BAD_CAST);
+    if (c != ')') {
+      format % ')' % c;
+      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
+    }
     return vector;
   }
 
