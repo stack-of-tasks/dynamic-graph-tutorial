@@ -47,7 +47,6 @@ namespace dynamicgraph {
 	 \brief Get feedback gain
       */
       void setGain (const ::dynamicgraph::Matrix& inGain) {
-	std::cout << "FeedbackController::setGain" << std::endl;
 	gain_ = inGain;
       }
 
@@ -55,7 +54,6 @@ namespace dynamicgraph {
 	 \brief Get feedback gain
       */
       ::dynamicgraph::Matrix getGain () const {
-	std::cout << "FeedbackController::getGain" << std::endl;
 	return gain_;
       }
 
