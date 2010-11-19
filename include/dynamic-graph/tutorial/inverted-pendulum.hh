@@ -11,6 +11,7 @@
 
 #include <dynamic-graph/entity.h>
 #include <dynamic-graph/signal-ptr.h>
+#include <dynamic-graph/linear-algebra.h>
 
 #include "dynamic-graph/tutorial/api.hh"
 
@@ -73,8 +74,6 @@ namespace dynamicgraph {
     class DG_TUTORIAL_EXPORT InvertedPendulum : public Entity
     {
     public:
-      typedef Eigen::VectorXd Vector;
-
       /**
 	 \brief Constructor by name
       */
@@ -150,11 +149,11 @@ namespace dynamicgraph {
       /**
 	 \brief Input force acting on the inverted pendulum
       */
-      SignalPtr< Vector, int > forceSIN;
+      SignalPtr< ::dynamicgraph::Vector, int > forceSIN;
       /**
 	 \brief State of the inverted pendulum
       */
-      Signal< Vector, int> stateSOUT;
+      Signal< ::dynamicgraph::Vector, int> stateSOUT;
 
       /// \brief Mass of the cart
       double cartMass_;
@@ -168,8 +167,9 @@ namespace dynamicgraph {
       /**
 	 \brief Compute the evolution of the state of the pendulum
       */
-      Vector computeDynamics(const Vector& inState, const Vector& inControl,
-			     double inTimeStep);
+      ::dynamicgraph::Vector
+	  computeDynamics(const ::dynamicgraph::Vector& inState,
+			  const Vector& inControl, double inTimeStep);
     };
   };
 };

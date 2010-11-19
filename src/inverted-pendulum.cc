@@ -5,6 +5,7 @@
  */
 
 #include <boost/format.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
 #include <dynamic-graph/factory.h>
 #include <dynamic-graph/command-setter.h>
@@ -31,8 +32,8 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   signalRegistration (stateSOUT);
 
   // Set signals as constant to size them
-  Vector state = Vector(4); state.setZero();
-  Vector input = Vector(1); input.setZero();
+  Vector state = boost::numeric::ublas::zero_vector<double>(4);
+  Vector input = boost::numeric::ublas::zero_vector<double>(1);
   stateSOUT.setConstant(state);
   forceSIN.setConstant(input);
 
@@ -70,10 +71,9 @@ InvertedPendulum::~InvertedPendulum()
 {
 }
 
-InvertedPendulum::Vector
-InvertedPendulum::computeDynamics(const Vector& inState,
-				  const Vector& inControl,
-				  double inTimeStep)
+Vector InvertedPendulum::computeDynamics(const Vector& inState,
+					 const Vector& inControl,
+					 double inTimeStep)
 {
   if (inState.size() != 4)
     throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
@@ -130,75 +130,4 @@ void InvertedPendulum::incr(double inTimeStep)
   forceSIN(t+1);
 }
 
-class VectorCastRegisterer : public SignalCastRegisterer
-{
-public:
-  VectorCastRegisterer() :
-    SignalCastRegisterer(typeid(InvertedPendulum::Vector), disp, cast, trace) {}
-
-  static boost::any cast(std::istringstream& iss)
-  {
-    char c;
-    unsigned int size=0;
-    boost::format format("expecting '%1%', got '%2%' "
-			 "instead while parsing Eigen vector");
-    iss.get(c);
-    // Look for an unsigned integer between brackets
-    if (c != '[') {
-      format % '[' % c;
-      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
-    }
-    iss >> size;
-    iss.get(c);
-    if (c != ']') {
-      format % ']' % c;
-      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
-    }
-
-    // Read vector coordinates
-    InvertedPendulum::Vector vector(size);
-    iss.get(c);
-    if (c != '(') {
-      format % '(' % c;
-      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
-    }
-    for (unsigned int index = 0; index < size-1; index++) {
-      iss >> vector[index];
-      iss.get(c);
-      if (c != ',') {
-      format % ',' % c;
-      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
-      }
-    }
-    // There is no comma after last coordinate
-    if (size > 0) {
-      iss >> vector[size-1];
-    }      
-    iss.get(c);
-    if (c != ')') {
-      format % ')' % c;
-      throw ExceptionSignal(ExceptionSignal::BAD_CAST, format.str());
-    }
-    return vector;
-  }
-
-  static void disp(const boost::any& object, std::ostream& os)
-  {
-    InvertedPendulum::Vector vector =
-      boost::any_cast<InvertedPendulum::Vector>(object);
-    os << "[" << vector.rows() << "](" ;
-    for (unsigned index = 0; index < vector.rows()-1; index++) {
-      os << vector[index] << ",";
-    }
-    if (vector.rows() > 0) {
-      os << vector[vector.rows()-1];
-    }
-    os << ")";
-  }
-  static void trace(const boost::any& object, std::ostream& os)
-  {
-    disp(object,os);
-  }
-};
-
-VectorCastRegisterer IPVectorCast;
+DefaultCastRegisterer<Vector> vectorCastRegisterer;
