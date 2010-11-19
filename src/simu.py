@@ -4,74 +4,57 @@ import dynamic_graph as dg
 import dynamic_graph.tutorial as dgt
 import dynamic_graph.signal_base as dgsb
 
-def A(ip, dt):
-    jac = []
-    for i in range(4):
-        x = [0,0,0,0]
-        x[i] = dt
-        ip.signal('state').value = dgsb.tupleToString(x)
-        ip.incr(dt)
-        y = dgsb.stringToTuple(ip.signal('state').value)
-        b = np.array(y)
-        a = np.array(x)
-        deriv = (b-a)/(dt*dt)
-        jac.append(deriv.tolist())
-    return np.array(jac).transpose()
-
-def B(ip, dt):
-    jac = []
-    x = [0,0,0,0]
-    for i in range(1):
-        ip.signal('state').value = dgsb.tupleToString(x)
-        f = [0]
-        f[i] = dt
-        ip.signal('force').value = dgsb.tupleToString(f)
-        ip.incr(dt)
-        y = dgsb.stringToTuple(ip.signal('state').value)
-        b = np.array(y)
-        a = np.array(x)
-        deriv = (b-a)/(dt*dt)
-        jac.append(deriv.tolist())
-    return np.array(jac).transpose()
-
 # define inverted pendulum
 a = dgt.InvertedPendulum("IP")
 a.setCartMass(1.0)
 a.setPendulumMass(1.0)
 a.setPendulumLength(1.0)
 
+b = dgt.FeedbackController("K")
+
+# plug signals
+dg.plug('IP.state', 'K.state')
+dg.plug('K.force', 'IP.force')
+
+timeStep = 0.001
+
 # Set value of state signal
-a.signal('state').value = '[4](0.0,0.01,0.0,0.0)'
+a.signal('state').value = '[4](0.0,0.1,0.0,0.0)'
 
-timeStep = 0.01
-timeSteps = []
-values = []
+gain = ((0.0,27.0,0.001,0.001,),)
+b.setGain(gain,)
 
-# Loop over time and compute discretized state values
-for x in xrange(10000) :
-    t = x*timeStep
-    timeSteps.append(t)
-    values.append(dgsb.stringToTuple(a.signal('state').value))
-    a.incr(timeStep)
+def play (nbSteps):
+    timeSteps = []
+    values = []
 
-# Convert into numpy array
-x = np.array(timeSteps)
-y = np.array(values).transpose()
+    # Set value of state signal
+    a.signal('state').value = '[4](0.0,0.1,0.0,0.0)'
+    # Loop over time and compute discretized state values
+    for x in xrange(nbSteps) :
+        t = x*timeStep
+        timeSteps.append(t)
+        values.append(dgsb.stringToTuple(a.signal('state').value))
+        a.incr(timeStep)
 
-fig  = pl.figure()
-ax1 = fig.add_subplot(121)
-ax2 = fig.add_subplot(122)
+    # Convert into numpy array
+    x = np.array(timeSteps)
+    y = np.array(values).transpose()
 
-# plot configuration variables
-ax1.plot(x,y[0])
-ax1.plot(x,y[1])
+    fig  = pl.figure()
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
 
-# plot velocity variables
-ax2.plot(x,y[2])
-ax2.plot(x,y[3])
+    # plot configuration variables
+    ax1.plot(x,y[0])
+    ax1.plot(x,y[1])
 
-leg = ax1.legend(("x", "theta"))
-leg = ax2.legend(("dx", "dtheta"))
+    # plot velocity variables
+    ax2.plot(x,y[2])
+    ax2.plot(x,y[3])
 
-pl.show()
+    leg = ax1.legend(("x", "theta"))
+    leg = ax2.legend(("dx", "dtheta"))
+
+    pl.show()
 
