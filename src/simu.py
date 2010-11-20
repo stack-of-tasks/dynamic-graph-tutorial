@@ -19,7 +19,11 @@ dg.plug('K.force', 'IP.force')
 timeStep = 0.001
 
 # Set value of state signal
-a.signal('state').value = (0.0,0.1,0.0,0.0)
+s = a.signal('state')
+f = a.signal('force')
+
+s.value = (0.0,0.1,0.0,0.0)
+
 
 gain = ((0.0,27.0,0.001,0.001,),)
 b.setGain(gain,)
@@ -27,14 +31,16 @@ b.setGain(gain,)
 def play (nbSteps):
     timeSteps = []
     values = []
+    forces = []
 
     # Set value of state signal
-    a.signal('state').value = '[4](0.0,0.1,0.0,0.0)'
+    s.value = '[4](0.0,0.1,0.0,0.0)'
     # Loop over time and compute discretized state values
     for x in xrange(nbSteps) :
         t = x*timeStep
         timeSteps.append(t)
-        values.append(dgsb.stringToTuple(a.signal('state').value))
+        values.append(s.value)
+        forces.append(s.value)
         a.incr(timeStep)
 
     # Convert into numpy array
@@ -52,9 +58,10 @@ def play (nbSteps):
     # plot velocity variables
     ax2.plot(x,y[2])
     ax2.plot(x,y[3])
+    ax2.plot(x,forces)
 
     leg = ax1.legend(("x", "theta"))
-    leg = ax2.legend(("dx", "dtheta"))
+    leg = ax2.legend(("dx", "dtheta", "force"))
 
     pl.show()
 

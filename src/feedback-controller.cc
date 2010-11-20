@@ -19,7 +19,7 @@ FeedbackController::FeedbackController(const std::string& inName) :
   Entity(inName),
   stateSIN(NULL, "FeedbackController("+inName+")::input(vector)::state"),
   forceSOUT(stateSIN,
-	    "FeedbackController("+inName+")::output(vector)::force"),
+	    "FeedbackController("+inName+")::output(double)::force"),
   gain_(boost::numeric::ublas::zero_matrix<double>(4))
 {
   // Register signals into the entity.
@@ -27,13 +27,13 @@ FeedbackController::FeedbackController(const std::string& inName) :
   signalRegistration (forceSOUT);
 
   // Set signals as constant to size them
-  Vector force = boost::numeric::ublas::zero_vector<double>(1);
+  double force = 0.;
   Vector state = boost::numeric::ublas::zero_vector<double>(4);
   forceSOUT.setConstant(force);
   stateSIN.setConstant(state);
 
   // Define refresh function for output signal
-  boost::function2<Vector&, Vector&,const int&> ftest
+  boost::function2<double&, double&,const int&> ftest
     = boost::bind(&FeedbackController::computeForceFeedback,
 		  this, _1, _2);
 
@@ -53,7 +53,7 @@ FeedbackController::~FeedbackController()
 {
 }
 
-Vector& FeedbackController::computeForceFeedback(Vector& force,
+double& FeedbackController::computeForceFeedback(double& force,
 						 const int& inTime)
 {
   const Vector& state = stateSIN(inTime);
@@ -63,6 +63,7 @@ Vector& FeedbackController::computeForceFeedback(Vector& force,
 					"state signal size is ",
 					"%d, should be 4.",
 					state.size());
-  force = -prod(gain_,state);
+  Vector v = -prod(gain_,state);
+  force = v[0];
   return force;
 }

@@ -23,7 +23,7 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
   Entity(inName),
-  forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::force"),
+  forceSIN(NULL, "InvertedPendulum("+inName+")::input(double)::force"),
   stateSOUT("InvertedPendulum("+inName+")::output(vector)::state"),
   cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0), viscosity_(0.1)
 {
@@ -33,7 +33,7 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
 
   // Set signals as constant to size them
   Vector state = boost::numeric::ublas::zero_vector<double>(4);
-  Vector input = boost::numeric::ublas::zero_vector<double>(1);
+  double input = 0.;
   stateSOUT.setConstant(state);
   forceSIN.setConstant(input);
 
@@ -72,7 +72,7 @@ InvertedPendulum::~InvertedPendulum()
 }
 
 Vector InvertedPendulum::computeDynamics(const Vector& inState,
-					 const Vector& inControl,
+					 const double& inControl,
 					 double inTimeStep)
 {
   if (inState.size() != 4)
@@ -81,11 +81,6 @@ Vector InvertedPendulum::computeDynamics(const Vector& inState,
 					"%d, should be 4.",
 					inState.size());
 
-  if (inControl.size() != 1)
-    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
-					"force signal size is ",
-					"%d, should be 1.",
-					inControl.size());
   double dt = inTimeStep;
   double dt2 = dt*dt;
   double g = Constant::gravity;
@@ -93,7 +88,7 @@ Vector InvertedPendulum::computeDynamics(const Vector& inState,
   double th = inState[1];
   double dx = inState[2];
   double dth = inState[3];
-  double F = inControl[0];
+  double F = inControl;
   double m = pendulumMass_;
   double M = cartMass_;
   double l = pendulumLength_;

@@ -149,7 +149,7 @@ namespace dynamicgraph {
       /**
 	 \brief Input force acting on the inverted pendulum
       */
-      SignalPtr< ::dynamicgraph::Vector, int > forceSIN;
+      SignalPtr< double, int > forceSIN;
       /**
 	 \brief State of the inverted pendulum
       */
@@ -169,7 +169,7 @@ namespace dynamicgraph {
       */
       ::dynamicgraph::Vector
 	  computeDynamics(const ::dynamicgraph::Vector& inState,
-			  const Vector& inControl, double inTimeStep);
+			  const double& inControl, double inTimeStep);
     };
   };
 };

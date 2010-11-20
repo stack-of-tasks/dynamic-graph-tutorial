@@ -71,8 +71,7 @@ namespace dynamicgraph {
       /**
 	 Compute the control law
       */
-      ::dynamicgraph::Vector&
-	computeForceFeedback(::dynamicgraph::Vector& force, const int& inTime);
+      double& computeForceFeedback(double& force, const int& inTime);
 
       /**
 	 \brief State of the inverted pendulum
@@ -81,7 +80,7 @@ namespace dynamicgraph {
       /**
 	 \brief Force computed by the control law
       */
-      SignalTimeDependent < ::dynamicgraph::Vector, int > forceSOUT;
+      SignalTimeDependent < double, int > forceSOUT;
 
       /// \brief Gain of the controller
       ::dynamicgraph::Matrix gain_;
