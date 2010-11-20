@@ -19,7 +19,7 @@ dg.plug('K.force', 'IP.force')
 timeStep = 0.001
 
 # Set value of state signal
-a.signal('state').value = '[4](0.0,0.1,0.0,0.0)'
+a.signal('state').value = (0.0,0.1,0.0,0.0)
 
 gain = ((0.0,27.0,0.001,0.001,),)
 b.setGain(gain,)
