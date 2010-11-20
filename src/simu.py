@@ -13,14 +13,19 @@ a.setPendulumLength(1.0)
 b = dgt.FeedbackController("K")
 
 # plug signals
-dg.plug('IP.state', 'K.state')
-dg.plug('K.force', 'IP.force')
+stateOut = a.signal('state')
+forceIn =  a.signal('force')
+stateIn =  b.signal('state')
+forceOut = b.signal('force')
+
+dg.plug(stateOut, stateIn)
+dg.plug(forceOut, forceIn)
 
 timeStep = 0.001
 
 # Set value of state signal
-s = a.signal('state')
-f = a.signal('force')
+s = stateOut
+f = forceIn
 
 s.value = (0.0,0.1,0.0,0.0)
 
@@ -40,7 +45,7 @@ def play (nbSteps):
         t = x*timeStep
         timeSteps.append(t)
         values.append(s.value)
-        forces.append(s.value)
+        forces.append(f.value)
         a.incr(timeStep)
 
     # Convert into numpy array
@@ -64,4 +69,7 @@ def play (nbSteps):
     leg = ax2.legend(("dx", "dtheta", "force"))
 
     pl.show()
+
+if __name__ == '__main__' :
+    play(100)
 
