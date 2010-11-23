@@ -5,7 +5,7 @@
 
 This tutorial implements a simple application of the dynamic-graph package with two entities represented by the following classes:
 \li dynamicgraph::tutorial::InvertedPendulum: that implements the dynamics of a pendulum on a cart and
-\li dynamicgraph::tutorial::FeedbackControl: that implements a closed-loop control loop that stabilizes the pendulum.
+\li dynamicgraph::tutorial::FeedbackController: that implements a closed-loop control loop that stabilizes the pendulum.
 
 \section dg_tutorial_inverted_pendulum_ Prerequisite
 
