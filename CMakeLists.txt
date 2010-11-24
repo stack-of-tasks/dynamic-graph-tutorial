@@ -5,107 +5,41 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-SET(PROJECT_NAME dg-tutorial)
+INCLUDE(cmake/base.cmake)
+INCLUDE(cmake/boost.cmake)
+INCLUDE(cmake/lapack.cmake)
+INCLUDE(cmake/cpack.cmake)
+
+SET(PROJECT_NAME dynamic-graph-tutorial)
 project(${PROJECT_NAME})
 
 SET(PROJECT_VERSION 1.0)
+SET(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
+SET(PROJECT_URL "http://github.com/jrl-umi3218/dynamic-graph-tutorial")
 
-SET(CMAKE_VERBOSE_MAKEFILE true)
-
-IF(WIN32)
-  SET(LIBDIR_KW "/LIBPATH:")
-  SET(LIBINCL_KW "")
-  SET(LIB_EXT ".lib")
-ENDIF(WIN32)
-
-IF(UNIX)
-  SET(LIBDIR_KW "-L")
-  SET(LIBINCL_KW "-l")
-  SET(LIB_EXT "")
-ENDIF(UNIX)
-
+SET(${PROJECT_NAME}_HEADERS
+    include/dynamic-graph/tutorial/inverted-pendulum.hh
+    include/dynamic-graph/tutorial/feedback-controller.hh
+    include/dynamic-graph/tutorial/api.hh
+)
 #
 # Look for dependencies
 #
 
-# Load Pkgconfig macros
-INCLUDE(FindPkgConfig)
-SET(PACKAGE_REQUIREMENTS "")
+SETUP_PROJECT()
 
 #
 #  Documentation dependency to package dynamic-graph
 #
-SET(DYNAMIC_GRAPH_FOUND 0)
-SET(DYNAMIC_GRAPH_REQUIRED "dynamic-graph >= 1.0")
-PKG_CHECK_MODULES(DYNAMIC_GRAPH REQUIRED ${DYNAMIC_GRAPH_REQUIRED})
-EXEC_PROGRAM(${PKG_CONFIG_EXECUTABLE} ARGS  --variable=docdir dynamic-graph
-  OUTPUT_VARIABLE DYNAMIC_GRAPH_DOCDIR)
-MESSAGE(STATUS "pkg-config: ${PKG_CONFIG_EXECUTABLE}")
-MESSAGE(STATUS "DYNAMIC_GRAPH_DOCDIR=${DYNAMIC_GRAPH_DOCDIR}")
-SET(DYNAMIC_GRAPH_FOUND 1)
 
-IF(NOT ${DYNAMIC_GRAPH_FOUND})
-  MESSAGE(FATAL_ERROR "Check that package dynamic-graph is installed in a directory pointed out by PKG_CONFIG_PATH.")
-ENDIF(NOT ${DYNAMIC_GRAPH_FOUND})
+ADD_REQUIRED_DEPENDENCY("dynamic-graph")
 
 #
 #  Dependency to package dynamic-graph-python
 #
-SET(DYNAMIC_GRAPH_PYTHON_FOUND 0)
-SET(DYNAMIC_GRAPH_PYTHON_REQUIRED "dynamic-graph-python >= 1.0")
-PKG_CHECK_MODULES(DYNAMIC_GRAPH_PYTHON REQUIRED ${DYNAMIC_GRAPH_PYTHON_REQUIRED})
-EXEC_PROGRAM(${PKG_CONFIG_EXECUTABLE} ARGS  --variable=docdir dynamic-graph-python
-  OUTPUT_VARIABLE DYNAMIC_GRAPH_PYTHON_DOCDIR)
-MESSAGE(STATUS "pkg-config: ${PKG_CONFIG_EXECUTABLE}")
-MESSAGE(STATUS "DYNAMIC_GRAPH_PYTHON_DOCDIR=${DYNAMIC_GRAPH_PYTHON_DOCDIR}")
-SET(DYNAMIC_GRAPH_PYTHON_FOUND 1)
-
-IF(NOT ${DYNAMIC_GRAPH_PYTHON_FOUND})
-  MESSAGE(FATAL_ERROR "Check that package dynamic-graph-python is installed in a directory pointed out by PKG_CONFIG_PATH.")
-ENDIF(NOT ${DYNAMIC_GRAPH_PYTHON_FOUND})
-
-IF(PACKAGE_REQUIREMENTS STREQUAL "")
-  SET(PACKAGE_REQUIREMENTS ${DYNAMIC_GRAPH_PYTHON_REQUIRED})
-ELSE(PACKAGE_REQUIREMENTS STREQUAL "")
-  SET(PACKAGE_REQUIREMENTS "${PACKAGE_REQUIREMENTS}, ${DYNAMIC_GRAPH_PYTHON_REQUIRED}")
-ENDIF(PACKAGE_REQUIREMENTS STREQUAL "")
-
-#
-# pkg-config file
-#
-
-SET(install_pkg_prefix "\${prefix}")
-SET(install_pkg_exec_prefix "\${exec_prefix}")
-SET(install_pkg_libdir "\${libdir}")
-SET(install_pkg_datarootdir "\${datarootdir}")
-SET(install_pkg_include_dir "\${includedir}")
-
-IF(UNIX)
-  SET (${PROJECT_NAME}_LDFLAGS "-Wl,-R${install_pkg_libdir} ${LIBINCL_KW}${PROJECT_NAME}${LIB_EXT} ${${PROJECT_NAME}_LDFLAGS}")
-ENDIF(UNIX)
-
-IF(WIN32)
-  SET (${PROJECT_NAME}_LDFLAGS "${LIBINCL_KW}${PROJECT_NAME}${LIB_EXT} ${${PROJECT_NAME}_LDFLAGS}")
-ENDIF(WIN32)
-
-# Install the file in the appropriate place.
-SET(install_libdir_pkgconfig ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
-
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc)
-
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
-  DESTINATION ${install_libdir_pkgconfig}
-  PERMISSIONS OWNER_READ GROUP_READ WORLD_READ OWNER_WRITE)
+ADD_REQUIRED_DEPENDENCY("dynamic-graph-python")
 
 ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(include)
-#ADD_SUBDIRECTORY(unitTesting)
+ADD_SUBDIRECTORY(doc)
 
-#
-# Documentation produced by doxygen
-#
-INCLUDE(FindDoxygen)
-IF(DOXYGEN_FOUND)
-  add_subdirectory(doc)
-ENDIF(DOXYGEN_FOUND)
+SETUP_PROJECT_FINALIZE()

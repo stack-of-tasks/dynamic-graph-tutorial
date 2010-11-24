@@ -171,6 +171,6 @@ namespace dynamicgraph {
 	  computeDynamics(const ::dynamicgraph::Vector& inState,
 			  const double& inControl, double inTimeStep);
     };
-  };
-};
+  } // namespace tutorial
+} // namespace dynamicgraph
 #endif
