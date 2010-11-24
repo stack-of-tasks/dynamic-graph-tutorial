@@ -29,8 +29,11 @@ namespace dynamicgraph {
       {
       public:
 	virtual ~Increment() {}
-	Increment(InvertedPendulum& entity) :
-	  Command(entity, boost::assign::list_of(Value::DOUBLE))
+	/// Create a command and store it in Entity
+	/// \param entity Instance of Entity owning of the command
+	/// \param docstring documentation of the command
+	Increment(InvertedPendulum& entity, const std::string& docstring) :
+	  Command(entity, boost::assign::list_of(Value::DOUBLE), docstring)
 	{
 	}
 	virtual Value doExecute() 

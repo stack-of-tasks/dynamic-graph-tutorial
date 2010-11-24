@@ -39,14 +39,26 @@ FeedbackController::FeedbackController(const std::string& inName) :
 
   forceSOUT.setFunction(boost::bind(&FeedbackController::computeForceFeedback,
 				    this, _1, _2));
+  std::string docstring;
   // setGain
+  docstring =
+    "\n"
+    "    Set gain of controller\n"
+    "      takes a tuple of 4 floating point numbers as input\n"
+    "\n";
   addCommand(std::string("setGain"),
 	     new ::dynamicgraph::command::Setter<FeedbackController, Matrix>
-	     (*this, &FeedbackController::setGain));
+	     (*this, &FeedbackController::setGain, docstring));
+
   // getGain
+  docstring =
+    "\n"
+    "    Get gain of controller\n"
+    "      return a tuple of 4 floating point numbers\n"
+    "\n";
   addCommand(std::string("getGain"),
 	     new ::dynamicgraph::command::Getter<FeedbackController, Matrix>
-	     (*this, &FeedbackController::getGain));
+	     (*this, &FeedbackController::getGain, docstring));
 }
 
 FeedbackController::~FeedbackController()

@@ -38,33 +38,71 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   forceSIN.setConstant(input);
 
   // Commands
+  std::string docstring;
+
   // Incr
+  docstring =
+    "\n"
+    "    Integrate dynamics for time step provided as input\n"
+    "\n"
+    "      take one floating point number as input\n"
+    "\n";
   addCommand(std::string("incr"),
-	     new command::Increment(*this));
+	     new command::Increment(*this, docstring));
+
   // setCartMass
+  docstring =
+    "\n"
+    "    Set cart mass\n"
+    "\n";
   addCommand(std::string("setCartMass"),
 	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::setCartMass));
+	     (*this, &InvertedPendulum::setCartMass, docstring));
+
   // getCartMass
+  docstring =
+    "\n"
+    "    Get cart mass\n"
+    "\n";
   addCommand(std::string("getCartMass"),
 	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::getCartMass));
+	     (*this, &InvertedPendulum::getCartMass, docstring));
+
   // setPendulumMass
+  docstring =
+    "\n"
+    "    Set pendulum mass\n"
+    "\n";
   addCommand(std::string("setPendulumMass"),
 	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::setPendulumMass));
+	     (*this, &InvertedPendulum::setPendulumMass, docstring));
+
   // getPendulumMass
+  docstring =
+    "\n"
+    "    Get pendulum mass\n"
+    "\n";
   addCommand(std::string("getPendulumMass"),
 	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::getPendulumMass));
+	     (*this, &InvertedPendulum::getPendulumMass, docstring));
+
   // setPendulumLength
+  docstring =
+    "\n"
+    "    Set pendulum length\n"
+    "\n";
   addCommand(std::string("setPendulumLength"),
 	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::setPendulumLength));
+	     (*this, &InvertedPendulum::setPendulumLength, docstring));
+
   // getPendulumLength
+  docstring =
+    "\n"
+    "    Get pendulum length\n"
+    "\n";
   addCommand(std::string("getPendulumLength"),
 	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::getPendulumLength));
+	     (*this, &InvertedPendulum::getPendulumLength, docstring));
 }
 
 InvertedPendulum::~InvertedPendulum()

@@ -7,3 +7,6 @@ import dynamic_graph as dg
 import wrap
 
 dg.entity.updateEntityClasses(globals())
+
+InvertedPendulum('')
+FeedbackController('')
