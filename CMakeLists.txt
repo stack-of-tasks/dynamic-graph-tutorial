@@ -20,7 +20,6 @@ SET(PROJECT_URL "http://github.com/jrl-umi3218/dynamic-graph-tutorial")
 SET(${PROJECT_NAME}_HEADERS
     include/dynamic-graph/tutorial/inverted-pendulum.hh
     include/dynamic-graph/tutorial/feedback-controller.hh
-    include/dynamic-graph/tutorial/api.hh
 )
 #
 # Look for dependencies

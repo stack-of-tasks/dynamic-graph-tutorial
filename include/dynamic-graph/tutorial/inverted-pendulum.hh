@@ -1,19 +1,28 @@
 /*
- *  Copyright 2010 CNRS
+ * Copyright 2010,
+ * Florent Lamiraux
  *
- *  Florent Lamiraux
+ * CNRS
+ *
+ * This file is part of dynamic-graph-tutorial.
+ * dynamic-graph-tutorial is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ * dynamic-graph-tutorial is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.  You should
+ * have received a copy of the GNU Lesser General Public License along
+ * with dynamic-graph-tutorial.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DG_TUTORIAL_INVERTED_PENDULUM_HH
 #define DG_TUTORIAL_INVERTED_PENDULUM_HH
 
-#include <eigen2/Eigen/Core>
-
 #include <dynamic-graph/entity.h>
 #include <dynamic-graph/signal-ptr.h>
 #include <dynamic-graph/linear-algebra.h>
-
-#include "dynamic-graph/tutorial/api.hh"
 
 namespace dynamicgraph {
   namespace tutorial {
@@ -71,7 +80,7 @@ namespace dynamicgraph {
        where \f$\lambda\f$ is a positive coefficient.
     */
 
-    class DG_TUTORIAL_EXPORT InvertedPendulum : public Entity
+    class InvertedPendulum : public Entity
     {
     public:
       /**

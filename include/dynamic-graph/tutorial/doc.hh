@@ -17,7 +17,7 @@ This tutorial requires prior installation of packages:
 
 This tutorial show:
 \li how to \ref dg_tutorial_inverted_pendulum_cxx "create a new entity" with signals and commands,
-\li how to build a python module to create and control this entity in a python
+\li how to \ref dg_tutorial_inverted_pendulum_python "build a python module" to create and control this entity in a python
 interpreter.
 
 

@@ -15,18 +15,20 @@ The interface is defined in file <c>include/dynamic-graph/tutorial/inverted-pend
 
 First, we include
 \li the header defining Entity class and
-\li the header defining SignalPtr template class
+\li the header defining SignalPtr template class,
+\li the header defining matrix and vector types:
 
 \code
     #include <dynamic-graph/entity.h>
     #include <dynamic-graph/signal-ptr.h>
+    #include <dynamic-graph/linear-algebra.h>
 \endcode
 
 Then in namespace <c>dynamicgraph::tutorial</c> we define class InvertedPendulum
 \code
     namespace dynamicgraph {
       namespace tutorial {
-        class DG_TUTORIAL_EXPORT InvertedPendulum : public Entity
+        class InvertedPendulum : public Entity
         {
 \endcode
 with a constructor taking a name as an input
@@ -81,7 +83,7 @@ The name of the class is stored as a static member
 \endcode
 In the private part of the class, we store signals
 \code
-          SignalPtr< Vector, int > forceSIN;
+          SignalPtr< double, int > forceSIN;
           Signal< Vector, int> stateSOUT;
 \endcode
 and parameters
@@ -99,8 +101,9 @@ The implementation is written in file <c>src/inverted-pendulum.cc</c>.
 First, we include headers defining
 \li class FactoryStorage,
 \li general setter and getter commands
-\li the previously defined header, and
-\li local Increment command class:
+\li the previously defined header,
+\li local Increment command class, and
+\li gravity constant:
 
 \subsection dg_tutorial_inverted_pendulum_cxx_implementation_headers Headers
 
@@ -133,7 +136,7 @@ Then we define the class constructor
 \code
     InvertedPendulum::InvertedPendulum(const std::string& inName) :
       Entity(inName),
-      forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::forcein"),
+      forceSIN(NULL, "InvertedPendulum("+inName+")::input(vector)::force"),
       stateSOUT("InvertedPendulum("+inName+")::output(vector)::state"),
       cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0), viscosity_(0.1)
 \endcode
@@ -146,20 +149,30 @@ We register signals into an associative array stored into Entity class
 
 We set input and output signal as constant with a given value
 \code
-      Vector state = ZeroVector(4);
-      Vector input = ZeroVector(1);
+      Vector state = boost::numeric::ublas::zero_vector<double>(4);
+      double input = 0.;
       stateSOUT.setConstant(state);
       forceSIN.setConstant(input);
 \endcode
 
 The following lines of code define and register commands into the entity.
 A \ref dynamicgraph::command::Command "command" is created by calling a constructor with 
-\li a string: the name of the command and
-\li a pointer to a newly created command:
+\li a string: the name of the command,
+\li a pointer to a newly created command and
+\li a string documenting the command:
 
 \code
+      std::string docstring;
+    
+      // Incr
+      docstring =
+        "\n"
+        "    Integrate dynamics for time step provided as input\n"
+        "\n"
+        "      take one floating point number as input\n"
+        "\n";
       addCommand(std::string("incr"),
-                 new command::Increment(*this));
+                 new command::Increment(*this, docstring));
 \endcode
 
 In this example, command::Increment is a command specific to our class
@@ -167,13 +180,21 @@ InvertedPendulum. This new command is explained in page \ref dg_tutorial_inverte
 
 Setter and getter commands are available through classes templated by the type of entity using the command and the type of the parameter. Be aware that only a prespecified set of types are supported for commands, see class dynamicgraph::command::Value.
 \code
-      addCommand(std::string("setCartMass"),
-                 new ::dynamicgraph::command::Setter<InvertedPendulum, double>
-                 (*this, &InvertedPendulum::setCartMass));
+  docstring =
+    "\n"
+    "    Set cart mass\n"
+    "\n";
+  addCommand(std::string("setCartMass"),
+	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
+	     (*this, &InvertedPendulum::setCartMass, docstring));
 
-      addCommand(std::string("getCartMass"),
-                 new ::dynamicgraph::command::Getter<InvertedPendulum, double>
-                 (*this, &InvertedPendulum::getCartMass));
+  docstring =
+    "\n"
+    "    Get cart mass\n"
+    "\n";
+  addCommand(std::string("getCartMass"),
+	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
+	     (*this, &InvertedPendulum::getCartMass, docstring));
 \endcode
 
 \note

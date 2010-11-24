@@ -7,14 +7,10 @@
 #ifndef DG_TUTORIAL_FEEDBACK_CONTROLLER_HH
 #define DG_TUTORIAL_FEEDBACK_CONTROLLER_HH
 
-#include <eigen2/Eigen/Core>
-
 #include <dynamic-graph/entity.h>
 #include <dynamic-graph/signal-ptr.h>
 #include <dynamic-graph/signal-time-dependent.h>
 #include <dynamic-graph/linear-algebra.h>
-
-#include "dynamic-graph/tutorial/api.hh"
 
 namespace dynamicgraph {
   namespace tutorial {
@@ -24,7 +20,7 @@ namespace dynamicgraph {
        This class implements a feedback control for the inverted pendulum
        represented by class InvertedPendulum
     */
-    class DG_TUTORIAL_EXPORT FeedbackController : public Entity
+    class FeedbackController : public Entity
     {
     public:
       /**
