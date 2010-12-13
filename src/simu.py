@@ -38,8 +38,6 @@ def play (nbSteps):
     values = []
     forces = []
 
-    # Set value of state signal
-    s.value = '[4](0.0,0.1,0.0,0.0)'
     # Loop over time and compute discretized state values
     for x in xrange(nbSteps) :
         t = x*timeStep
