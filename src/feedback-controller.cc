@@ -20,7 +20,7 @@ FeedbackController::FeedbackController(const std::string& inName) :
   stateSIN(NULL, "FeedbackController("+inName+")::input(vector)::state"),
   forceSOUT(stateSIN,
 	    "FeedbackController("+inName+")::output(double)::force"),
-  gain_(boost::numeric::ublas::zero_matrix<double>(4))
+  gain_(Matrix(4,1))
 {
   // Register signals into the entity.
   signalRegistration (stateSIN);
@@ -28,7 +28,8 @@ FeedbackController::FeedbackController(const std::string& inName) :
 
   // Set signals as constant to size them
   double force = 0.;
-  Vector state = boost::numeric::ublas::zero_vector<double>(4);
+  Vector state(4);
+  state.fill(0.);
   forceSOUT.setConstant(force);
   stateSIN.setConstant(state);
 
@@ -75,7 +76,7 @@ double& FeedbackController::computeForceFeedback(double& force,
 					"state signal size is ",
 					"%d, should be 4.",
 					state.size());
-  Vector v = -prod(gain_,state);
-  force = v[0];
+  Vector v = -gain_ * state;
+  force = v(0);
   return force;
 }

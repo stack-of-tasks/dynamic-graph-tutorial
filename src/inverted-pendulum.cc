@@ -32,7 +32,8 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
   signalRegistration (stateSOUT);
 
   // Set signals as constant to size them
-  Vector state = boost::numeric::ublas::zero_vector<double>(4);
+  Vector state(4);
+  state.fill(0.);
   double input = 0.;
   stateSOUT.setConstant(state);
   forceSIN.setConstant(input);
@@ -122,10 +123,10 @@ Vector InvertedPendulum::computeDynamics(const Vector& inState,
   double dt = inTimeStep;
   double dt2 = dt*dt;
   double g = Constant::gravity;
-  double x = inState[0];
-  double th = inState[1];
-  double dx = inState[2];
-  double dth = inState[3];
+  double x = inState(0);
+  double th = inState(1);
+  double dx = inState(2);
+  double dth = inState(3);
   double F = inControl;
   double m = pendulumMass_;
   double M = cartMass_;
@@ -146,10 +147,10 @@ Vector InvertedPendulum::computeDynamics(const Vector& inState,
   double ddth = ((M+m)*b2 + m*l*cth*b1)/det;
 
   Vector nextState(4);
-  nextState[0] = x + dx*dt + .5*ddx*dt2;
-  nextState[1] = th + dth*dt + .5*ddth*dt2;
-  nextState[2] = dx + dt*ddx;
-  nextState[3] = dth + dt*ddth;
+  nextState(0) = x + dx*dt + .5*ddx*dt2;
+  nextState(1) = th + dth*dt + .5*ddth*dt2;
+  nextState(2) = dx + dt*ddx;
+  nextState(3) = dth + dt*ddth;
 
   return nextState;
 }
