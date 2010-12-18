@@ -163,5 +163,3 @@ void InvertedPendulum::incr(double inTimeStep)
   stateSOUT.setTime(t+1);
   forceSIN(t+1);
 }
-
-DefaultCastRegisterer<Vector> vectorCastRegisterer;
