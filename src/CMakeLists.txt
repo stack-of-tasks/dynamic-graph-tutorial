@@ -66,4 +66,4 @@ SET(NEW_ENTITY_CLASS
   FeedbackController
   )
 
-DYNAMIC_GRAPH_PYTHON_MODULE("tutorial")
+DYNAMIC_GRAPH_PYTHON_MODULE("tutorial" ${LIBRARY_NAME} wrap)
