@@ -11,11 +11,11 @@ Welcome to @PROJECT_NAME@ documentation
 
 Python module dynamic_graph.tutorial implements bindings for dynamic-graph-tutorial_ library. To each main C++ class is associated a Python class.
 
-InvertedPendulum
+TableCart
 ----------------
-maps dynamicgraph::tutorial::InvertedPendulum_ C++ class.
+maps dynamicgraph::tutorial::TableCart_ C++ class.
 
-.. autoclass:: dynamic_graph.tutorial.InvertedPendulum
+.. autoclass:: dynamic_graph.tutorial.TableCart
    :members:
 
 FeedbackController
@@ -35,5 +35,5 @@ Indices and tables
 * :ref:`search`
 
 .. _dynamic-graph-tutorial: file://@PKG_CONFIG_DOXYGENDOCDIR@/main.html
-.. _InvertedPendulum: file://@PKG_CONFIG_DOXYGENDOCDIR@/classdynamic_graph_1_1tutorial_1_1_inverted_pendulum.html
+.. _TableCart: file://@PKG_CONFIG_DOXYGENDOCDIR@/classdynamic_graph_1_1tutorial_1_1_table_cart.html
 .. _FeedbackController: file://@PKG_CONFIG_DOXYGENDOCDIR@/classdynamic_graph_1_1tutorial_1_1_feedback_controller.html

@@ -32,14 +32,14 @@ namespace dynamicgraph {
 	/// Create a command and store it in Entity
 	/// \param entity Instance of Entity owning of the command
 	/// \param docstring documentation of the command
-	Increment(InvertedPendulum& entity, const std::string& docstring) :
+	Increment(TableCart& entity, const std::string& docstring) :
 	  Command(entity, boost::assign::list_of(Value::DOUBLE), docstring)
 	{
 	}
 	virtual Value doExecute() 
 	{
 	  Entity& entity = owner();
-	  InvertedPendulum& ip = static_cast<InvertedPendulum&>(entity);
+	  TableCart& ip = static_cast<TableCart&>(entity);
 	  std::vector<Value> values = getParameterValues();
 	  double timeStep = values[0].value();
 	  ip.incr(timeStep);

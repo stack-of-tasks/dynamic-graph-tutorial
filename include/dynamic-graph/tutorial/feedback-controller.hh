@@ -4,8 +4,8 @@
  *  Florent Lamiraux
  */
 
-#ifndef DG_TUTORIAL_FEEDBACK_CONTROLLER_HH
-#define DG_TUTORIAL_FEEDBACK_CONTROLLER_HH
+#ifndef DYNAMIC_GRAPH_TUTORIAL_FEEDBACK_CONTROLLER_HH
+#define DYNAMIC_GRAPH_TUTORIAL_FEEDBACK_CONTROLLER_HH
 
 #include <dynamic-graph/entity.h>
 #include <dynamic-graph/signal-ptr.h>
@@ -15,13 +15,14 @@
 namespace dynamicgraph {
   namespace tutorial {
     /**
-       \brief Feedback controller for an inverted pendulum
+       \brief Feedback controller for a table cart
 
-       This class implements a feedback control for the inverted pendulum
-       represented by class InvertedPendulum
+       This class implements a feedback control for the table cart
+       represented by class TableCart
     */
     class FeedbackController : public Entity
     {
+      DYNAMIC_GRAPH_ENTITY_DECL ();
     public:
       /**
 	 \brief Constructor by name
@@ -30,58 +31,50 @@ namespace dynamicgraph {
 
       ~FeedbackController();
 
-      /// Each entity should provide the name of the class it belongs to
-      virtual const std::string& getClassName (void) const {
-	return CLASS_NAME;
+      /// \name Gains
+      /// @{
+
+      /// Set gain relative to center of mass
+      void setComGain (const double& inGain) {
+	comGain_ = inGain;
       }
 
-      /**
-	  \name Parameters
-	  @{
-      */
-      /**
-	 \brief Get feedback gain
-      */
-      void setGain (const ::dynamicgraph::Matrix& inGain) {
-	gain_ = inGain;
+      /// Get gain relative to center of mass
+      double getComGain () const {
+	return comGain_;
       }
 
-      /**
-	 \brief Get feedback gain
-      */
-      ::dynamicgraph::Matrix getGain () const {
-	return gain_;
+      /// Set gain relative to ZMP
+      void setZmpGain (const double& inGain) {
+	zmpGain_ = inGain;
       }
 
-      /**
-	 @}
-      */
+      /// Get gain relative to ZMP
+      double getZmpGain () const {
+	return zmpGain_;
+      }
 
-    protected:
-      /*
-	\brief Class name
-      */
-      static const std::string CLASS_NAME;
+      /// @}
 
     private:
       /**
 	 Compute the control law
       */
-      double& computeForceFeedback(double& force, const int& inTime);
+      double& computeControlFeedback(double& control, const int& inTime);
 
-      /**
-	 \brief State of the inverted pendulum
-      */
-      SignalPtr < ::dynamicgraph::Vector, int> stateSIN;
-      /**
-	 \brief Force computed by the control law
-      */
-      SignalTimeDependent < double, int > forceSOUT;
+      /// State of the table cart
+      SignalPtr < ::dynamicgraph::Vector, int> stateSIN_;
+      /// ZMP
+      SignalPtr < double, int> zmpSIN_;
+      /// Control computed by the control law
+      SignalTimeDependent < double, int > controlSOUT_;
 
-      /// \brief Gain of the controller
-      ::dynamicgraph::Matrix gain_;
+      /// Gain of the controller relative to center of mass
+      double comGain_;
+      /// Gain of the controller relative to center of pressure
+      double zmpGain_;
     };
   } // namespace tutorial
 } // namespace dynamicgraph
 
-#endif //DG_TUTORIAL_FEEDBACK_CONTROLLER_HH
+#endif //DYNAMIC_GRAPH_TUTORIAL_FEEDBACK_CONTROLLER_HH

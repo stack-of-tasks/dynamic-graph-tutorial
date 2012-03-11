@@ -26,7 +26,7 @@ LINK_DIRECTORIES(${DYNAMIC_GRAPH_PYTHON_LIBRARY_DIRS} ${PYTHON_LIBRARY_DIRS})
 
 ADD_LIBRARY(${LIBRARY_NAME}
   SHARED
-  inverted-pendulum.cc
+  table-cart.cc
   feedback-controller.cc
   )
 
@@ -42,7 +42,7 @@ INSTALL(TARGETS ${LIBRARY_NAME}
   DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 SET(NEW_ENTITY_CLASS
-  InvertedPendulum
+  TableCart
   FeedbackController
   )
 
