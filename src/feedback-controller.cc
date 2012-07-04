@@ -20,22 +20,22 @@ FeedbackController::FeedbackController(const std::string& inName) :
   stateSIN_(NULL, "FeedbackController("+inName+")::input(vector)::state"),
   zmpSIN_ (NULL, "FeedbackController("+inName+")::input(double)::zmp"),
   controlSOUT_(stateSIN_,
-	    "FeedbackController("+inName+")::output(double)::force"),
+	    "FeedbackController("+inName+")::output(double)::control"),
   comGain_(1.), zmpGain_ (1.)
 {
   // Register signals into the entity.
   signalRegistration (stateSIN_);
+  signalRegistration (zmpSIN_);
   signalRegistration (controlSOUT_);
 
   // Set signals as constant to size them
-  double control = 0.;
-  Vector state(2);
-  state.fill(0.);
+  Vector control (1.); control.fill (0.);
   controlSOUT_.setConstant(control);
+  Vector state(2); state.fill(0.);
   stateSIN_.setConstant(state);
 
   // Define refresh function for output signal
-  boost::function2<double&, double&,const int&> ftest
+  boost::function2<Vector&, Vector&,const int&> ftest
     = boost::bind(&FeedbackController::computeControlFeedback,
 		  this, _1, _2);
 
@@ -89,18 +89,17 @@ FeedbackController::~FeedbackController()
 {
 }
 
-double& FeedbackController::computeControlFeedback(double& control,
+Vector& FeedbackController::computeControlFeedback(Vector& control,
 						   const int& inTime)
 {
   const Vector& state = stateSIN_ (inTime);
-  const double& zmp = zmpSIN_ (inTime);
+  const Vector& zmp = zmpSIN_ (inTime);
 
-  if (state.size() != 2)
+  if (state.size() != 1)
     throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
 					"state signal size is ",
-					"%d, should be 2.",
+					"%d, should be 1.",
 					state.size());
-  double x = state (0);
-  control = -comGain_ * x - zmpGain_ * zmp;
+  control = - comGain_ * state + zmpGain_ * zmp;
   return control;
 }

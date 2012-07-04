@@ -36,14 +36,15 @@ TableCart::TableCart(const std::string& inName) :
   signalRegistration (zmpSOUT_);
 
   // Set signals as constant to size them
-  Vector state (2);
-  state.fill (0.);
-  double force = 0.;
+  Vector state (1); state.fill (0.);
   stateSOUT_.setConstant(state);
+  Vector force (1); force.fill (0.);
   forceSIN_.setConstant(force);
-  Vector control (2.);
-  control.fill (0.);
+  Vector control (1); control.fill (0.);
   controlSIN_.setConstant (control);
+  Vector zmp (1); zmp.fill (0.);
+  zmpSOUT_.setConstant (zmp);
+
   prevControl_ = control;
 
   // Commands
@@ -102,41 +103,62 @@ TableCart::~TableCart()
 
 Vector TableCart::computeDynamics(const Vector& inState,
 				  const Vector& inControl,
-				  const double& inForce,
+				  const Vector& inForce,
 				  const Vector& inPrevControl,
 				  double inTimeStep,
-				  double& zmp)
+				  Vector& outZmp)
 {
-  if (inState.size() != 2)
+  if (inState.size() != 1)
     throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
 					"state signal size is ",
-					"%d, should be 2.",
+					"%d, should be 1.",
 					inState.size());
+  if (inControl.size() != 1)
+    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
+					"control signal size is ",
+					"%d, should be 1.",
+					inControl.size());
+  if (inForce.size() != 1)
+    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
+					"force signal size is ",
+					"%d, should be 1.",
+					inForce.size());
+
+  if (inForce.size() != 1)
+    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
+					"force signal size is ",
+					"%d, should be 1.",
+					inForce.size());
+
+  if (outZmp.size() != 1)
+    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
+					"force signal size is ",
+					"%d, should be 1.",
+					outZmp.size());
 
   double dt = inTimeStep;
   double g = Constant::gravity;
-  double x = inState (0);
-  double z = inState (1);
-  double f = inForce;
-  double ddx = (inControl (0) - inPrevControl (0))/dt;
+  double z = cartHeight_;
+  const Vector& f = inForce;
+  Vector ddx = (1/dt)*(inControl - inPrevControl);
   double m = cartMass_;
 
   Vector nextState = inState + dt*inControl;
-  zmp = x - z/g*(ddx - f/m);
-
+  outZmp = nextState - (z/g)*(ddx - (1/m)*f);
   return nextState;
 }
 
 void TableCart::incr(double inTimeStep)
 {
   int t = stateSOUT_.getTime();
-  double zmp;
+  Vector zmp (1);
   Vector nextState = computeDynamics (stateSOUT_ (t), controlSIN_ (t),
 				      forceSIN_ (t), prevControl_, inTimeStep,
 				      zmp);
   stateSOUT_.setConstant (nextState);
-  zmpSOUT_.setConstant (zmp);
   stateSOUT_.setTime (t+1);
-  forceSIN_ (t+1);
+  zmpSOUT_.setConstant (zmp);
+  zmpSOUT_.setTime (t+1);
+  forceSIN_.setTime (t+1);
   prevControl_ = controlSIN_ (t);
 }

@@ -60,14 +60,14 @@ namespace dynamicgraph {
       /**
 	 Compute the control law
       */
-      double& computeControlFeedback(double& control, const int& inTime);
+      Vector& computeControlFeedback(Vector& control, const int& inTime);
 
       /// State of the table cart
       SignalPtr < ::dynamicgraph::Vector, int> stateSIN_;
       /// ZMP
-      SignalPtr < double, int> zmpSIN_;
+      SignalPtr < ::dynamicgraph::Vector, int> zmpSIN_;
       /// Control computed by the control law
-      SignalTimeDependent < double, int > controlSOUT_;
+      SignalTimeDependent < ::dynamicgraph::Vector, int > controlSOUT_;
 
       /// Gain of the controller relative to center of mass
       double comGain_;

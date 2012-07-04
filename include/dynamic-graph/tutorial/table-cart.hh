@@ -18,48 +18,35 @@
  */
 
 #ifndef DYNAMIC_GRAPH_TUTORIAL_TABLE_CART_HH
-# define DYNAMIC_GRAPH_TUTORIAL_TABLE_CART_HH
+#define DYNAMIC_GRAPH_TUTORIAL_TABLE_CART_HH
 
-# include <dynamic-graph/entity.h>
-# include <dynamic-graph/signal-ptr.h>
-# include <dynamic-graph/linear-algebra.h>
+#include <dynamic-graph/entity.h>
+#include <dynamic-graph/signal-ptr.h>
+#include <dynamic-graph/linear-algebra.h>
 
 namespace dynamicgraph {
   namespace tutorial {
-
-    /**
-       \brief Table cart model
-
-       This class represents the classical table-cart model as used as a
-       simplified model for a humanoid robot.
-
-       The equation of motion is:
-
-       \f{eqnarray*}{
-       \dot x  &=& \textbf{u}
-       \f}
-
-       where
-       \li the state \f$x\f$ is the position of the cart on an horizontal axis
-       represented by signal stateSOUT,
-       \li the control is a vector of dimension 1 \f$\textbf{u}\f$ reprensented
-       by signal controlSIN_.
-       \li \f$m\f$ is the mass of the cart.
-
-       The output of the system, represented by signal zmpSOUT is the center of
-       pressure of the ground reaction force.
-
-       \f{eqnarray*}{
-       z &=& x - \frac {h}{g} (\ddot {x} + \frac {1}{m} F)
-       \f}
-
-       where
-       \li \f$h\f$ is the height of the cart,
-       \li \f$g\f$ is the gravity constant and
-       \li \$F\f$ is a perturbation force.
-       
-    */
-
+    /// \brief Table cart model
+    ///
+    /// This class represents the classical table-cart model as used as a
+    /// simplified model for a humanoid robot.
+    /// The equation of motion is:
+    /// \f{eqnarray*}{\dot x  &=& \textbf{u}\f}
+    /// where
+    /// \li the state \f$x\f$ is the position of the cart on an horizontal axis
+    /// represented by signal stateSOUT,
+    /// \li the control is a vector of dimension 1 \f$\textbf{u}\f$ reprensented
+    /// by signal controlSIN_.
+    /// \li \f$m\f$ is the mass of the cart.
+    ///
+    /// The output of the system, represented by signal zmpSOUT is the center of
+    /// pressure of the ground reaction force.
+    /// \f{eqnarray*}{z &=& x - \frac {h}{g} (\ddot {x} - \frac {1}{m} F)\f}
+    ///
+    /// where
+    /// \li \f$h\f$ is the height of the cart,
+    /// \li \f$g\f$ is the gravity constant and
+    /// \li \f$F\f$ is a perturbation force.
     class TableCart : public Entity
     {
       DYNAMIC_GRAPH_ENTITY_DECL ();
@@ -103,13 +90,13 @@ namespace dynamicgraph {
 
     private:
       /// Perturbation force acting on the table cart
-      SignalPtr< double, int > forceSIN_;
+      SignalPtr< ::dynamicgraph::Vector, int > forceSIN_;
       /// Control
       SignalPtr< ::dynamicgraph::Vector, int > controlSIN_;
       /// State of the table cart
       Signal< ::dynamicgraph::Vector, int> stateSOUT_;
       /// ZMP
-      Signal< double, int> zmpSOUT_;
+      Signal< ::dynamicgraph::Vector, int> zmpSOUT_;
 
       /// \brief Mass of the cart
       double cartMass_;
@@ -125,10 +112,10 @@ namespace dynamicgraph {
       ::dynamicgraph::Vector
 	  computeDynamics(const Vector& inState,
 				  const Vector& inControl,
-				  const double& inForce,
+				  const Vector& inForce,
 				  const Vector& inPrevControl,
 				  double inTimeStep,
-				  double& zmp);
+				  Vector& outZmp);
     };
   } // namespace tutorial
 } // namespace dynamicgraph

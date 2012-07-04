@@ -1,70 +1,64 @@
 import numpy as np
 import matplotlib.pyplot as pl
-import dynamic_graph as dg
-import dynamic_graph.tutorial as dgt
-import dynamic_graph.signal_base as dgsb
+from math import pi, sin
+from dynamic_graph import plug
+from dynamic_graph.tutorial import TableCart, FeedbackController
 
 # define inverted pendulum
-a = dgt.InvertedPendulum("IP")
-a.setCartMass(1.0)
-a.setPendulumMass(1.0)
-a.setPendulumLength(1.0)
+robot = TableCart ("robot")
+robot.setCartMass (56.0)
+robot.setCartHeight (0.80)
 
-b = dgt.FeedbackController("K")
+K = FeedbackController("K")
+K.setComGain (.01)
+K.setZmpGain (.01)
 
-# plug signals
-stateOut = a.signal('state')
-forceIn =  a.signal('force')
-stateIn =  b.signal('state')
-forceOut = b.signal('force')
-
-dg.plug(stateOut, stateIn)
-dg.plug(forceOut, forceIn)
+plug(robot.state, K.state)
+plug(robot.zmp, K.zmp)
+plug(K.control, robot.control)
 
 timeStep = 0.001
 
-# Set value of state signal
-s = stateOut
-f = forceIn
-
-s.value = (0.0,0.1,0.0,0.0)
-
-
-gain = ((0.0,27.0,0.001,0.001,),)
-b.setGain(gain,)
-
 def play (nbSteps):
     timeSteps = []
-    values = []
+    states = []
     forces = []
+    zmps = []
+    controls = []
 
-    # Loop over time and compute discretized state values
+    # Loop over time and compute discretized state
     for x in xrange(nbSteps) :
         t = x*timeStep
+        if t <= 1.:
+            robot.force.value = (sin (t/pi),)
         timeSteps.append(t)
-        values.append(s.value)
-        forces.append(f.value)
-        a.incr(timeStep)
+        states.append(robot.state.value)
+        forces.append(robot.force.value)
+        zmps.append(robot.zmp.value)
+        controls.append (K.control.value)
+        robot.incr(timeStep)
 
     # Convert into numpy array
     x = np.array(timeSteps)
-    y = np.array(values).transpose()
+    y1 = np.array (states).transpose ()
+    y2 = np.array (forces).transpose ()
+    y3 = np.array (zmps).transpose ()
+    y4 = np.array (controls).transpose ()
 
-    fig  = pl.figure()
-    ax1 = fig.add_subplot(121)
-    ax2 = fig.add_subplot(122)
+    fig  = pl.figure ()
+    ax1 = fig.add_subplot (121)
+    ax2 = fig.add_subplot (122)
 
     # plot configuration variables
-    ax1.plot(x,y[0])
-    ax1.plot(x,y[1])
+    ax1.plot (x,y1[0])
+    ax1.plot (x,y3[0])
 
     # plot velocity variables
-    ax2.plot(x,y[2])
-    ax2.plot(x,y[3])
-    ax2.plot(x,forces)
+    ax2.plot(x,y2[0])
+    ax2.plot(x,y4[0])
 
-    leg = ax1.legend(("x", "theta"))
-    leg = ax2.legend(("dx", "dtheta", "force"))
+    leg = ax1.legend(("x", "zmp"))
+    leg = ax2.legend(("f", "dx"))
 
     pl.show()
 
