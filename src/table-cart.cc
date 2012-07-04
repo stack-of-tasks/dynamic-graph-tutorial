@@ -23,7 +23,7 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(TableCart, "TableCart");
 
 TableCart::TableCart(const std::string& inName) :
   Entity(inName),
-  forceSIN_(NULL, "TableCart("+inName+")::input(double)::force"),
+  forceSIN_(NULL, "TableCart("+inName+")::input(Vector)::force"),
   controlSIN_(NULL, "TableCart("+inName+")::input(Vector)::control"),
   stateSOUT_("TableCart("+inName+")::output(vector)::state"),
   zmpSOUT_ ("TableCart("+inName+")::output(vector)::zmp"),

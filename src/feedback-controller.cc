@@ -18,9 +18,9 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(FeedbackController, "FeedbackController");
 FeedbackController::FeedbackController(const std::string& inName) :
   Entity(inName),
   stateSIN_(NULL, "FeedbackController("+inName+")::input(vector)::state"),
-  zmpSIN_ (NULL, "FeedbackController("+inName+")::input(double)::zmp"),
+  zmpSIN_ (NULL, "FeedbackController("+inName+")::input(vector)::zmp"),
   controlSOUT_(stateSIN_,
-	    "FeedbackController("+inName+")::output(double)::control"),
+	    "FeedbackController("+inName+")::output(vector)::control"),
   comGain_(1.), zmpGain_ (1.)
 {
   // Register signals into the entity.
