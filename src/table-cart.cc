@@ -26,6 +26,8 @@ TableCart::TableCart(const std::string& inName) :
   forceSIN_(NULL, "TableCart("+inName+")::input(Vector)::force"),
   controlSIN_(NULL, "TableCart("+inName+")::input(Vector)::control"),
   stateSOUT_("TableCart("+inName+")::output(vector)::state"),
+  velocitySOUT_ ("TableCart("+inName+")::output(vector)::velocity"),
+  accelerationSOUT_ ("TableCart("+inName+")::output(vector)::acceleration"),
   zmpSOUT_ ("TableCart("+inName+")::output(vector)::zmp"),
   cartMass_(58.0), viscosity_(0.1)
 {
@@ -33,11 +35,15 @@ TableCart::TableCart(const std::string& inName) :
   signalRegistration (forceSIN_);
   signalRegistration (controlSIN_);
   signalRegistration (stateSOUT_);
+  signalRegistration (velocitySOUT_);
+  signalRegistration (accelerationSOUT_);
   signalRegistration (zmpSOUT_);
 
   // Set signals as constant to size them
   Vector state (1); state.fill (0.);
   stateSOUT_.setConstant(state);
+  velocitySOUT_.setConstant (state);
+  accelerationSOUT_.setConstant (state);
   Vector force (1); force.fill (0.);
   forceSIN_.setConstant(force);
   Vector control (1); control.fill (0.);
@@ -104,7 +110,6 @@ TableCart::~TableCart()
 Vector TableCart::computeDynamics(const Vector& inState,
 				  const Vector& inControl,
 				  const Vector& inForce,
-				  const Vector& inPrevControl,
 				  double inTimeStep,
 				  Vector& outZmp)
 {
@@ -140,7 +145,10 @@ Vector TableCart::computeDynamics(const Vector& inState,
   double g = Constant::gravity;
   double z = cartHeight_;
   const Vector& f = inForce;
-  Vector ddx = (1/dt)*(inControl - inPrevControl);
+  Vector ddx = (1/dt)*(inControl - prevControl_);
+  prevControl_ = inControl;
+  velocity_ = inControl;
+  acceleration_ = ddx;
   double m = cartMass_;
 
   Vector nextState = inState + dt*inControl;
@@ -153,12 +161,16 @@ void TableCart::incr(double inTimeStep)
   int t = stateSOUT_.getTime();
   Vector zmp (1);
   Vector nextState = computeDynamics (stateSOUT_ (t), controlSIN_ (t),
-				      forceSIN_ (t), prevControl_, inTimeStep,
+				      forceSIN_ (t), inTimeStep,
 				      zmp);
   stateSOUT_.setConstant (nextState);
   stateSOUT_.setTime (t+1);
   zmpSOUT_.setConstant (zmp);
   zmpSOUT_.setTime (t+1);
   forceSIN_.setTime (t+1);
+  velocitySOUT_.setTime (t+1);
+  velocitySOUT_.setConstant (velocity_);
+  accelerationSOUT_.setTime (t+1);
+  accelerationSOUT_.setConstant (acceleration_);
   prevControl_ = controlSIN_ (t);
 }
