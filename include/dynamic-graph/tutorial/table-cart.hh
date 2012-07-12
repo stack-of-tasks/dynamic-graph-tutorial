@@ -90,17 +90,13 @@ namespace dynamicgraph {
 
     private:
       /// Perturbation force acting on the table cart
-      SignalPtr< ::dynamicgraph::Vector, int > forceSIN_;
+      SignalPtr< double, int > forceSIN_;
       /// Control
-      SignalPtr< ::dynamicgraph::Vector, int > controlSIN_;
+      SignalPtr< double, int > controlSIN_;
       /// State of the table cart
       Signal< ::dynamicgraph::Vector, int> stateSOUT_;
-      /// Velocity of the table cart
-      Signal< ::dynamicgraph::Vector, int> velocitySOUT_;
-      /// Velocity of the table cart
-      Signal< ::dynamicgraph::Vector, int> accelerationSOUT_;
       /// ZMP
-      Signal< ::dynamicgraph::Vector, int> zmpSOUT_;
+      Signal< double, int> zmpSOUT_;
 
       /// \brief Mass of the cart
       double cartMass_;
@@ -108,20 +104,14 @@ namespace dynamicgraph {
       double cartHeight_;
       /// \brief Viscosity coefficient
       double viscosity_;
-      /// Control at previous iteration
-      ::dynamicgraph::Vector prevControl_;
-      /// Velocity
-      ::dynamicgraph::Vector velocity_;
-      /// Acceleration
-      ::dynamicgraph::Vector acceleration_;
       /**
 	 \brief Compute the evolution of the state of the pendulum
       */
-      ::dynamicgraph::Vector computeDynamics(const Vector& inState,
-					     const Vector& inControl,
-					     const Vector& inForce,
-					     double inTimeStep,
-					     Vector& outZmp);
+      Vector computeDynamics(const Vector& inState,
+			     const double& inControl,
+			     const double& inForce,
+			     double inTimeStep,
+			     double& outZmp);
     };
   } // namespace tutorial
 } // namespace dynamicgraph

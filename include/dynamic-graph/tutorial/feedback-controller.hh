@@ -44,6 +44,16 @@ namespace dynamicgraph {
 	return comGain_;
       }
 
+      /// Set gain relative to center of mass velocity
+      void setComDotGain (const double& inGain) {
+	comDotGain_ = inGain;
+      }
+
+      /// Get gain relative to center of mass velocity
+      double getComDotGain () const {
+	return comDotGain_;
+      }
+
       /// Set gain relative to ZMP
       void setZmpGain (const double& inGain) {
 	zmpGain_ = inGain;
@@ -60,17 +70,19 @@ namespace dynamicgraph {
       /**
 	 Compute the control law
       */
-      Vector& computeControlFeedback(Vector& control, const int& inTime);
+      double& computeControlFeedback(double& control, const int& inTime);
 
       /// State of the table cart
       SignalPtr < ::dynamicgraph::Vector, int> stateSIN_;
       /// ZMP
-      SignalPtr < ::dynamicgraph::Vector, int> zmpSIN_;
+      SignalPtr < double, int> zmpSIN_;
       /// Control computed by the control law
-      SignalTimeDependent < ::dynamicgraph::Vector, int > controlSOUT_;
+      SignalTimeDependent < double, int > controlSOUT_;
 
       /// Gain of the controller relative to center of mass
       double comGain_;
+      /// Gain of the controller relative to center of mass velocity
+      double comDotGain_;
       /// Gain of the controller relative to center of pressure
       double zmpGain_;
     };

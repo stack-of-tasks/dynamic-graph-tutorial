@@ -18,10 +18,10 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(FeedbackController, "FeedbackController");
 FeedbackController::FeedbackController(const std::string& inName) :
   Entity(inName),
   stateSIN_(NULL, "FeedbackController("+inName+")::input(vector)::state"),
-  zmpSIN_ (NULL, "FeedbackController("+inName+")::input(vector)::zmp"),
+  zmpSIN_ (NULL, "FeedbackController("+inName+")::input(float)::zmp"),
   controlSOUT_(stateSIN_,
-	    "FeedbackController("+inName+")::output(vector)::control"),
-  comGain_(1.), zmpGain_ (1.)
+	    "FeedbackController("+inName+")::output(float)::control"),
+  comGain_(0.), comDotGain_ (0.), zmpGain_ (0.)
 {
   // Register signals into the entity.
   signalRegistration (stateSIN_);
@@ -29,13 +29,13 @@ FeedbackController::FeedbackController(const std::string& inName) :
   signalRegistration (controlSOUT_);
 
   // Set signals as constant to size them
-  Vector control (1.); control.fill (0.);
+  double control = 0;
   controlSOUT_.setConstant(control);
   Vector state(2); state.fill(0.);
   stateSIN_.setConstant(state);
 
   // Define refresh function for output signal
-  boost::function2<Vector&, Vector&,const int&> ftest
+  boost::function2<double&, double&,const int&> ftest
     = boost::bind(&FeedbackController::computeControlFeedback,
 		  this, _1, _2);
 
@@ -57,12 +57,32 @@ FeedbackController::FeedbackController(const std::string& inName) :
   // getGain
   docstring =
     "\n"
-    "    Get gain of controller\n"
+    "    Get com gain of controller\n"
     "      - return a floating point number\n"
     "\n";
   addCommand(std::string("getComGain"),
 	     new ::dynamicgraph::command::Getter<FeedbackController, double>
 	     (*this, &FeedbackController::getComGain, docstring));
+  // setGain
+  docstring =
+    "\n"
+    "    Set com velocity gain\n"
+    "      - input\n"
+    "        a floating point number\n"
+    "\n";
+  addCommand(std::string("setComDotGain"),
+	     new ::dynamicgraph::command::Setter<FeedbackController, double>
+	     (*this, &FeedbackController::setComDotGain, docstring));
+
+  // getGain
+  docstring =
+    "\n"
+    "    Get com velocity gain of controller\n"
+    "      - return a floating point number\n"
+    "\n";
+  addCommand(std::string("getComDotGain"),
+	     new ::dynamicgraph::command::Getter<FeedbackController, double>
+	     (*this, &FeedbackController::getComDotGain, docstring));
   // setGain
   docstring =
     "\n"
@@ -89,17 +109,17 @@ FeedbackController::~FeedbackController()
 {
 }
 
-Vector& FeedbackController::computeControlFeedback(Vector& control,
+double& FeedbackController::computeControlFeedback(double& control,
 						   const int& inTime)
 {
   const Vector& state = stateSIN_ (inTime);
-  const Vector& zmp = zmpSIN_ (inTime);
+  const double& zmp = zmpSIN_ (inTime);
 
-  if (state.size() != 1)
+  if (state.size() != 2)
     throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
 					"state signal size is ",
-					"%d, should be 1.",
+					"%d, should be 2.",
 					state.size());
-  control = - comGain_ * state + zmpGain_ * zmp;
+  control = - comGain_ * state (0) - comDotGain_ * state (1) + zmpGain_ * zmp;
   return control;
 }
