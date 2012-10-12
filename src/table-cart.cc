@@ -27,7 +27,7 @@ TableCart::TableCart(const std::string& inName) :
   controlSIN_(NULL, "TableCart("+inName+")::input(float)::control"),
   stateSOUT_("TableCart("+inName+")::output(vector)::state"),
   zmpSOUT_ ("TableCart("+inName+")::output(double)::zmp"),
-  cartMass_(58.0), viscosity_(0.1)
+  cartMass_(58.0), stiffness_ (100.), viscosity_(0.1)
 {
   // Register signals into the entity.
   signalRegistration (forceSIN_);
@@ -92,6 +92,40 @@ TableCart::TableCart(const std::string& inName) :
   addCommand(std::string("getCartHeight"),
 	     new ::dynamicgraph::command::Getter<TableCart, double>
 	     (*this, &TableCart::getCartHeight, docstring));
+  // setStiffness
+  docstring =
+    "\n"
+    "    Set stiffness of the flexibility\n"
+    "\n";
+  addCommand(std::string("setStiffness"),
+	     new ::dynamicgraph::command::Setter<TableCart, double>
+	     (*this, &TableCart::setStiffness, docstring));
+
+  // getStiffness
+  docstring =
+    "\n"
+    "    Get cart stiffness of the flexibility\n"
+    "\n";
+  addCommand(std::string("getStiffness"),
+	     new ::dynamicgraph::command::Getter<TableCart, double>
+	     (*this, &TableCart::getStiffness, docstring));
+  // setViscosity
+  docstring =
+    "\n"
+    "    Set viscosity of the flexibility\n"
+    "\n";
+  addCommand(std::string("setViscosity"),
+	     new ::dynamicgraph::command::Setter<TableCart, double>
+	     (*this, &TableCart::setViscosity, docstring));
+
+  // getViscosity
+  docstring =
+    "\n"
+    "    Get cart viscosity of the flexibility\n"
+    "\n";
+  addCommand(std::string("getViscosity"),
+	     new ::dynamicgraph::command::Getter<TableCart, double>
+	     (*this, &TableCart::getViscosity, docstring));
 
 }
 
@@ -101,27 +135,42 @@ TableCart::~TableCart()
 
 Vector TableCart::computeDynamics(const Vector& inState,
 				  const double& inControl,
-				  const double& inForce,
+				  const double&,
 				  double inTimeStep,
 				  double& outZmp)
 {
-  if (inState.size() != 2)
+  if (inState.size() != 4)
     throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
 					"state signal size is ",
-					"%d, should be 2.",
+					"%d, should be 4.",
 					inState.size());
 
   double dt = inTimeStep;
   double g = Constant::gravity;
-  double z = cartHeight_;
-  const double& f = inForce;
-  double ddx = inControl;
   double m = cartMass_;
+  double kth = stiffness_;
+  double kdth = viscosity_;
+  double xi = inState (0);
+  double th = inState (1);
+  double dxi = inState (2);
+  double dth = inState (3);
+  double zeta = cartHeight_;
+  double ddxi = inControl;
+  double ddth = (-kth*th -kdth*dth - m*(cos(th)*xi - sin(th)*zeta)*g + m*(zeta*ddxi - 2*dth*xi*dxi))/(m*(xi*xi+zeta*zeta));
+  Vector nextState (4);
+  nextState (0) = inState (0) + dt*dxi;
+  nextState (1) = inState (1) + dt*dth;
+  nextState (2) = inState (2) + dt*ddxi;
+  nextState (3) = inState (3) + dt*(ddth);
 
-  Vector nextState (2);
-  nextState (0) = inState (0) + dt*inState (1);
-  nextState (1) = inState (1) + dt*inControl;
-  outZmp = inState (0) - (z/g)*(ddx - (1/m)*f);
+  double x = cos (th)*xi - sin (th)*zeta;
+  double z = sin (th)*xi + cos (th)*zeta;
+  double dx = cos (th)*dxi + dth*(-sin(th)*xi - cos (th)*zeta);
+
+  double ddz = sin(th)*ddxi + 2*dth*dx + dth*dth*z + ddth*x;
+  double fz = m * (ddz + g);
+  double My = kth*inState (1) + kdth*inState (3);
+  outZmp = -My/fz;
   return nextState;
 }
 

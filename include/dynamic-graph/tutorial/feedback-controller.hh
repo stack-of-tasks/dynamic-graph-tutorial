@@ -34,34 +34,14 @@ namespace dynamicgraph {
       /// \name Gains
       /// @{
 
-      /// Set gain relative to center of mass
-      void setComGain (const double& inGain) {
-	comGain_ = inGain;
+      /// Set pole of feedback controller
+      void setGains (const Vector& inGains) {
+	gains_ = inGains;
       }
 
       /// Get gain relative to center of mass
-      double getComGain () const {
-	return comGain_;
-      }
-
-      /// Set gain relative to center of mass velocity
-      void setComDotGain (const double& inGain) {
-	comDotGain_ = inGain;
-      }
-
-      /// Get gain relative to center of mass velocity
-      double getComDotGain () const {
-	return comDotGain_;
-      }
-
-      /// Set gain relative to ZMP
-      void setZmpGain (const double& inGain) {
-	zmpGain_ = inGain;
-      }
-
-      /// Get gain relative to ZMP
-      double getZmpGain () const {
-	return zmpGain_;
+      Vector getGains () const {
+	return gains_;
       }
 
       /// @}
@@ -80,11 +60,7 @@ namespace dynamicgraph {
       SignalTimeDependent < double, int > controlSOUT_;
 
       /// Gain of the controller relative to center of mass
-      double comGain_;
-      /// Gain of the controller relative to center of mass velocity
-      double comDotGain_;
-      /// Gain of the controller relative to center of pressure
-      double zmpGain_;
+      Vector gains_;
     };
   } // namespace tutorial
 } // namespace dynamicgraph

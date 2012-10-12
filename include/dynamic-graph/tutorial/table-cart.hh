@@ -84,6 +84,26 @@ namespace dynamicgraph {
 	return cartHeight_;
       }
 
+      /// \brief Set the stiffness of the flexibility
+      void setStiffness (const double& inStiffness) {
+	stiffness_ = inStiffness;
+      }
+
+      /// \brief Get the stiffness of the flexibility
+      double getStiffness () const {
+	return stiffness_;
+      }
+
+      /// \brief Set the viscosity of the flexibility
+      void setViscosity (const double& inViscosity) {
+	viscosity_ = inViscosity;
+      }
+
+      /// \brief Get the viscosity of the flexibility
+      double getViscosity () const {
+	return viscosity_;
+      }
+
       /**
 	 @}
       */
@@ -102,6 +122,8 @@ namespace dynamicgraph {
       double cartMass_;
       /// \brief Height of the cart
       double cartHeight_;
+      /// \brief Stiffness of the flexibility
+      double stiffness_;
       /// \brief Viscosity coefficient
       double viscosity_;
       /**
