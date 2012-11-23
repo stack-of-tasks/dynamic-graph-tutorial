@@ -4,6 +4,7 @@
  *  Florent Lamiraux
  */
 
+#include <dynamic-graph/linear-algebra.h>
 #include <dynamic-graph/factory.h>
 #include <dynamic-graph/command-setter.h>
 #include <dynamic-graph/command-getter.h>
@@ -18,8 +19,8 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(FeedbackController, "FeedbackController");
 FeedbackController::FeedbackController(const std::string& inName) :
   Entity(inName),
   stateSIN_(NULL, "FeedbackController("+inName+")::input(vector)::state"),
-  zmpSIN_ (NULL, "FeedbackController("+inName+")::input(float)::zmp"),
-  controlSOUT_("FeedbackController("+inName+")::output(float)::control"),
+  zmpSIN_ (NULL, "FeedbackController("+inName+")::input(double)::zmp"),
+  controlSOUT_("FeedbackController("+inName+")::output(Vector)::control"),
   gains_(4)
 {
   // Register signals into the entity.
@@ -31,7 +32,7 @@ FeedbackController::FeedbackController(const std::string& inName) :
   gains_.fill (0.);
 
   // Set signals as constant to size them
-  double control = 0;
+  Vector control (1); control.setZero ();
   controlSOUT_.setConstant(control);
   Vector state(2); state.fill(0.);
   stateSIN_.setConstant(state);
@@ -67,16 +68,18 @@ FeedbackController::~FeedbackController()
 {
 }
 
-double& FeedbackController::computeControlFeedback(double& control,
+Vector& FeedbackController::computeControlFeedback(Vector& control,
 						   const int& inTime)
 {
-  const Vector& state = stateSIN_ (inTime);
+  Vector state = stateSIN_ (inTime);
 
-  if (state.size() != 4)
+  if (state.size() < 4)
     throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
 					"state signal size is ",
-					"%d, should be 2.",
+					"%d, should be at least 4.",
 					state.size());
-  control = - gains_.scalarProduct (state);
+  state.resize (4, false);
+  control.resize (1);
+  control (0) = - gains_.scalarProduct (state);
   return control;
 }

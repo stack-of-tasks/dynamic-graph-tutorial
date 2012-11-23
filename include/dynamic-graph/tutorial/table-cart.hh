@@ -39,14 +39,6 @@ namespace dynamicgraph {
     /// by signal controlSIN_.
     /// \li \f$m\f$ is the mass of the cart.
     ///
-    /// The output of the system, represented by signal zmpSOUT is the center of
-    /// pressure of the ground reaction force.
-    /// \f{eqnarray*}{z &=& x - \frac {h}{g} (\ddot {x} - \frac {1}{m} F)\f}
-    ///
-    /// where
-    /// \li \f$h\f$ is the height of the cart,
-    /// \li \f$g\f$ is the gravity constant and
-    /// \li \f$F\f$ is a perturbation force.
     class TableCart : public Entity
     {
       DYNAMIC_GRAPH_ENTITY_DECL ();
@@ -112,11 +104,11 @@ namespace dynamicgraph {
       /// Perturbation force acting on the table cart
       SignalPtr< double, int > forceSIN_;
       /// Control
-      SignalPtr< double, int > controlSIN_;
+      SignalPtr< Vector, int > controlSIN_;
       /// State of the table cart
       Signal< ::dynamicgraph::Vector, int> stateSOUT_;
-      /// ZMP
-      Signal< double, int> zmpSOUT_;
+      /// Output: position of the center of mass and momentum at the foot
+      Signal< ::dynamicgraph::Vector, int> outputSOUT_;
 
       /// \brief Mass of the cart
       double cartMass_;
@@ -130,10 +122,10 @@ namespace dynamicgraph {
 	 \brief Compute the evolution of the state of the pendulum
       */
       Vector computeDynamics(const Vector& inState,
-			     const double& inControl,
+			     const Vector& inControl,
 			     const double& inForce,
 			     double inTimeStep,
-			     double& outZmp);
+			     Vector& output);
     };
   } // namespace tutorial
 } // namespace dynamicgraph

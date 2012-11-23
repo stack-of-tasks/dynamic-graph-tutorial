@@ -23,27 +23,27 @@ DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(TableCart, "TableCart");
 
 TableCart::TableCart(const std::string& inName) :
   Entity(inName),
-  forceSIN_(NULL, "TableCart("+inName+")::input(float)::force"),
-  controlSIN_(NULL, "TableCart("+inName+")::input(float)::control"),
+  forceSIN_(NULL, "TableCart("+inName+")::input(double)::force"),
+  controlSIN_(NULL, "TableCart("+inName+")::input(vector)::control"),
   stateSOUT_("TableCart("+inName+")::output(vector)::state"),
-  zmpSOUT_ ("TableCart("+inName+")::output(double)::zmp"),
+  outputSOUT_ ("TableCart("+inName+")::output(vector)::output"),
   cartMass_(58.0), stiffness_ (100.), viscosity_(0.1)
 {
   // Register signals into the entity.
   signalRegistration (forceSIN_);
   signalRegistration (controlSIN_);
   signalRegistration (stateSOUT_);
-  signalRegistration (zmpSOUT_);
+  signalRegistration (outputSOUT_);
 
   // Set signals as constant to size them
   Vector state (2); state.fill (0.);
   stateSOUT_.setConstant(state);
   double force = 0;
   forceSIN_.setConstant(force);
-  double control =0;
+  Vector control (1); control.setZero ();
   controlSIN_.setConstant (control);
-  double zmp = 0;
-  zmpSOUT_.setConstant (zmp);
+  Vector output (2); output.setZero ();
+  outputSOUT_.setConstant (output);
 
   // Commands
   std::string docstring;
@@ -134,10 +134,10 @@ TableCart::~TableCart()
 }
 
 Vector TableCart::computeDynamics(const Vector& inState,
-				  const double& inControl,
+				  const Vector& inControl,
 				  const double&,
 				  double inTimeStep,
-				  double& outZmp)
+				  Vector& output)
 {
   if (inState.size() != 4)
     throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
@@ -155,35 +155,31 @@ Vector TableCart::computeDynamics(const Vector& inState,
   double dxi = inState (2);
   double dth = inState (3);
   double zeta = cartHeight_;
-  double ddxi = inControl;
+  double ddxi = inControl (0);
   double ddth = (-kth*th -kdth*dth - m*(cos(th)*xi - sin(th)*zeta)*g + m*(zeta*ddxi - 2*dth*xi*dxi))/(m*(xi*xi+zeta*zeta));
   Vector nextState (4);
   nextState (0) = inState (0) + dt*dxi;
   nextState (1) = inState (1) + dt*dth;
   nextState (2) = inState (2) + dt*ddxi;
-  nextState (3) = inState (3) + dt*(ddth);
+  nextState (3) = inState (3) + dt*ddth;
 
-  double x = cos (th)*xi - sin (th)*zeta;
-  double z = sin (th)*xi + cos (th)*zeta;
-  double dx = cos (th)*dxi + dth*(-sin(th)*xi - cos (th)*zeta);
-
-  double ddz = sin(th)*ddxi + 2*dth*dx + dth*dth*z + ddth*x;
-  double fz = m * (ddz + g);
-  double My = kth*inState (1) + kdth*inState (3);
-  outZmp = -My/fz;
+  double My = kth*nextState (1) + kdth*nextState (3);
+  output.resize (2);
+  output (0) = xi;
+  output (1) = My;
   return nextState;
 }
 
 void TableCart::incr(double inTimeStep)
 {
   int t = stateSOUT_.getTime();
-  double zmp;
+  Vector output;
   Vector nextState = computeDynamics (stateSOUT_ (t), controlSIN_ (t),
 				      forceSIN_ (t), inTimeStep,
-				      zmp);
+				      output);
   stateSOUT_.setConstant (nextState);
   stateSOUT_.setTime (t+1);
-  zmpSOUT_.setConstant (zmp);
-  zmpSOUT_.setTime (t+1);
+  outputSOUT_.setConstant (output);
+  outputSOUT_.setTime (t+1);
   forceSIN_.setTime (t+1);
 }
