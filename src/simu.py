@@ -36,7 +36,7 @@ a3 = alpha1 + alpha2 + alpha3 + alpha4
 
 # Compute feedback gains
 mu = kth/(m*zeta) - g
-A = np.matrix ([[0,0,zeta,1],
+L = np.matrix ([[0,0,zeta,1],
                [zeta,1,kdth/(m*zeta),0],
                [kdth/(m*zeta),0,mu,-g/zeta],
                [mu,-g/zeta,0,0]])
@@ -45,7 +45,7 @@ v = np.matrix ([[a3*zeta-kdth/(m*zeta)],
                 [a1*zeta],
                 [a0*zeta]])
 
-gains = np.linalg.solve (A, v)
+gains = np.linalg.solve (L, v)
 gains = tuple ([gains.item (i,0) for i in range (4)])
 
 timeStep = 0.001
