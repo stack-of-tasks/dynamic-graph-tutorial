@@ -10,12 +10,16 @@
 #include <dynamic-graph/factory.h>
 #include <dynamic-graph/command-setter.h>
 #include <dynamic-graph/command-getter.h>
+#include <dynamic-graph/command-direct-setter.h>
+#include <dynamic-graph/command-direct-getter.h>
 #include "dynamic-graph/tutorial/table-cart.hh"
 #include "command-increment.hh"
 #include "constant.hh"
 
 using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
+using dynamicgraph::command::makeDirectSetter;
+using dynamicgraph::command::makeDirectGetter;
 
 const double Constant::gravity = 9.81;
 
@@ -27,7 +31,7 @@ TableCart::TableCart(const std::string& inName) :
   controlSIN_(NULL, "TableCart("+inName+")::input(vector)::control"),
   stateSOUT_("TableCart("+inName+")::output(vector)::state"),
   outputSOUT_ ("TableCart("+inName+")::output(vector)::output"),
-  cartMass_(58.0), stiffness_ (100.), viscosity_(0.1)
+  cartMass_(58.0), stiffness_ (100.), viscosity_(0.1), Iyy_ (0.)
 {
   // Register signals into the entity.
   signalRegistration (forceSIN_);
@@ -127,6 +131,21 @@ TableCart::TableCart(const std::string& inName) :
 	     new ::dynamicgraph::command::Getter<TableCart, double>
 	     (*this, &TableCart::getViscosity, docstring));
 
+  // setMomentOfInertia
+  docstring =
+    "\n"
+    "    Set moment of inertia around y axis\n"
+    "\n";
+  addCommand ("setMomentOfInertia",
+	      makeDirectSetter (*this, &Iyy_, docstring));
+
+  // setMomentOfInertia
+  docstring =
+    "\n"
+    "    Get moment of inertia around y axis\n"
+    "\n";
+  addCommand ("getMomentOfInertia",
+	      makeDirectGetter (*this, &Iyy_, docstring));
 }
 
 TableCart::~TableCart()
@@ -150,6 +169,7 @@ Vector TableCart::computeDynamics(const Vector& inState,
   double m = cartMass_;
   double kth = stiffness_;
   double kdth = viscosity_;
+  double Iyy = Iyy_;
   double xi = inState (0);
   double th = inState (1);
   double dxi = inState (2);

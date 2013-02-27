@@ -118,6 +118,8 @@ namespace dynamicgraph {
       double stiffness_;
       /// \brief Viscosity coefficient
       double viscosity_;
+      /// Moment of inertia around y axis
+      double Iyy_;
       /**
 	 \brief Compute the evolution of the state of the pendulum
       */

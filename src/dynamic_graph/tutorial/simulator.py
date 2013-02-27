@@ -17,6 +17,7 @@ class Simulator (object):
         self.robot.setCartHeight (zeta)
         self.robot.setStiffness (kth)
         self.robot.setViscosity (kdth)
+        self.robot.setMomentOfInertia (Iyy)
 
     def findRoots (self, gain):
         zeta = self.zeta
