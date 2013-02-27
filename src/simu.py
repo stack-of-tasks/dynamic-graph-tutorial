@@ -3,59 +3,31 @@ import numpy as np
 import matplotlib.pyplot as pl
 from math import pi, sin, cos
 from dynamic_graph import plug
-from dynamic_graph.tutorial import TableCart, FeedbackController
+from dynamic_graph.tutorial import FeedbackController
 from dynamic_graph.sot.dynamics import flexibility_f, flexibility_h
 from dynamic_graph.sot.core import Kalman, Multiply_double_vector, \
     Add_of_vector
 from dynamic_graph.sot.tools import Oscillator
+from dynamic_graph.tutorial.simulator import Simulator
 
-zeta = .80
 th0 = .05
-g = 9.81
-m = 56.
-kth = 425.
-kdth = 0.0
-# define inverted pendulum
-robot = TableCart ("robot")
-robot.setCartMass (m)
-robot.setCartHeight (zeta)
-robot.setStiffness (kth)
-robot.setViscosity (kdth)
+
+simulator = Simulator (name = "robot", m = 57., zeta = .8077, kth = 510,
+                       kdth = 20., Iyy = 6.9417085929720743)
 
 # gains
-alpha1 = 2.
-alpha2 = 4.
-alpha3 = 6.
-alpha4 = 8.
+alpha = (4., 4., 4., 4.,)
 
-# Get coefficients of characteristic polynomial
-a0 = alpha1*alpha2*alpha3*alpha4
-a1 = alpha2*alpha3*alpha4 + alpha1*alpha3*alpha4+alpha1*alpha2*alpha4+alpha1*alpha2*alpha3
-a2 = alpha3*alpha4 + alpha2*alpha4 + alpha2*alpha3 + alpha1*alpha4 + alpha1*alpha3 + alpha1*alpha2
-a3 = alpha1 + alpha2 + alpha3 + alpha4
 
-# Compute feedback gains
-mu = kth/(m*zeta) - g
-L = np.matrix ([[0,0,zeta,1],
-               [zeta,1,kdth/(m*zeta),0],
-               [kdth/(m*zeta),0,mu,-g/zeta],
-               [mu,-g/zeta,0,0]])
-v = np.matrix ([[a3*zeta-kdth/(m*zeta)],
-                [a2*zeta - mu],
-                [a1*zeta],
-                [a0*zeta]])
-
-gains = np.linalg.solve (L, v)
-gains = tuple ([gains.item (i,0) for i in range (4)])
-
-timeStep = 0.001
+gains = simulator.computeGains (alpha)
+timeStep = 0.005
 # Initial state
-x0 = (0.,th0, 0., 0., 450.)
+x0 = (0.,th0, 0., 0., simulator.kth)
 P0 = ((.02, 0., 0., 0., 0.,),
       (0., .02, 0., 0., 0.,),
       (0., .0, .03, 0., 0.,),
       (0., 0., 0., .03, 0.,),
-      (0., 0., 0., 0., 100,))
+      (0., 0., 0., 0., 1e-3,))
 Q = ((0., 0., 0., 0., 0.,),
      (0., 0., 0., 0., 0.,),
      (0., 0., 0., 0., 0.,),
@@ -63,7 +35,7 @@ Q = ((0., 0., 0., 0., 0.,),
      (0., 0., 0., 0., 0.,),)
 R = ((.01, 0.),(0., 1.,),)
 
-robot.state.value = x0 [:4]
+simulator.robot.state.value = x0 [:4]
 
 K = FeedbackController("K")
 K.setGains (gains)
@@ -78,7 +50,7 @@ h = flexibility_h ('h')
 f.setTimePeriod (timeStep)
 h.setTimePeriod (timeStep)
 mult = Multiply_double_vector ('mult')
-mult.sin2.value = (1.,)
+mult.sin2.value = (0.,)
 sinus = Oscillator ('sinus')
 sinus.setTimePeriod (timeStep)
 sinus.magnitude.value = 10.
@@ -89,16 +61,18 @@ plug (K.control, add.sin1)
 plug (mult.sout, add.sin2)
 plug (ekf.x_est, K.state)
 plug (add.sout, f.control)
-plug (add.sout, robot.control)
+plug (add.sout, simulator.robot.control)
 plug (ekf.x_est, f.state)
 plug (f.newState, h.state)
 plug (f.jacobian, ekf.F)
 plug (h.jacobian, ekf.H)
+f.cosineFoot.value = 1.
+f.nbSupport.value = 1
 ekf.Q.value = Q
 ekf.R.value = R
 plug (f.newState, ekf.x_pred)
 plug (h.observation, ekf.y_pred)
-plug (robot.output, ekf.y)
+plug (simulator.robot.output, ekf.y)
 #robot.control.value = 0.
 
 timeSteps = []
@@ -112,11 +86,11 @@ def play (nbSteps):
     for x in xrange(nbSteps) :
         t = x*timeStep
         timeSteps.append(t)
-        states.append(robot.state.value)
+        states.append(simulator.robot.state.value)
         controls.append (K.control.value)
-        outputs.append (robot.output.value)
+        outputs.append (simulator.robot.output.value)
         stateEstimations.append (ekf.x_est.value)
-        robot.incr(timeStep)
+        simulator.robot.incr(timeStep)
 
     # Convert into numpy array
     x = np.array(timeSteps)
