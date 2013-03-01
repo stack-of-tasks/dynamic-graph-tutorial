@@ -31,8 +31,10 @@ TableCart::TableCart(const std::string& inName) :
   controlSIN_(NULL, "TableCart("+inName+")::input(vector)::control"),
   stateSOUT_("TableCart("+inName+")::output(vector)::state"),
   outputSOUT_ ("TableCart("+inName+")::output(vector)::output"),
-  cartMass_(58.0), stiffness_ (100.), viscosity_(0.1), Iyy_ (0.)
+  cartMass_(58.0), stiffness_ (100.), viscosity_(0.1), Iyy_ (0.),
+  A_ (4, 4), B_ (4, 1)
 {
+  A_.setZero (); B_.setZero ();
   // Register signals into the entity.
   signalRegistration (forceSIN_);
   signalRegistration (controlSIN_);
@@ -170,20 +172,27 @@ Vector TableCart::computeDynamics(const Vector& inState,
   double kth = stiffness_;
   double kdth = viscosity_;
   double Iyy = Iyy_;
+  double zeta = cartHeight_;
+
+  A_ (0, 2) = 1.; A_ (1, 3) = 1.;
+  A_ (3, 0) = - g/(zeta*zeta + m*Iyy);
+  A_ (3, 1) = (m*g*zeta - kth)/(zeta*zeta + m*Iyy);
+  A_ (3, 3) = -kdth/(zeta*zeta + m*Iyy);
+  B_ (2, 0) = 1.; B_ (3, 0) = 1/zeta;
+
   double xi = inState (0);
   double th = inState (1);
-  double dxi = inState (2);
   double dth = inState (3);
-  double zeta = cartHeight_;
-  double ddxi = inControl (0);
-  double ddth = (-kth*th -kdth*dth - m*(cos(th)*xi - sin(th)*zeta)*g + m*(zeta*ddxi - 2*dth*xi*dxi))/(m*(xi*xi+zeta*zeta)+Iyy);
-  //double ddth = ((-kth + m*g*zeta)*th -kdth*dth - m*g*xi + m*zeta*ddxi)/(m*zeta*zeta+Iyy);
-  Vector nextState (4);
+
   double My = kth*th + kdth*dth;
-  nextState (0) = inState (0) + dt*dxi;
-  nextState (1) = inState (1) + dt*dth;
-  nextState (2) = inState (2) + dt*ddxi;
-  nextState (3) = inState (3) + dt*ddth;
+
+  const Vector& xn = inState;
+  const Vector& k1 = A_*xn + B_*inControl;
+  const Vector& k2 = A_*(xn + k1*(dt/2)) + B_*inControl;
+  const Vector& k3 = A_*(xn + k2*(dt/2)) + B_*inControl;
+  const Vector& k4 = A_*(xn + k3*dt) + B_*inControl;
+
+  Vector nextState = xn + (k1 + k2*2 + k3*2 + k4)*(dt/6.);
 
   output.resize (2);
   output (0) = xi;

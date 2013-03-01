@@ -20,7 +20,7 @@ from tools import getMaxima, fitFunction, fitSinusoid
 simulator = Simulator (name = "robot", m = 57., zeta = .8077, kth = 1020,
                        kdth = 30., Iyy = 6.9417085929720743)
 
-dt = 0.00001
+dt = 0.0001
 startTime = 0
 # Initial state
 x0 = (0., 0., 0., 0.)
@@ -41,6 +41,7 @@ comRs = []
 duration = 400*pi/omega
 dxi = 0
 gain = 20
+Xi = []
 Dxi = []
 D2xi = []
 Theta = []
@@ -53,6 +54,7 @@ for i in range (int (duration/dt)):
     dxiRef = - A * omega * sin (omega*t)
     d2xiRef = - A * omega**2 * cos (omega*t)
     xi = simulator.robot.state.value [0]
+    Xi.append (xi)
     dxi = simulator.robot.state.value [2]
     Dxi.append (dxi)
     Theta.append (simulator.robot.state.value [1])
@@ -74,7 +76,7 @@ with open ('./comRs.plot', 'w') as f:
     for i, com in zip (xrange (startTime, startTime + 1000000), comRs):
         f.write ("{0}\t{1}\t{2}\t{3}\n".format (i, com [0], com [1], com [2]))
 
-maximaRs, magnitudeRs = getMaxima (map (lambda x: x[0], comRs), startTime)
+maximaRs, magnitudeRs = getMaxima (Xi, startTime)
 
 # build Momentum signal as arrays
 period = 2*pi/omega
@@ -110,6 +112,18 @@ with open ('./My-fit-Iyy.plot', 'w') as f:
 with open ('./My.plot', 'w') as f:
     for i, my in zip (xrange (startTime, startTime + 1000000), My):
         f.write ("{0}\t{1}\n".format (i, my))
+
+with open ('./xi.plot', 'w') as f:
+    for i, th in zip (xrange (startTime, startTime + 1000000), Xi):
+        f.write ("{0}\t{1}\n".format (i, th))
+
+with open ('./dxi.plot', 'w') as f:
+    for i, dth in zip (xrange (startTime, startTime + 1000000), Dxi):
+        f.write ("{0}\t{1}\n".format (i, dth))
+
+with open ('./d2xi.plot', 'w') as f:
+    for i, d2th in zip (xrange (startTime, startTime + 1000000), D2xi):
+        f.write ("{0}\t{1}\n".format (i, d2th))
 
 with open ('./theta.plot', 'w') as f:
     for i, th in zip (xrange (startTime, startTime + 1000000), Theta):

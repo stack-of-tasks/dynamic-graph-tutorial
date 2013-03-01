@@ -128,6 +128,8 @@ namespace dynamicgraph {
 			     const double& inForce,
 			     double inTimeStep,
 			     Vector& output);
+      Matrix A_;
+      Matrix B_;
     };
   } // namespace tutorial
 } // namespace dynamicgraph
