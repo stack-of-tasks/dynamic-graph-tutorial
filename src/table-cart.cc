@@ -177,14 +177,14 @@ Vector TableCart::computeDynamics(const Vector& inState,
   double zeta = cartHeight_;
   double ddxi = inControl (0);
   double ddth = (-kth*th -kdth*dth - m*(cos(th)*xi - sin(th)*zeta)*g + m*(zeta*ddxi - 2*dth*xi*dxi))/(m*(xi*xi+zeta*zeta)+Iyy);
-  //double ddth = ((-kth + m*g*zeta)*th -kdth*dth - m*g*xi + m*zeta*ddxi)/(m*(xi*xi+zeta*zeta)+Iyy);
+  //double ddth = ((-kth + m*g*zeta)*th -kdth*dth - m*g*xi + m*zeta*ddxi)/(m*zeta*zeta+Iyy);
   Vector nextState (4);
+  double My = kth*th + kdth*dth;
   nextState (0) = inState (0) + dt*dxi;
   nextState (1) = inState (1) + dt*dth;
   nextState (2) = inState (2) + dt*ddxi;
   nextState (3) = inState (3) + dt*ddth;
 
-  double My = kth*nextState (1) + kdth*nextState (3);
   output.resize (2);
   output (0) = xi;
   output (1) = My;
