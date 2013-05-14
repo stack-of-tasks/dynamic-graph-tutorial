@@ -35,6 +35,11 @@ namespace dynamicgraph {
 	return CLASS_NAME;
       }
 
+      /// Header documentation of the python class
+      virtual std::string getDocString () const {
+	return
+	  "Feedback controller aimed at maintaining the pendulum vertical\n";
+      }
       /**
 	  \name Parameters
 	  @{

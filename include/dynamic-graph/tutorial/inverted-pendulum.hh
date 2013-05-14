@@ -95,6 +95,12 @@ namespace dynamicgraph {
 	return CLASS_NAME;
       }
 
+      /// Header documentation of the python class
+      virtual std::string getDocString () const {
+	return
+	  "Classical inverted pendulum dynamic model\n";
+      }
+
       /// Integrate equation of motion over time step given as input
       void incr(double inTimeStep);
 
