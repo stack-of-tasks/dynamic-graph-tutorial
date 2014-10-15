@@ -125,6 +125,10 @@ using a macro defined in <c>dynamic-graph/factory.h</c>:
 \code
     DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 \endcode
+\note The two parameters of the macros are respectively
+\li the C++ type of the new Entity,
+\li the name of the type of the corresponding python class. It is highly
+recommended to use the same name for both.
 
 \subsection dg_tutorial_inverted_pendulum_cxx_implementation_constructor Constructor
 

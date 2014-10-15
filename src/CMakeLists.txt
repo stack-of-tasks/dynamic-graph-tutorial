@@ -41,9 +41,5 @@ PKG_CONFIG_USE_DEPENDENCY(${PROJECT_NAME} dynamic-graph-python)
 INSTALL(TARGETS ${LIBRARY_NAME}
   DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
-SET(NEW_ENTITY_CLASS
-  InvertedPendulum
-  FeedbackController
-  )
-
+# Create a python module containing new Python entity classes
 DYNAMIC_GRAPH_PYTHON_MODULE("tutorial" ${LIBRARY_NAME} wrap)

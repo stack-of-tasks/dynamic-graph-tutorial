@@ -13,6 +13,9 @@
 using namespace dynamicgraph;
 using namespace dynamicgraph::tutorial;
 
+// Register new Entity type in the factory
+// Note that the second argument is the type name of the python class
+// that will be created when importing the python module.
 DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(FeedbackController, "FeedbackController");
 
 FeedbackController::FeedbackController(const std::string& inName) :

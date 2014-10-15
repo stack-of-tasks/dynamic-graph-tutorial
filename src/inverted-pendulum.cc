@@ -19,6 +19,9 @@ using namespace dynamicgraph::tutorial;
 
 const double Constant::gravity = 9.81;
 
+// Register new Entity type in the factory
+// Note that the second argument is the type name of the python class
+// that will be created when importing the python module.
 DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 
 InvertedPendulum::InvertedPendulum(const std::string& inName) :
