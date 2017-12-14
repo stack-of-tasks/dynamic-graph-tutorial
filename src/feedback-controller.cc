@@ -79,7 +79,7 @@ double& FeedbackController::computeForceFeedback(double& force,
 					"state signal size is ",
 					"%d, should be 4.",
 					state.size());
-  Vector v = -gain_ * state;
+  Vector v (-gain_ * state);
   force = v(0);
   return force;
 }
