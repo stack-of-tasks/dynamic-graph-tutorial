@@ -1,44 +1,41 @@
 #
-#  Copyright 2010 CNRS
+#  Copyright 2010, 2018 CNRS
 #  Author: Florent Lamiraux
 #
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-SET (CXX_DISABLE_WERROR ON)
 INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
-INCLUDE(cmake/lapack.cmake)
-INCLUDE(cmake/cpack.cmake)
+INCLUDE(cmake/test.cmake)
+INCLUDE(cmake/python.cmake)
 
 SET(PROJECT_NAME dynamic-graph-tutorial)
-project(${PROJECT_NAME})
-
 SET(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
-SET(PROJECT_URL "http://github.com/jrl-umi3218/dynamic-graph-tutorial")
 
-SET(${PROJECT_NAME}_HEADERS
-    include/dynamic-graph/tutorial/inverted-pendulum.hh
-    include/dynamic-graph/tutorial/feedback-controller.hh
-)
-#
-# Look for dependencies
-#
+SET(PROJECT_URL "http://github.com/stack-of-tasks/${PROJECT_NAME}")
 
 SETUP_PROJECT()
 
-#
-#  Documentation dependency to package dynamic-graph
-#
-
 ADD_REQUIRED_DEPENDENCY("dynamic-graph")
 
-#
-#  Dependency to package dynamic-graph-python
-#
-ADD_REQUIRED_DEPENDENCY("dynamic-graph-python")
+SET(BOOST_COMPONENTS unit_test_framework)
 
+OPTION (BUILD_PYTHON_INTERFACE "Build the python binding" ON)
+IF(BUILD_PYTHON_INTERFACE)
+  ADD_REQUIRED_DEPENDENCY("dynamic-graph-python")
+  FINDPYTHON()
+  STRING(REGEX REPLACE "-" "_" PY_NAME ${PROJECT_NAME})
+  SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} python)
+  INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
+ENDIF(BUILD_PYTHON_INTERFACE)
+
+SEARCH_FOR_BOOST()
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+
+ADD_SUBDIRECTORY(include/dynamic-graph/tutorial)
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(doc)
+ADD_SUBDIRECTORY(tests)
 
 SETUP_PROJECT_FINALIZE()
