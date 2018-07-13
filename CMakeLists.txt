@@ -14,7 +14,6 @@ INCLUDE(cmake/cpack.cmake)
 SET(PROJECT_NAME dynamic-graph-tutorial)
 project(${PROJECT_NAME})
 
-SET(PROJECT_VERSION 1.0)
 SET(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
 SET(PROJECT_URL "http://github.com/jrl-umi3218/dynamic-graph-tutorial")
 
