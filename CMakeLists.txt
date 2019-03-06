@@ -10,10 +10,11 @@ INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/test.cmake)
 INCLUDE(cmake/python.cmake)
 
+SET(PROJECT_NAMESPACE stack-of-tasks)
 SET(PROJECT_NAME dynamic-graph-tutorial)
 SET(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
 
-SET(PROJECT_URL "http://github.com/stack-of-tasks/${PROJECT_NAME}")
+SET(PROJECT_URL "http://github.com/${PROJECT_NAME}/${PROJECT_NAME}")
 
 SETUP_PROJECT()
 
