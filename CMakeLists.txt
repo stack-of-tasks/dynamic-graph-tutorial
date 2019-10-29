@@ -5,18 +5,18 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
+SET(PROJECT_NAMESPACE stack-of-tasks)
+SET(PROJECT_NAME dynamic-graph-tutorial)
+SET(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
+SET(PROJECT_URL "http://github.com/${PROJECT_NAME}/${PROJECT_NAME}")
+
 INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/test.cmake)
 INCLUDE(cmake/python.cmake)
 
-SET(PROJECT_NAMESPACE stack-of-tasks)
-SET(PROJECT_NAME dynamic-graph-tutorial)
-SET(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
-
-SET(PROJECT_URL "http://github.com/${PROJECT_NAME}/${PROJECT_NAME}")
-
-SETUP_PROJECT()
+CMAKE_POLICY(SET CMP0048 OLD)
+PROJECT(${PROJECT_NAME} CXX)
 
 ADD_REQUIRED_DEPENDENCY("dynamic-graph")
 
@@ -38,5 +38,3 @@ ADD_SUBDIRECTORY(include/dynamic-graph/tutorial)
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(doc)
 ADD_SUBDIRECTORY(tests)
-
-SETUP_PROJECT_FINALIZE()
