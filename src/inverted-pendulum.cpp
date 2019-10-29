@@ -24,15 +24,17 @@ const double Constant::gravity = 9.81;
 // that will be created when importing the python module.
 DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(InvertedPendulum, "InvertedPendulum");
 
-InvertedPendulum::InvertedPendulum(const std::string& inName) :
-  Entity(inName),
-  forceSIN(NULL, "InvertedPendulum("+inName+")::input(double)::force"),
-  stateSOUT("InvertedPendulum("+inName+")::output(vector)::state"),
-  cartMass_(1.0), pendulumMass_(1.0), pendulumLength_(1.0), viscosity_(0.1)
-{
+InvertedPendulum::InvertedPendulum(const std::string& inName)
+    : Entity(inName),
+      forceSIN(NULL, "InvertedPendulum(" + inName + ")::input(double)::force"),
+      stateSOUT("InvertedPendulum(" + inName + ")::output(vector)::state"),
+      cartMass_(1.0),
+      pendulumMass_(1.0),
+      pendulumLength_(1.0),
+      viscosity_(0.1) {
   // Register signals into the entity.
-  signalRegistration (forceSIN);
-  signalRegistration (stateSOUT);
+  signalRegistration(forceSIN);
+  signalRegistration(stateSOUT);
 
   // Set signals as constant to size them
   Vector state(4);
@@ -46,85 +48,71 @@ InvertedPendulum::InvertedPendulum(const std::string& inName) :
 
   // Incr
   docstring =
-    "\n"
-    "    Integrate dynamics for time step provided as input\n"
-    "\n"
-    "      take one floating point number as input\n"
-    "\n";
-  addCommand(std::string("incr"),
-	     new command::Increment(*this, docstring));
+      "\n"
+      "    Integrate dynamics for time step provided as input\n"
+      "\n"
+      "      take one floating point number as input\n"
+      "\n";
+  addCommand(std::string("incr"), new command::Increment(*this, docstring));
 
   // setCartMass
   docstring =
-    "\n"
-    "    Set cart mass\n"
-    "\n";
-  addCommand(std::string("setCartMass"),
-	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::setCartMass, docstring));
+      "\n"
+      "    Set cart mass\n"
+      "\n";
+  addCommand(std::string("setCartMass"), new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
+                                             *this, &InvertedPendulum::setCartMass, docstring));
 
   // getCartMass
   docstring =
-    "\n"
-    "    Get cart mass\n"
-    "\n";
-  addCommand(std::string("getCartMass"),
-	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::getCartMass, docstring));
+      "\n"
+      "    Get cart mass\n"
+      "\n";
+  addCommand(std::string("getCartMass"), new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
+                                             *this, &InvertedPendulum::getCartMass, docstring));
 
   // setPendulumMass
   docstring =
-    "\n"
-    "    Set pendulum mass\n"
-    "\n";
-  addCommand(std::string("setPendulumMass"),
-	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::setPendulumMass, docstring));
+      "\n"
+      "    Set pendulum mass\n"
+      "\n";
+  addCommand(std::string("setPendulumMass"), new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
+                                                 *this, &InvertedPendulum::setPendulumMass, docstring));
 
   // getPendulumMass
   docstring =
-    "\n"
-    "    Get pendulum mass\n"
-    "\n";
-  addCommand(std::string("getPendulumMass"),
-	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::getPendulumMass, docstring));
+      "\n"
+      "    Get pendulum mass\n"
+      "\n";
+  addCommand(std::string("getPendulumMass"), new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
+                                                 *this, &InvertedPendulum::getPendulumMass, docstring));
 
   // setPendulumLength
   docstring =
-    "\n"
-    "    Set pendulum length\n"
-    "\n";
-  addCommand(std::string("setPendulumLength"),
-	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::setPendulumLength, docstring));
+      "\n"
+      "    Set pendulum length\n"
+      "\n";
+  addCommand(std::string("setPendulumLength"), new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
+                                                   *this, &InvertedPendulum::setPendulumLength, docstring));
 
   // getPendulumLength
   docstring =
-    "\n"
-    "    Get pendulum length\n"
-    "\n";
-  addCommand(std::string("getPendulumLength"),
-	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::getPendulumLength, docstring));
+      "\n"
+      "    Get pendulum length\n"
+      "\n";
+  addCommand(std::string("getPendulumLength"), new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
+                                                   *this, &InvertedPendulum::getPendulumLength, docstring));
 }
 
-InvertedPendulum::~InvertedPendulum()
-{
-}
+InvertedPendulum::~InvertedPendulum() {}
 
-Vector InvertedPendulum::computeDynamics(const Vector& inState,
-					 const double& inControl,
-					 double inTimeStep)
-{
+Vector InvertedPendulum::computeDynamics(const Vector& inState, const double& inControl, double inTimeStep) {
   if (inState.size() != 4)
-    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
-					"state signal size is ",
-					"%d, should be 4.",
-					inState.size());
+    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC, "state signal size is ",
+                                        "%d, should be 4.", inState.size());
 
   double dt = inTimeStep;
-  double dt2 = dt*dt;
+  double dt2 = dt * dt;
   double g = Constant::gravity;
   double x = inState(0);
   double th = inState(1);
@@ -135,34 +123,33 @@ Vector InvertedPendulum::computeDynamics(const Vector& inState,
   double M = cartMass_;
   double l = pendulumLength_;
   double lambda = viscosity_;
-  double l2 = l*l;
-  double dth2 = dth*dth;
+  double l2 = l * l;
+  double dth2 = dth * dth;
   double sth = sin(th);
   double cth = cos(th);
-  double sth2 = sth*sth;
+  double sth2 = sth * sth;
 
-  double b1 = F - m*l*dth2*sth - lambda*dx;
-  double b2 = m*l*g*sth - lambda*dth;
+  double b1 = F - m * l * dth2 * sth - lambda * dx;
+  double b2 = m * l * g * sth - lambda * dth;
 
-  double det = m*l2*(M + m*sth2);
+  double det = m * l2 * (M + m * sth2);
 
-  double ddx = (b1*m*l2 + b2*m*l*cth)/det;
-  double ddth = ((M+m)*b2 + m*l*cth*b1)/det;
+  double ddx = (b1 * m * l2 + b2 * m * l * cth) / det;
+  double ddth = ((M + m) * b2 + m * l * cth * b1) / det;
 
   Vector nextState(4);
-  nextState(0) = x + dx*dt + .5*ddx*dt2;
-  nextState(1) = th + dth*dt + .5*ddth*dt2;
-  nextState(2) = dx + dt*ddx;
-  nextState(3) = dth + dt*ddth;
+  nextState(0) = x + dx * dt + .5 * ddx * dt2;
+  nextState(1) = th + dth * dt + .5 * ddth * dt2;
+  nextState(2) = dx + dt * ddx;
+  nextState(3) = dth + dt * ddth;
 
   return nextState;
 }
 
-void InvertedPendulum::incr(double inTimeStep)
-{
+void InvertedPendulum::incr(double inTimeStep) {
   int t = stateSOUT.getTime();
   Vector nextState = computeDynamics(stateSOUT(t), forceSIN(t), inTimeStep);
   stateSOUT.setConstant(nextState);
-  stateSOUT.setTime(t+1);
-  forceSIN(t+1);
+  stateSOUT.setTime(t + 1);
+  forceSIN(t + 1);
 }

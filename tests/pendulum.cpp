@@ -2,10 +2,9 @@
 
 #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 
-BOOST_AUTO_TEST_SUITE ( BOOST_TEST_MODULE )
+BOOST_AUTO_TEST_SUITE(BOOST_TEST_MODULE)
 
-BOOST_AUTO_TEST_CASE(test_pendulum)
-{
+BOOST_AUTO_TEST_CASE(test_pendulum) {
   dynamicgraph::tutorial::InvertedPendulum pendulum("test pendulum");
   pendulum.setCartMass(1.2);
   BOOST_CHECK(pendulum.getCartMass() == 1.2);

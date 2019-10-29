@@ -74,7 +74,7 @@ Setters and getters will enable us later to control parameters through commands.
 
           double getPendulumLength () const {
             return pendulumLength_;
-	  }
+          }
 \endcode
 
 The name of the class is stored as a static member
@@ -160,14 +160,14 @@ We set input and output signal as constant with a given value
 \endcode
 
 The following lines of code define and register commands into the entity.
-A \ref dynamicgraph::command::Command "command" is created by calling a constructor with 
+A \ref dynamicgraph::command::Command "command" is created by calling a constructor with
 \li a string: the name of the command,
 \li a pointer to a newly created command and
 \li a string documenting the command:
 
 \code
       std::string docstring;
-    
+
       // Incr
       docstring =
         "\n"
@@ -182,34 +182,35 @@ A \ref dynamicgraph::command::Command "command" is created by calling a construc
 In this example, command::Increment is a command specific to our class
 InvertedPendulum. This new command is explained in page \ref dg_tutorial_inverted_pendulum_command.
 
-Setter and getter commands are available through classes templated by the type of entity using the command and the type of the parameter. Be aware that only a prespecified set of types are supported for commands, see class dynamicgraph::command::Value.
-\code
-  docstring =
+Setter and getter commands are available through classes templated by the type of entity using the command and the type
+of the parameter. Be aware that only a prespecified set of types are supported for commands, see class
+dynamicgraph::command::Value. \code docstring =
     "\n"
     "    Set cart mass\n"
     "\n";
   addCommand(std::string("setCartMass"),
-	     new ::dynamicgraph::command::Setter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::setCartMass, docstring));
+             new ::dynamicgraph::command::Setter<InvertedPendulum, double>
+             (*this, &InvertedPendulum::setCartMass, docstring));
 
   docstring =
     "\n"
     "    Get cart mass\n"
     "\n";
   addCommand(std::string("getCartMass"),
-	     new ::dynamicgraph::command::Getter<InvertedPendulum, double>
-	     (*this, &InvertedPendulum::getCartMass, docstring));
+             new ::dynamicgraph::command::Getter<InvertedPendulum, double>
+             (*this, &InvertedPendulum::getCartMass, docstring));
 \endcode
 
 \note
 It is important to notice that
-\li commands passed to method Entity::addCommand will be destroyed automatically by Entity class destructor. The user should therefore not destroy them,
-\li commands should be defined and registered in the class constructor. Commands defined later on will not be reachable by python bindings.
+\li commands passed to method Entity::addCommand will be destroyed automatically by Entity class destructor. The user
+should therefore not destroy them, \li commands should be defined and registered in the class constructor. Commands
+defined later on will not be reachable by python bindings.
 
 \subsection dg_tutorial_inverted_pendulum_cxx_implementation_newtypes Registering new types: advanced feature
 
-Signals are templated by the type of data they convey. In this example, we hae defined our own class of vectors InvertedPendulum::Vector. In order to be able to create signals with this type, we need to register the new type:
-\code
+Signals are templated by the type of data they convey. In this example, we hae defined our own class of vectors
+InvertedPendulum::Vector. In order to be able to create signals with this type, we need to register the new type: \code
 dynamicgraph::DefaultCastRegisterer<InvertedPendulum::Vector> IPVectorCast;
 \endcode
 

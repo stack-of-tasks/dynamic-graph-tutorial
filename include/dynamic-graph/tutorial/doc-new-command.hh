@@ -6,7 +6,7 @@
 Command (dynamicgraph::command::Command) are objects that encapsulate an
 action to be performed on an entity.
 
-In this page, we define a new command that will call method 
+In this page, we define a new command that will call method
 InvertedPendulum::incr. The source code is in
 <c>src/command-increment.hh</c>.
 
@@ -25,12 +25,11 @@ The constructor takes
 \li a reference to a InvertedPendulum and calls parent class,
 \li a vector a types specifying the number and types of input arguments of the command and
 \li a string documenting the command.
-In this case, there is only one argument of type <c>double</c>. Note the use of <c>boost::assign::list_of</c> to build a vector in one command line:
-\code
-	Increment(InvertedPendulum& entity, const std::string& docstring) :
-	  Command(entity, boost::assign::list_of(Value::DOUBLE), docstring)
-	{
-	}
+In this case, there is only one argument of type <c>double</c>. Note the use of <c>boost::assign::list_of</c> to build
+a vector in one command line: \code Increment(InvertedPendulum& entity, const std::string& docstring) : Command(entity,
+boost::assign::list_of(Value::DOUBLE), docstring)
+        {
+        }
 \endcode
 
 We then define the action of the command in virtual method <c>doExecute</c>.
@@ -38,7 +37,7 @@ We need to get a reference to the object on which the command will act. Note
 that we can straightfowardly statically cast in <c>InvertedPendulum</c> the
 Entity object returned by method <c>owner</c>:
 \code
-    virtual Value doExecute() 
+    virtual Value doExecute()
     {
       Entity& entity = owner();
       InvertedPendulum& ip = static_cast<InvertedPendulum&>(entity);
