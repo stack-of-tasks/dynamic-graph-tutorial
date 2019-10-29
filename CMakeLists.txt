@@ -1,6 +1,6 @@
 #
-#  Copyright 2010, 2018 CNRS
-#  Author: Florent Lamiraux
+#  Copyright 2010, 2018, 2019 CNRS
+#  Authors: Florent Lamiraux, Guilhem Saurel
 #
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
@@ -14,6 +14,11 @@ INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/test.cmake)
 INCLUDE(cmake/python.cmake)
+INCLUDE(cmake/sphinx.cmake)
+
+OPTION (BUILD_PYTHON_INTERFACE "Build the python binding" ON)
+OPTION (INSTALL_PYTHON_INTERFACE_ONLY "Install *ONLY* the python binding" OFF)
+SET (CUSTOM_HEADER_DIR "dynamic-graph/tutorial")
 
 CMAKE_POLICY(SET CMP0048 OLD)
 PROJECT(${PROJECT_NAME} CXX)
@@ -22,7 +27,6 @@ ADD_REQUIRED_DEPENDENCY("dynamic-graph")
 
 SET(BOOST_COMPONENTS unit_test_framework)
 
-OPTION (BUILD_PYTHON_INTERFACE "Build the python binding" ON)
 IF(BUILD_PYTHON_INTERFACE)
   ADD_REQUIRED_DEPENDENCY("dynamic-graph-python")
   FINDPYTHON()
@@ -34,7 +38,7 @@ ENDIF(BUILD_PYTHON_INTERFACE)
 SEARCH_FOR_BOOST()
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-ADD_SUBDIRECTORY(include/dynamic-graph/tutorial)
+ADD_SUBDIRECTORY(include/${CUSTOM_HEADER_DIR})
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(doc)
 ADD_SUBDIRECTORY(tests)

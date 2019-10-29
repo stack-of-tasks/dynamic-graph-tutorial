@@ -1,7 +1,5 @@
-# Copyright 2010, Florent Lamiraux, CNRS
+# Copyright 2010, 2019, Florent Lamiraux, Guilhem Saurel CNRS
 #
-
-INCLUDE(../cmake/sphinx.cmake)
 
 SPHINX_SETUP()
 SPHINX_FINALIZE()
