@@ -1,5 +1,7 @@
-# Copyright 2010, 2019, Florent Lamiraux, Guilhem Saurel CNRS
+# Copyright 2010, 2019-2020, Florent Lamiraux, Guilhem Saurel CNRS
 #
 
-SPHINX_SETUP()
-SPHINX_FINALIZE()
+IF(BUILD_PYTHON_INTERFACE)
+  SPHINX_SETUP()
+  SPHINX_FINALIZE()
+ENDIF(BUILD_PYTHON_INTERFACE)
