@@ -1,28 +1,4 @@
-# Copyright 2010, 2018, Florent Lamiraux, CNRS
-#
-
-
-SET(${PROJECT_NAME}_SOURCES
-  inverted-pendulum
-  feedback-controller
-  )
-
-SET(${PY_NAME}_PYTHON
-  simu.py
-  )
-
-ADD_LIBRARY(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES})
-
-TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC dynamic-graph::dynamic-graph)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} dynamic-graph::dynamic-graph)
-
 IF(BUILD_PYTHON_INTERFACE)
-  TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC dynamic-graph-python::dynamic-graph-python)
-  TARGET_LINK_LIBRARIES(${PROJECT_NAME} dynamic-graph-python::dynamic-graph-python)
+  PYTHON_INSTALL_ON_SITE("dynamic_graph/tutorial" simu.py)
   DYNAMIC_GRAPH_PYTHON_MODULE("tutorial" ${PROJECT_NAME} wrap)
-  INSTALL(FILES ${${PY_NAME}_PYTHON} DESTINATION "${PYTHON_SITELIB}/dynamic_graph/tutorial/")
 ENDIF(BUILD_PYTHON_INTERFACE)
-
-IF (NOT INSTALL_PYTHON_INTERFACE_ONLY)
-  INSTALL(TARGETS ${PROJECT_NAME} DESTINATION lib)
-ENDIF (NOT INSTALL_PYTHON_INTERFACE_ONLY)
