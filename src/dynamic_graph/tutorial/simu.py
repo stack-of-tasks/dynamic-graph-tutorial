@@ -3,41 +3,45 @@ import dynamic_graph.tutorial as dgt
 import matplotlib.pyplot as pl
 import numpy as np
 
-# define inverted pendulum
-a = dgt.InvertedPendulum("IP")
-a.setCartMass(1.0)
-a.setPendulumMass(1.0)
-a.setPendulumLength(1.0)
 
-b = dgt.FeedbackController("K")
+def build_graph():
+    # define inverted pendulum
+    a = dgt.InvertedPendulum("IP")
+    a.setCartMass(1.0)
+    a.setPendulumMass(1.0)
+    a.setPendulumLength(1.0)
 
-# plug signals
-stateOut = a.signal('state')
-forceIn = a.signal('force')
-stateIn = b.signal('state')
-forceOut = b.signal('force')
+    b = dgt.FeedbackController("K")
 
-dg.plug(stateOut, stateIn)
-dg.plug(forceOut, forceIn)
+    # plug signals
+    stateOut = a.signal('state')
+    forceIn = a.signal('force')
+    stateIn = b.signal('state')
+    forceOut = b.signal('force')
 
-timeStep = 0.001
+    dg.plug(stateOut, stateIn)
+    dg.plug(forceOut, forceIn)
 
-# Set value of state signal
-s = stateOut
-f = forceIn
+    # Set value of state signal
+    s = stateOut
+    f = forceIn
 
-s.value = (0.0, 0.1, 0.0, 0.0)
+    s.value = (0.0, 0.1, 0.0, 0.0)
 
-gain = ((
-    0.0,
-    27.0,
-    0.001,
-    0.001,
-), )
-b.setGain(gain, )
+    gain = ((
+        0.0,
+        27.0,
+        0.001,
+        0.001,
+    ), )
+    b.setGain(gain, )
+
+    return s, f, a
 
 
 def play(nbSteps):
+    s, f, a = build_graph()
+    timeStep = 0.001
     timeSteps = []
     values = []
     forces = []
