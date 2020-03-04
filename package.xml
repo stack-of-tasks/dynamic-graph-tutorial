@@ -1,0 +1,21 @@
+<package format="2">
+  <name>dynamic-graph-tutorial</name>
+  <version>1.2.0</version>
+  <description>
+    Dynamic graph tutorial
+  </description>
+  <maintainer email="ostasse@laas.fr">Olivier Stasse</maintainer>
+  <license>BSD</license>
+
+  <url>http://github.com/stack-of-tasks/dynamic-graph-tutorial</url>
+  <author>Nicolas Mansard</author>
+  <author>Olivier Stasse</author>
+
+  <build_depend>dynamic-graph</build_depend>
+  <build_depend>dynamic-graph-python</build_depend>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <doc_depend>doxygen</doc_depend>
+
+</package>
