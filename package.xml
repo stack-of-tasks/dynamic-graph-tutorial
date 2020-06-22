@@ -14,8 +14,12 @@
   <build_depend>dynamic-graph</build_depend>
   <build_depend>dynamic-graph-python</build_depend>
 
-  <buildtool_depend>catkin</buildtool_depend>
-
   <doc_depend>doxygen</doc_depend>
+  
+  <buildtool_depend>cmake</buildtool_depend>
 
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+  
 </package>
