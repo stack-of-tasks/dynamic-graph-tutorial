@@ -26,7 +26,6 @@ SET(CUSTOM_HEADER_DIR "dynamic-graph/tutorial")
 INCLUDE(cmake/base.cmake)
 INCLUDE(cmake/boost.cmake)
 INCLUDE(cmake/python.cmake)
-INCLUDE(cmake/sphinx.cmake)
 
 # Project definition
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
@@ -72,7 +71,6 @@ ENDIF(NOT INSTALL_PYTHON_INTERFACE_ONLY)
 
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(tests)
-ADD_SUBDIRECTORY(doc)
 
 IF(NOT INSTALL_PYTHON_INTERFACE_ONLY)
   INSTALL(FILES package.xml DESTINATION share/${PROJECT_NAME})

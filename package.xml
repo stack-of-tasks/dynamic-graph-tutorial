@@ -13,6 +13,9 @@
 
   <build_depend>dynamic-graph</build_depend>
   <build_depend>dynamic-graph-python</build_depend>
+  <depend>doxygen</depend>
+  <depend>git</depend>
+
 
   <doc_depend>doxygen</doc_depend>
   
