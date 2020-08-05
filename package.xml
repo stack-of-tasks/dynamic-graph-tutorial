@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>dynamic-graph-tutorial</name>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
   <description>
     Dynamic graph tutorial
   </description>
@@ -22,11 +22,11 @@
   <depend>boost</depend>
 
   <doc_depend>doxygen</doc_depend>
-  
+
   <buildtool_depend>cmake</buildtool_depend>
 
   <export>
     <build_type>cmake</build_type>
   </export>
-  
+
 </package>
