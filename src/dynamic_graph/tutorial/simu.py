@@ -26,14 +26,9 @@ def build_graph():
     s = stateOut
     f = forceIn
 
-    s.value = (0.0, 0.1, 0.0, 0.0)
+    s.value = np.array((0.0, 0.1, 0.0, 0.0))
 
-    gain = ((
-        0.0,
-        27.0,
-        0.001,
-        0.001,
-    ), )
+    gain = np.array((0.0, 27.0, 0.001, 0.001))
     b.setGain(gain, )
 
     return s, f, a

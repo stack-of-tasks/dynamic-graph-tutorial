@@ -1,4 +1,5 @@
 IF(BUILD_PYTHON_INTERFACE)
   PYTHON_INSTALL_ON_SITE("dynamic_graph/tutorial" simu.py)
-  DYNAMIC_GRAPH_PYTHON_MODULE("tutorial" ${PROJECT_NAME} tutorial-wrap)
+  DYNAMIC_GRAPH_PYTHON_MODULE("tutorial" ${PROJECT_NAME} tutorial-wrap
+    MODULE_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/tutorial-python.h")
 ENDIF(BUILD_PYTHON_INTERFACE)
