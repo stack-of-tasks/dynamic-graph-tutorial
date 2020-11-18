@@ -125,7 +125,7 @@ class InvertedPendulum : public Entity {
      @}
   */
 
- protected:
+ public:
   /*
     \brief Class name
   */

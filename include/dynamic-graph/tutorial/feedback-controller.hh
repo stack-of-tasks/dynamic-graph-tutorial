@@ -54,7 +54,7 @@ class FeedbackController : public Entity {
      @}
   */
 
- protected:
+ public:
   /*
     \brief Class name
   */
