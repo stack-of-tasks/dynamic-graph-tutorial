@@ -43,6 +43,12 @@ IF(BUILD_PYTHON_INTERFACE)
   SEARCH_FOR_BOOST_PYTHON(REQUIRED)
 ENDIF(BUILD_PYTHON_INTERFACE)
 
+IF(Boost_VERSION GREATER 107299 OR Boost_VERSION_MACRO GREATER 107299)
+  # Silence a warning about a deprecated use of boost bind by boost >= 1.73
+  # without dropping support for boost < 1.73
+  ADD_DEFINITIONS(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
+ENDIF()
+
 # Main Library
 SET(${PROJECT_NAME}_HEADERS
   include/${CUSTOM_HEADER_DIR}/inverted-pendulum.hh
