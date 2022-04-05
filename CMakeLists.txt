@@ -56,8 +56,8 @@ SET(${PROJECT_NAME}_HEADERS
   )
 
 SET(${PROJECT_NAME}_SOURCES
-  src/inverted-pendulum
-  src/feedback-controller
+  src/inverted-pendulum.cpp
+  src/feedback-controller.cpp
   )
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
