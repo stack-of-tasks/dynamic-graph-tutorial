@@ -10,8 +10,8 @@
 #define DG_TUTORIAL_INVERTED_PENDULUM_HH
 
 #include <dynamic-graph/entity.h>
-#include <dynamic-graph/signal-ptr.h>
 #include <dynamic-graph/linear-algebra.h>
+#include <dynamic-graph/signal-ptr.h>
 
 namespace dynamicgraph {
 namespace tutorial {
@@ -23,9 +23,9 @@ namespace tutorial {
    The equation of motion is:
 
    \f{eqnarray*}{
-   \left ( M + m \right ) \ddot x - m l \ddot \theta \cos \theta + m l \dot \theta^2 \sin \theta &=& F\\
-   m l (-g \sin \theta - \ddot x \cos \theta + l \ddot \theta) &=& 0
-   \f}
+   \left ( M + m \right ) \ddot x - m l \ddot \theta \cos \theta + m l \dot
+   \theta^2 \sin \theta &=& F\\ m l (-g \sin \theta - \ddot x \cos \theta + l
+   \ddot \theta) &=& 0 \f}
 
    where
    \li the state is a vector of dimension 4
@@ -82,7 +82,9 @@ class InvertedPendulum : public Entity {
   virtual const std::string& getClassName(void) const { return CLASS_NAME; }
 
   /// Header documentation of the python class
-  virtual std::string getDocString() const { return "Classical inverted pendulum dynamic model\n"; }
+  virtual std::string getDocString() const {
+    return "Classical inverted pendulum dynamic model\n";
+  }
 
   /// Integrate equation of motion over time step given as input
   void incr(double inTimeStep);
@@ -153,7 +155,8 @@ class InvertedPendulum : public Entity {
   /**
      \brief Compute the evolution of the state of the pendulum
   */
-  ::dynamicgraph::Vector computeDynamics(const ::dynamicgraph::Vector& inState, const double& inControl,
+  ::dynamicgraph::Vector computeDynamics(const ::dynamicgraph::Vector& inState,
+                                         const double& inControl,
                                          double inTimeStep);
 };
 }  // namespace tutorial
