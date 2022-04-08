@@ -11,7 +11,8 @@ As an example, we review below class dynamicgraph::tutorial::InvertedPendulum.
 
 \section dg_tutorial_inverted_pendulum_cxx_interface Interface
 
-The interface is defined in file <c>include/dynamic-graph/tutorial/inverted-pendulum.hh</c>.
+The interface is defined in file
+<c>include/dynamic-graph/tutorial/inverted-pendulum.hh</c>.
 
 First, we include
 \li the header defining Entity class and
@@ -20,8 +21,8 @@ First, we include
 
 \code
     #include <dynamic-graph/entity.h>
-    #include <dynamic-graph/signal-ptr.h>
     #include <dynamic-graph/linear-algebra.h>
+    #include <dynamic-graph/signal-ptr.h>
 \endcode
 
 Then in namespace <c>dynamicgraph::tutorial</c> we define class InvertedPendulum
@@ -108,14 +109,16 @@ First, we include headers defining
 \subsection dg_tutorial_inverted_pendulum_cxx_implementation_headers Headers
 
 \code
-    #include <dynamic-graph/factory.h>
-    #include <dynamic-graph/command-setter.h>
     #include <dynamic-graph/command-getter.h>
-    #include "dynamic-graph/tutorial/inverted-pendulum.hh"
+    #include <dynamic-graph/command-setter.h>
+    #include <dynamic-graph/factory.h>
+
     #include "command-increment.hh"
+    #include "dynamic-graph/tutorial/inverted-pendulum.hh"
 \endcode
 
-\subsection dg_tutorial_inverted_pendulum_cxx_implementation_entity_registration Entity registration
+\subsection dg_tutorial_inverted_pendulum_cxx_implementation_entity_registration
+Entity registration
 
 The second step consists in
 \li registering our new class into the entity factory and
@@ -130,7 +133,8 @@ using a macro defined in <c>dynamic-graph/factory.h</c>:
 \li the name of the type of the corresponding python class. It is highly
 recommended to use the same name for both.
 
-\subsection dg_tutorial_inverted_pendulum_cxx_implementation_constructor Constructor
+\subsection dg_tutorial_inverted_pendulum_cxx_implementation_constructor
+Constructor
 
 Then we define the class constructor
 \li passing the instance name to Entity class constructor,
@@ -160,10 +164,9 @@ We set input and output signal as constant with a given value
 \endcode
 
 The following lines of code define and register commands into the entity.
-A \ref dynamicgraph::command::Command "command" is created by calling a constructor with
-\li a string: the name of the command,
-\li a pointer to a newly created command and
-\li a string documenting the command:
+A \ref dynamicgraph::command::Command "command" is created by calling a
+constructor with \li a string: the name of the command, \li a pointer to a newly
+created command and \li a string documenting the command:
 
 \code
       std::string docstring;
@@ -180,10 +183,12 @@ A \ref dynamicgraph::command::Command "command" is created by calling a construc
 \endcode
 
 In this example, command::Increment is a command specific to our class
-InvertedPendulum. This new command is explained in page \ref dg_tutorial_inverted_pendulum_command.
+InvertedPendulum. This new command is explained in page \ref
+dg_tutorial_inverted_pendulum_command.
 
-Setter and getter commands are available through classes templated by the type of entity using the command and the type
-of the parameter. Be aware that only a prespecified set of types are supported for commands, see class
+Setter and getter commands are available through classes templated by the type
+of entity using the command and the type of the parameter. Be aware that only a
+prespecified set of types are supported for commands, see class
 dynamicgraph::command::Value. \code docstring =
     "\n"
     "    Set cart mass\n"
@@ -203,18 +208,22 @@ dynamicgraph::command::Value. \code docstring =
 
 \note
 It is important to notice that
-\li commands passed to method Entity::addCommand will be destroyed automatically by Entity class destructor. The user
-should therefore not destroy them, \li commands should be defined and registered in the class constructor. Commands
+\li commands passed to method Entity::addCommand will be destroyed automatically
+by Entity class destructor. The user should therefore not destroy them, \li
+commands should be defined and registered in the class constructor. Commands
 defined later on will not be reachable by python bindings.
 
-\subsection dg_tutorial_inverted_pendulum_cxx_implementation_newtypes Registering new types: advanced feature
+\subsection dg_tutorial_inverted_pendulum_cxx_implementation_newtypes
+Registering new types: advanced feature
 
-Signals are templated by the type of data they convey. In this example, we hae defined our own class of vectors
-InvertedPendulum::Vector. In order to be able to create signals with this type, we need to register the new type: \code
+Signals are templated by the type of data they convey. In this example, we hae
+defined our own class of vectors InvertedPendulum::Vector. In order to be able
+to create signals with this type, we need to register the new type: \code
 dynamicgraph::DefaultCastRegisterer<InvertedPendulum::Vector> IPVectorCast;
 \endcode
 
 \note
-The new type should implement operator<< and operator>> in order to store variables in streams.
+The new type should implement operator<< and operator>> in order to store
+variables in streams.
 
 */

@@ -23,11 +23,12 @@ We first define the new class by deriving dynamicgraph::command::Command:
 
 The constructor takes
 \li a reference to a InvertedPendulum and calls parent class,
-\li a vector a types specifying the number and types of input arguments of the command and
-\li a string documenting the command.
-In this case, there is only one argument of type <c>double</c>. Note the use of <c>boost::assign::list_of</c> to build
-a vector in one command line: \code Increment(InvertedPendulum& entity, const std::string& docstring) : Command(entity,
-boost::assign::list_of(Value::DOUBLE), docstring)
+\li a vector a types specifying the number and types of input arguments of the
+command and \li a string documenting the command. In this case, there is only
+one argument of type <c>double</c>. Note the use of
+<c>boost::assign::list_of</c> to build a vector in one command line: \code
+Increment(InvertedPendulum& entity, const std::string& docstring) :
+Command(entity, boost::assign::list_of(Value::DOUBLE), docstring)
         {
         }
 \endcode

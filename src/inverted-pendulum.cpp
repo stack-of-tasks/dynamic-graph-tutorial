@@ -4,13 +4,15 @@
  *  Florent Lamiraux
  */
 
+#include "dynamic-graph/tutorial/inverted-pendulum.hh"
+
+#include <dynamic-graph/command-getter.h>
+#include <dynamic-graph/command-setter.h>
+#include <dynamic-graph/factory.h>
+
 #include <boost/format.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
-#include <dynamic-graph/factory.h>
-#include <dynamic-graph/command-setter.h>
-#include <dynamic-graph/command-getter.h>
-#include "dynamic-graph/tutorial/inverted-pendulum.hh"
 #include "command-increment.hh"
 #include "constant.hh"
 
@@ -60,55 +62,64 @@ InvertedPendulum::InvertedPendulum(const std::string& inName)
       "\n"
       "    Set cart mass\n"
       "\n";
-  addCommand(std::string("setCartMass"), new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
-                                             *this, &InvertedPendulum::setCartMass, docstring));
+  addCommand(std::string("setCartMass"),
+             new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
+                 *this, &InvertedPendulum::setCartMass, docstring));
 
   // getCartMass
   docstring =
       "\n"
       "    Get cart mass\n"
       "\n";
-  addCommand(std::string("getCartMass"), new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
-                                             *this, &InvertedPendulum::getCartMass, docstring));
+  addCommand(std::string("getCartMass"),
+             new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
+                 *this, &InvertedPendulum::getCartMass, docstring));
 
   // setPendulumMass
   docstring =
       "\n"
       "    Set pendulum mass\n"
       "\n";
-  addCommand(std::string("setPendulumMass"), new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
-                                                 *this, &InvertedPendulum::setPendulumMass, docstring));
+  addCommand(std::string("setPendulumMass"),
+             new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
+                 *this, &InvertedPendulum::setPendulumMass, docstring));
 
   // getPendulumMass
   docstring =
       "\n"
       "    Get pendulum mass\n"
       "\n";
-  addCommand(std::string("getPendulumMass"), new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
-                                                 *this, &InvertedPendulum::getPendulumMass, docstring));
+  addCommand(std::string("getPendulumMass"),
+             new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
+                 *this, &InvertedPendulum::getPendulumMass, docstring));
 
   // setPendulumLength
   docstring =
       "\n"
       "    Set pendulum length\n"
       "\n";
-  addCommand(std::string("setPendulumLength"), new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
-                                                   *this, &InvertedPendulum::setPendulumLength, docstring));
+  addCommand(std::string("setPendulumLength"),
+             new ::dynamicgraph::command::Setter<InvertedPendulum, double>(
+                 *this, &InvertedPendulum::setPendulumLength, docstring));
 
   // getPendulumLength
   docstring =
       "\n"
       "    Get pendulum length\n"
       "\n";
-  addCommand(std::string("getPendulumLength"), new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
-                                                   *this, &InvertedPendulum::getPendulumLength, docstring));
+  addCommand(std::string("getPendulumLength"),
+             new ::dynamicgraph::command::Getter<InvertedPendulum, double>(
+                 *this, &InvertedPendulum::getPendulumLength, docstring));
 }
 
 InvertedPendulum::~InvertedPendulum() {}
 
-Vector InvertedPendulum::computeDynamics(const Vector& inState, const double& inControl, double inTimeStep) {
+Vector InvertedPendulum::computeDynamics(const Vector& inState,
+                                         const double& inControl,
+                                         double inTimeStep) {
   if (inState.size() != 4)
-    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC, "state signal size is ",
+    throw dynamicgraph::ExceptionSignal(dynamicgraph::ExceptionSignal::GENERIC,
+                                        "state signal size is ",
                                         "%d, should be 4.", inState.size());
 
   double dt = inTimeStep;
