@@ -37,6 +37,7 @@ endif(BUILD_TESTING)
 
 if(BUILD_PYTHON_INTERFACE)
   add_project_dependency(dynamic-graph-python 4.0.6 REQUIRED)
+  include(cmake/python.cmake) # TODO: overwriting eigenpy/python.cmake
 endif(BUILD_PYTHON_INTERFACE)
 
 if(Boost_VERSION GREATER 107299 OR Boost_VERSION_MACRO GREATER 107299)
