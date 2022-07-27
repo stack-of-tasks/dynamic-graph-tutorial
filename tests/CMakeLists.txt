@@ -1,11 +1,13 @@
-ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
+add_definitions(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
 
-ADD_UNIT_TEST(pendulum pendulum.cpp)
-TARGET_LINK_LIBRARIES(pendulum PRIVATE ${PROJECT_NAME} Boost::unit_test_framework)
+add_unit_test(pendulum pendulum.cpp)
+target_link_libraries(pendulum PRIVATE ${PROJECT_NAME}
+                                       Boost::unit_test_framework)
 
-ADD_UNIT_TEST(controller controller.cpp)
-TARGET_LINK_LIBRARIES(controller PRIVATE ${PROJECT_NAME} Boost::unit_test_framework)
+add_unit_test(controller controller.cpp)
+target_link_libraries(controller PRIVATE ${PROJECT_NAME}
+                                         Boost::unit_test_framework)
 
-IF(BUILD_PYTHON_INTERFACE)
-  ADD_PYTHON_UNIT_TEST(simu "tests/simu.py" src)
-ENDIF(BUILD_PYTHON_INTERFACE)
+if(BUILD_PYTHON_INTERFACE)
+  add_python_unit_test(simu "tests/simu.py" src)
+endif(BUILD_PYTHON_INTERFACE)

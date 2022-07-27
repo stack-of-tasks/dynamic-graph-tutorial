@@ -1,80 +1,78 @@
 #
-#  Copyright 2010, 2018-2020 CNRS
-#  Authors: Florent Lamiraux, Guilhem Saurel
+# Copyright 2010, 2018-2020 CNRS Authors: Florent Lamiraux, Guilhem Saurel
 #
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+cmake_minimum_required(VERSION 3.1)
 
 # Project properties
-SET(PROJECT_ORG stack-of-tasks)
-SET(PROJECT_NAME dynamic-graph-tutorial)
-SET(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
-SET(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
+set(PROJECT_ORG stack-of-tasks)
+set(PROJECT_NAME dynamic-graph-tutorial)
+set(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
+set(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
 
 # Project options
-OPTION(BUILD_PYTHON_INTERFACE "Build the python bindings" ON)
-OPTION(INSTALL_PYTHON_INTERFACE_ONLY "Install *ONLY* the python bindings" OFF)
-OPTION(SUFFIX_SO_VERSION "Suffix library name with its version" ON)
+option(BUILD_PYTHON_INTERFACE "Build the python bindings" ON)
+option(INSTALL_PYTHON_INTERFACE_ONLY "Install *ONLY* the python bindings" OFF)
+option(SUFFIX_SO_VERSION "Suffix library name with its version" ON)
 
 # Project configuration
-IF(NOT INSTALL_PYTHON_INTERFACE_ONLY)
-  SET(PROJECT_USE_CMAKE_EXPORT TRUE)
-ENDIF(NOT INSTALL_PYTHON_INTERFACE_ONLY)
-SET(CUSTOM_HEADER_DIR "dynamic-graph/tutorial")
+if(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+  set(PROJECT_USE_CMAKE_EXPORT TRUE)
+endif(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+set(CUSTOM_HEADER_DIR "dynamic-graph/tutorial")
 
 # JRL-cmakemodule setup
-INCLUDE(cmake/base.cmake)
-INCLUDE(cmake/boost.cmake)
+include(cmake/base.cmake)
+include(cmake/boost.cmake)
 
 # Project definition
-COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
-PROJECT(${PROJECT_NAME} ${PROJECT_ARGS})
+compute_project_args(PROJECT_ARGS LANGUAGES CXX)
+project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 # Project dependencies
-ADD_PROJECT_DEPENDENCY(dynamic-graph REQUIRED)
-IF(BUILD_TESTING)
-  FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)
-ENDIF(BUILD_TESTING)
+add_project_dependency(dynamic-graph REQUIRED)
+if(BUILD_TESTING)
+  find_package(Boost REQUIRED COMPONENTS unit_test_framework)
+endif(BUILD_TESTING)
 
-IF(BUILD_PYTHON_INTERFACE)
-  ADD_PROJECT_DEPENDENCY(dynamic-graph-python 4.0.6 REQUIRED)
-ENDIF(BUILD_PYTHON_INTERFACE)
+if(BUILD_PYTHON_INTERFACE)
+  add_project_dependency(dynamic-graph-python 4.0.6 REQUIRED)
+endif(BUILD_PYTHON_INTERFACE)
 
-IF(Boost_VERSION GREATER 107299 OR Boost_VERSION_MACRO GREATER 107299)
+if(Boost_VERSION GREATER 107299 OR Boost_VERSION_MACRO GREATER 107299)
   # Silence a warning about a deprecated use of boost bind by boost >= 1.73
   # without dropping support for boost < 1.73
-  ADD_DEFINITIONS(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
-ENDIF()
+  add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
+endif()
 
 # Main Library
-SET(${PROJECT_NAME}_HEADERS
-  include/${CUSTOM_HEADER_DIR}/inverted-pendulum.hh
-  include/${CUSTOM_HEADER_DIR}/feedback-controller.hh
-  )
+set(${PROJECT_NAME}_HEADERS include/${CUSTOM_HEADER_DIR}/inverted-pendulum.hh
+                            include/${CUSTOM_HEADER_DIR}/feedback-controller.hh)
 
-SET(${PROJECT_NAME}_SOURCES
-  src/inverted-pendulum.cpp
-  src/feedback-controller.cpp
-  )
+set(${PROJECT_NAME}_SOURCES src/inverted-pendulum.cpp
+                            src/feedback-controller.cpp)
 
-ADD_LIBRARY(${PROJECT_NAME} SHARED
-  ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_HEADERS})
-TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC dynamic-graph::dynamic-graph)
+add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
+                                   ${${PROJECT_NAME}_HEADERS})
+target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
+target_link_libraries(${PROJECT_NAME} PUBLIC dynamic-graph::dynamic-graph)
 
-IF(SUFFIX_SO_VERSION)
-  SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
-ENDIF(SUFFIX_SO_VERSION)
+if(SUFFIX_SO_VERSION)
+  set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
+endif(SUFFIX_SO_VERSION)
 
-IF(NOT INSTALL_PYTHON_INTERFACE_ONLY)
-  INSTALL(TARGETS ${PROJECT_NAME} EXPORT ${TARGETS_EXPORT_NAME} DESTINATION lib)
-ENDIF(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+if(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+  install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${TARGETS_EXPORT_NAME}
+    DESTINATION lib)
+endif(NOT INSTALL_PYTHON_INTERFACE_ONLY)
 
-ADD_SUBDIRECTORY(src)
-IF(BUILD_TESTING)
-  ADD_SUBDIRECTORY(tests)
-ENDIF(BUILD_TESTING)
+add_subdirectory(src)
+if(BUILD_TESTING)
+  add_subdirectory(tests)
+endif(BUILD_TESTING)
 
-IF(NOT INSTALL_PYTHON_INTERFACE_ONLY)
-  INSTALL(FILES package.xml DESTINATION share/${PROJECT_NAME})
-ENDIF(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+if(NOT INSTALL_PYTHON_INTERFACE_ONLY)
+  install(FILES package.xml DESTINATION share/${PROJECT_NAME})
+endif(NOT INSTALL_PYTHON_INTERFACE_ONLY)
