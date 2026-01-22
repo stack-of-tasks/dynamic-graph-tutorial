@@ -10,6 +10,10 @@ set(PROJECT_NAME dynamic-graph-tutorial)
 set(PROJECT_DESCRIPTION "Tutorial for dynamic-graph")
 set(PROJECT_URL "https://github.com/${PROJECT_ORG}/${PROJECT_NAME}")
 
+if(NOT "${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+  set(CXX_DISABLE_WERROR ON)
+endif()
+
 # Project options
 option(BUILD_PYTHON_INTERFACE "Build the python bindings" ON)
 option(INSTALL_PYTHON_INTERFACE_ONLY "Install *ONLY* the python bindings" OFF)
